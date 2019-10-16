@@ -19,10 +19,10 @@
                 </el-submenu>
                 <el-submenu index="3">
                     <template slot="title">Profile</template>
-                    <el-menu-item index="3-1" :route="{path:''}">
+                    <el-menu-item index="3-1" @click="$router.push('/users')">
                         Fotograf
                     </el-menu-item>
-                    <el-menu-item index="3-2" :route="{path:''}">
+                    <el-menu-item index="3-2" @click="$router.push('/users')">
                         Model/Modelka
                     </el-menu-item>
                 </el-submenu>
@@ -43,7 +43,10 @@
             </el-menu>
         </el-header>
         <el-main>
-            <el-row>
+            <el-row type="flex" justify="center" :gutter="20">
+                <el-col :span="12">
+                <el-card>
+                    <h3>Rejestracja</h3>
                 <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px" class="demo-ruleForm" label-position="left">
                     <el-form-item label="Profesja" prop="occupation">
                         <el-radio-group v-model="ruleForm.occupation">
@@ -92,10 +95,12 @@
                         <el-input v-model="ruleForm.city"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="submitForm('ruleForm')">Utwórz konto</el-button>
+                        <el-button type="primary" @click="submitForm('ruleForm')" style="background-color: #2c3e50; border-color: #2c3e50">Utwórz konto</el-button>
                         <el-button @click="$router.push('/')">Anuluj</el-button>
                     </el-form-item>
                 </el-form>
+                </el-card>
+                </el-col>
             </el-row>
         </el-main>
     </el-container>

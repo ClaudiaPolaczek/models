@@ -19,10 +19,10 @@
                 </el-submenu>
                 <el-submenu index="3">
                     <template slot="title">Profile</template>
-                    <el-menu-item index="3-1" :route="{path:''}">
+                    <el-menu-item index="3-1" @click="$router.push('/users')">
                         Fotograf
                     </el-menu-item>
-                    <el-menu-item index="3-2" :route="{path:''}">
+                    <el-menu-item index="3-2" @click="$router.push('/users')">
                         Model/Modelka
                     </el-menu-item>
                 </el-submenu>
@@ -43,8 +43,11 @@
             </el-menu>
         </el-header>
         <el-main>
-            <el-row>
-            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px" class="demo-ruleForm">
+            <el-row type="flex" justify="center" :gutter="20">
+                <el-col :span="8">
+                    <el-card>
+                <h3>Logowanie</h3>
+            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" :label-position="labelPosition" class="demo-ruleForm">
                 <el-form-item label="Login" prop="username">
                     <el-input v-model="ruleForm.username"></el-input>
                 </el-form-item>
@@ -59,6 +62,8 @@
                     <el-button @click="$router.push('signup')">Załóż konto</el-button>
                 </el-form-item>
             </el-form>
+                    </el-card>
+                </el-col>
             </el-row>
         </el-main>
     </el-container>
@@ -69,6 +74,7 @@
         name: "Signin",
         data() {
             return {
+                labelPosition: 'top',
                 ruleForm: {
                     username: '',
                     password: '',
@@ -107,8 +113,7 @@
     .el-form{
         margin-top: 20px;
         border-color: #2c3e50;
-        text-align: center;
-        margin-left: 50px;
+        text-align: left;
     }
 </style>
 

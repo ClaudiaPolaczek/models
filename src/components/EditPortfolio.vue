@@ -19,10 +19,10 @@
                 </el-submenu>
                 <el-submenu index="3">
                     <template slot="title">Profile</template>
-                    <el-menu-item index="3-1" :route="{path:''}">
+                    <el-menu-item index="3-1" @click="$router.push('/users')">
                         Fotograf
                     </el-menu-item>
-                    <el-menu-item index="3-2" :route="{path:''}">
+                    <el-menu-item index="3-2" @click="$router.push('/users')">
                         Model/Modelka
                     </el-menu-item>
                 </el-submenu>
@@ -103,6 +103,7 @@
                             </el-row>
                         </div></el-col>
                         <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
+
                     </el-row>
                 </el-main>
             </el-container>
