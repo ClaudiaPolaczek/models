@@ -20,7 +20,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="contact in photographers" :key="contact.id">
+            <tr v-for="contact in photographers">
 
                 <th>{ { contact.id } }</th>
 

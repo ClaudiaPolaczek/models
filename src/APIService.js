@@ -8,7 +8,7 @@ export class APIService{
     }
 
     getPhotographers() {
-        const url = `${API_URL}/photographers`;
+        const url = `${API_URL}/photographers/`;
         return axios.get(url).then(response => response.data);
     }
 
