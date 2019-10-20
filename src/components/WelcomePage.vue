@@ -22,7 +22,7 @@
                     <el-menu-item index="3-1" @click="$router.push('/photographers')">
                         Fotograf
                     </el-menu-item>
-                    <el-menu-item index="3-2" @click="$router.push('/users')">
+                    <el-menu-item index="3-2" @click="$router.push('/models')">
                         Model/Modelka
                     </el-menu-item>
                 </el-submenu>

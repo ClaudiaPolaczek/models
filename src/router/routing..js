@@ -9,8 +9,11 @@ import Notifications from "@/components/Notifications";
 import Calendar from "@/components/Calendar";
 import UserPortfolio from "@/components/UserPortfolio";
 import EditPortfolio from "@/components/EditPortfolio";
-import Profiles from "@/components/Profiles";
-import Profile from "@/components/Profile";
+import PhotographerProfiles from "@/components/PhotographerProfiles";
+import PhotographerProfile from "@/components/PhotographerProfile";
+import ModelProfile from "@/components/ModelProfile";
+import ModelProfiles from "@/components/ModelProfiles";
+import Portfolio from "@/components/Portfolio";
 
 Vue.use(VueRouter)
 
@@ -24,9 +27,12 @@ export default new VueRouter({
         { path: '/notifications', component: Notifications},
         { path: '/calendar', component: Calendar},
         { path: '/portfolio/user', component: UserPortfolio},
-        { path: '/portfolio/id', component: EditPortfolio},
-        { path: '/photographers', component: Profiles},
-        { path: '/user/id', component: Profile},
+        { path: '/portfolios/id', component: EditPortfolio},
+        { path: '/portfolios/u/:username', component: Portfolio},
+        { path: '/photographers', component: PhotographerProfiles},
+        { path: '/photographers/:id', component: PhotographerProfile},
+        { path: '/models', component: ModelProfiles},
+        { path: '/models/:id', component: ModelProfile},
     ],
     mode: 'history'
 })

@@ -75,11 +75,13 @@
                             <el-radio label="Mężczyzna"></el-radio>
                         </el-radio-group>
                     </el-form-item>
-                    <el-form-item label="Data urodzenia" style="align-items: center">
-                        <el-col  :span="11">
-                            <el-date-picker type="date" placeholder="Wybierz datę" v-model="ruleForm.birthDate">
-                            </el-date-picker>
-                        </el-col>
+                    <el-form-item label="Wiek" style="align-items: center">
+                        <el-select v-model="ruleForm.age" placeholder="Wybierz">
+                            <el-option
+                                    v-for="n in 50"
+                                    :key="n.value">
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                     <el-form-item label="Województwo">
                         <el-select v-model="ruleForm.region" placeholder="Wybierz">
@@ -120,7 +122,7 @@
                     passwordConfirmation: '',
                     gender: '',
                     region: '',
-                    birthDate: '',
+                    age: '',
                     city: '',
                     options: [{
                         value: 'dolnoslaskie',
@@ -198,13 +200,13 @@
                         { required: true, message: 'Wybierz płeć', trigger: 'change' }
                     ],
                     region: [
-                        { required: true, message: 'Please select Activity zone', trigger: 'change' }
+                        { required: true, message: 'Wybierz wojewódźtwo', trigger: 'change' }
                     ],
                     city: [
-                        { required: true, message: 'Please pick a date', trigger: 'change' }
+                        { required: true, message: 'Podaj miasto', trigger: 'change' }
                     ],
-                    birthDate: [
-                        { type: 'date', required: true, message: 'Please pick a time', trigger: 'change' }
+                    age: [
+                        { required: true, message: 'Podaj wiek ', trigger: 'change' }
                     ]
                 }
             };
