@@ -17,6 +17,11 @@ export class APIService{
         return axios.get(url).then(response => response.data);
     }
 
+    getPhotographerByUsername(username) {
+        const url = `${API_URL}/photographers/u/${username}`;
+        return axios.get(url).then(response => response.data);
+    }
+
     getModels() {
         const url = `${API_URL}/models`;
         return axios.get(url).then(response => response.data);
@@ -24,6 +29,11 @@ export class APIService{
 
     getModelById(id) {
         const url = `${API_URL}/models/${id}`;
+        return axios.get(url).then(response => response.data);
+    }
+
+    getModelByUsername(username) {
+        const url = `${API_URL}/models/u/${username}`;
         return axios.get(url).then(response => response.data);
     }
 

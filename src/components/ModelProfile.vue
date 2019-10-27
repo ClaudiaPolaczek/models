@@ -143,7 +143,7 @@
 </template>
 
 <script>
-    import {APIService} from '../APIService';
+    import {APIService} from '../services/APIService';
     const API_URL = 'http://localhost:8080';
     const apiService = new APIService();
     export default {

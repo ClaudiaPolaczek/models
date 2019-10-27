@@ -14,12 +14,14 @@ import PhotographerProfile from "@/components/PhotographerProfile";
 import ModelProfile from "@/components/ModelProfile";
 import ModelProfiles from "@/components/ModelProfiles";
 import Portfolio from "@/components/Portfolio";
+import Account from "@/components/Account";
+import Home from "@/components/headers/Home";
 
 Vue.use(VueRouter)
 
 export default new VueRouter({
     routes: [
-        { path: '/', component: WelcomePage},
+      //  { path: '/', component: WelcomePage},
         { path: '/user', component: AccountSettings},
         { path: '/login', component: Signin},
         { path: '/signup', component: Signup},
@@ -33,6 +35,23 @@ export default new VueRouter({
         { path: '/photographers/:id', component: PhotographerProfile},
         { path: '/models', component: ModelProfiles},
         { path: '/models/:id', component: ModelProfile},
+        { path: '/account', component: Account},
+        {
+            path: '/',
+            name: 'home',
+            component: Home
+        },
+        { path: '/home', component: Home},
+        { path: '/admin', name: 'admin',
+            // lazy-loaded
+            component: () => import('@/components/headers/BoardAdmin.vue')
+        },
+        {
+            path: '/user',
+            name: 'user',
+            // lazy-loaded
+            component: () => import('@/components/headers/BoardUser.vue')
+        }
     ],
     mode: 'history'
 })

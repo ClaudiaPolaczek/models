@@ -19,10 +19,10 @@
                 </el-submenu>
                 <el-submenu index="3">
                     <template slot="title">Profile</template>
-                    <el-menu-item index="3-1" @click="$router.push('/users')">
+                    <el-menu-item index="3-1" @click="$router.push('/photographers')">
                         Fotograf
                     </el-menu-item>
-                    <el-menu-item index="3-2" @click="$router.push('/users')">
+                    <el-menu-item index="3-2" @click="$router.push('/models')">
                         Model/Modelka
                     </el-menu-item>
                 </el-submenu>
@@ -74,7 +74,7 @@
 </template>
 
 <script>
-    import {APIService} from '../APIService';
+    import {APIService} from '../services/APIService';
     const API_URL = 'http://localhost:8080';
     const apiService = new APIService();
 

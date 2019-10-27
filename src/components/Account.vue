@@ -78,111 +78,68 @@
                     <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb-container">
                         <el-breadcrumb-item :to="{ path: '/' }">Start</el-breadcrumb-item>
                         <el-breadcrumb-item>Konto</el-breadcrumb-item>
-                        <el-breadcrumb-item>Zaproszenia</el-breadcrumb-item>
                     </el-breadcrumb>
-                    <el-table
-                            :data="tableData"
-                            style="width: 100%">
-                        <el-table-column
-                                fixed
-                                prop="name"
-                                label="Zaproszenie od"
-                                width="180">
-                        </el-table-column>
-                        <el-table-column
-                                prop="date"
-                                label="Data sesji"
-                                width="100">
-                        </el-table-column>
-                        <el-table-column
-                                prop="duration"
-                                label="Czas trwania"
-                                width="100">
-                        </el-table-column>
-                        <el-table-column
-                                prop="topic"
-                                label="Temat sesji"
-                                width="120">
-                        </el-table-column>
-                        <el-table-column
-                                prop="city"
-                                label="Miasto"
-                                width="120">
-                        </el-table-column>
-                        <el-table-column
-                                prop="address"
-                                label="Adres"
-                                width="200">
-                        </el-table-column>
-                        <el-table-column
-                                prop="status"
-                                label="Status"
-                                width="200">
-                        </el-table-column>
-                        <el-table-column
-                                fixed="right"
-                                label="Operacje"
-                                width="170">
-                            <template slot-scope="scope">
-                                <el-button @click="accept" type="text" size="small">Akceptuj</el-button>
-                                <el-button @click="cancel" type="text" size="small">Odrzuć</el-button>
-                            </template>
-                        </el-table-column>
-                    </el-table>
+                    <el-card>
+                                <header>
+                                    <h3>
+                                        <strong>{{currentUser.username}}</strong>
+                                    </h3>
+                                </header>
+                                <p>
+                                    <strong>Imię:</strong>
+                                    {{user.survey.firstName}}
+                                </p>
+                                <strong>Rola:</strong>
+                                {{currentUser.role}}
+                    </el-card>
                 </el-main>
             </el-container>
         </el-container>
     </el-container>
 </template>
 
+
 <script>
+    import User from '../models/user';
+    import {APIService} from '../services/APIService';
+    const apiService = new APIService();
     export default {
-        methods: {
-            accept() {
-                console.log('click');
-            },
-            cancel() {
-                console.log('click');
-            }
-        },
+        name: 'account',
         data() {
             return {
-                tableData: [{
-                    date: '2020-05-03',
-                    name: 'Jan Kowalski',
-                    topic: 'Portret',
-                    city: 'Gliwice',
-                    address: 'ul. Zwycięstwa 1',
-                    duration: '2',
-                    status: 'Zaakceptowane'
-                }, {
-                    date: '2020-05-02',
-                    name: 'Jan Kowalski',
-                    topic: 'Portret',
-                    city: 'Gliwice',
-                    address: 'ul. Zwycięstwa 1',
-                    duration: '2',
-                    status: ''
-                }, {
-                    date: '2020-05-04',
-                    name: 'Jan Kowalski',
-                    topic: 'Portret',
-                    city: 'Gliwice',
-                    address: 'ul. Zwycięstwa 1',
-                    duration: '2',
-                    status: 'Odrzucone'
-                }, {
-                    date: '2020-05-01',
-                    name: 'Jan Kowalski',
-                    topic: 'Portret',
-                    city: 'Gliwice',
-                    address: 'ul. Zwycięstwa 1',
-                    duration: '2',
-                    status: 'Zaakceptowane'
-                }]
+                username: '',
+                user: []
             }
+        },
+        computed: {
+            currentUser() {
+                 if(this.$store.state.auth.user.role == "[MODEL]"){
+                     this.getModelByUsername( this.$store.state.auth.user.username)
+                 }
+                else if(this.$store.state.auth.user.role == "[PHOTOGRAPHER]"){
+                    this.getPhotographerByUsername( this.$store.state.auth.user.username)
+                }
+                return this.$store.state.auth.user;
+            }
+        },
+        mounted() {
+            if (!this.currentUser) {
+                this.$router.push('/login');
+            }
+        },
+        methods: {
+            getModelByUsername(username) {
+                apiService.getModelByUsername(username).then((data) => {
+                    this.user = data;
+                });
+            },
+            getPhotographerByUsername(username) {
+                apiService.getPhotographerByUsername(username).then((data) => {
+                    this.user = data;
+                });
+            },
         }
-    }
+    };
 </script>
 
 <style scoped>
