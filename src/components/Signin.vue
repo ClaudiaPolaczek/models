@@ -1,52 +1,10 @@
 <template>
     <el-container>
-        <el-header>
-            <el-menu
-                    :default-active="activeIndex"
-                    class="el-menu"
-                    mode="horizontal"
-                    background-color="#B3C0D1"
-                    text-color="#333"
-                    active-text-color="#333"
-                    :router="true">
-                <el-menu-item index="1" :route="{path:'/'}">
-                    Start
-                </el-menu-item>
-                <el-submenu index="2">
-                    <template slot="title">Portfolio</template>
-                    <el-menu-item index="2-1" :route="{path:''}">Fotograf</el-menu-item>
-                    <el-menu-item index="2-2" :route="{path:''}" >Model/Modelka</el-menu-item>
-                </el-submenu>
-                <el-submenu index="3">
-                    <template slot="title">Profile</template>
-                    <el-menu-item index="3-1" @click="$router.push('/photographers')">
-                        Fotograf
-                    </el-menu-item>
-                    <el-menu-item index="3-2" @click="$router.push('/models')">
-                        Model/Modelka
-                    </el-menu-item>
-                </el-submenu>
-                <el-submenu index="4" style="float: right;">
-                    <template slot="title"><i class="el-icon-setting"></i></template>
-                    <el-menu-item index="4-1" :route="{path:'user'}"><i class="el-icon-user"></i>
-                        <el-badge :value="numberOfNotifications" class="item">
-                            Konto
-                        </el-badge>
-                    </el-menu-item>
-                    <el-menu-item index="4-2"><i class="el-icon-circle-close"></i>
-                        Wyloguj
-                    </el-menu-item>
-                </el-submenu>
-                <el-menu-item index="5" style="float: right;" :route="{path:'login'}">
-                    <span style="padding: 7em 2em">Logowanie</span>
-                </el-menu-item>
-            </el-menu>
-        </el-header>
         <el-main>
             <el-row type="flex" justify="center" :gutter="20">
                 <el-col :span="8">
                     <el-card>
-                        <h3>Logowanie</h3>
+                        <h2>Logowanie</h2>
                         <el-form name="form" :rules="rules" label-width="100px" :label-position="labelPosition">
                             <el-form-item label="Login" prop="username">
                                 <el-input
@@ -127,7 +85,7 @@
                 if (this.user.username && this.user.password) {
                     this.$store.dispatch('auth/login', this.user).then(
                         () => {
-                            this.$router.push('/user');
+                            this.$router.push('/account');
                         },
                         error => {
                             this.loading = false;

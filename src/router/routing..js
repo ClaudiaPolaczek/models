@@ -1,34 +1,41 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router'
 import WelcomePage from "@/components/WelcomePage";
-import AccountSettings from "@/components/AccountSettings";
+import AccountSettings from "@/components/Account/AccountSettings";
 import Signin from "@/components/Signin";
-import Invitations from "@/components/Invitations";
+import Invitations from "@/components/Account/Invitations";
 import Signup from "@/components/Signup";
-import Notifications from "@/components/Notifications";
-import Calendar from "@/components/Calendar";
-import UserPortfolio from "@/components/UserPortfolio";
-import EditPortfolio from "@/components/EditPortfolio";
-import PhotographerProfiles from "@/components/PhotographerProfiles";
-import PhotographerProfile from "@/components/PhotographerProfile";
-import ModelProfile from "@/components/ModelProfile";
-import ModelProfiles from "@/components/ModelProfiles";
+import Notifications from "@/components/Account/Notifications";
+import Calendar from "@/components/Account/Calendar";
+import UserPortfolio from "@/components/Account/UserPortfolio";
+import EditPortfolio from "@/components/Account/EditPortfolio";
+import PhotographerProfiles from "@/components/Profiles/PhotographerProfiles";
+import PhotographerProfile from "@/components/Profiles/PhotographerProfile";
+import ModelProfile from "@/components/Profiles/ModelProfile";
+import ModelProfiles from "@/components/Profiles/ModelProfiles";
 import Portfolio from "@/components/Portfolio";
-import Account from "@/components/Account";
+import Account from "@/components/Account/Account";
 import Home from "@/components/headers/Home";
+import PasswordChange from "@/components/Account/PasswordChange";
+import ModelAdditionalData from "@/components/Account/ModelAdditionalData";
+import PhotoshootInvitation from "@/components/PhotoshootInvitation";
+import AdminComments from "@/admin/AdminComments";
+import AdminUsers from "@/admin/AdminUsers";
 
 Vue.use(VueRouter)
 
 export default new VueRouter({
     routes: [
-      //  { path: '/', component: WelcomePage},
+        { path: '/', component: WelcomePage},
         { path: '/user', component: AccountSettings},
         { path: '/login', component: Signin},
         { path: '/signup', component: Signup},
         { path: '/invitations', component: Invitations},
         { path: '/notifications', component: Notifications},
         { path: '/calendar', component: Calendar},
-        { path: '/portfolio/user', component: UserPortfolio},
+        { path: '/user/portfolio', component: UserPortfolio},
+        { path: '/user/password', component: PasswordChange},
+        { path: '/user/model', component: ModelAdditionalData},
         { path: '/portfolios/id', component: EditPortfolio},
         { path: '/portfolios/u/:username', component: Portfolio},
         { path: '/photographers', component: PhotographerProfiles},
@@ -36,12 +43,10 @@ export default new VueRouter({
         { path: '/models', component: ModelProfiles},
         { path: '/models/:id', component: ModelProfile},
         { path: '/account', component: Account},
-        {
-            path: '/',
-            name: 'home',
-            component: Home
-        },
         { path: '/home', component: Home},
+        { path: '/photoshoot/:id', component: PhotoshootInvitation},
+        { path: '/admin/comments', component: AdminComments},
+        { path: '/admin/users', component: AdminUsers},
         { path: '/admin', name: 'admin',
             // lazy-loaded
             component: () => import('@/components/headers/BoardAdmin.vue')
@@ -53,5 +58,8 @@ export default new VueRouter({
             component: () => import('@/components/headers/BoardUser.vue')
         }
     ],
-    mode: 'history'
+    mode: 'history',
+
 })
+
+

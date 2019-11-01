@@ -11,9 +11,14 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
   faHome,
   faUser,
+  faUserCircle,
+  faUserCog,
   faUserPlus,
   faSignInAlt,
-  faSignOutAlt
+  faSignOutAlt,
+  faCalendarAlt,
+    faEnvelope,
+    faBell
 } from '@fortawesome/free-solid-svg-icons';
 import VeeValidate from 'vee-validate';
 
@@ -22,9 +27,11 @@ Vue.use(ElementUI, { locale })
 Vue.use(VeeValidate);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.prototype.$http = axios
-library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt);
+library.add(faHome, faUser, faUserCircle,faUserCog, faUserPlus, faSignInAlt, faSignOutAlt , faCalendarAlt, faEnvelope,
+    faBell);
 
 new Vue({
+  el: '#app',
   router,
   store,
   render: h => h(App),

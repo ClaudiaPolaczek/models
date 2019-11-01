@@ -1,58 +1,77 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand navbar-dark bg-dark">
-      <a href="#" class="navbar-brand">bezKoder</a>
-      <div class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a href="/home" class="nav-link">
-            <font-awesome-icon icon="home" /> Home
-          </a>
-        </li>
-        <li class="nav-item" v-if="showAdminBoard">
-          <a href="/admin" class="nav-link">Admin Board</a>
-        </li>
-        <li class="nav-item">
-          <a href="/user" class="nav-link" v-if="currentUser">User</a>
-        </li>
-      </div>
+  <el-container>
+    <el-header>
+      <el-menu
+              :default-active="activeIndex"
+              class="el-menu"
+              mode="horizontal"
+              background-color="#B3C0D1"
+              text-color="#333"
+              active-text-color="#333"
+              :router="true">
+        <el-menu-item index="1" :route="{path:'/'}">
+          <font-awesome-icon icon="home" size=" fa-lg" style="margin-right: 10px"/> Start
+        </el-menu-item>
+        <el-submenu index="2">
+          <template slot="title">Portfolio</template>
+          <el-menu-item index="2-1" :route="{path:''}">Fotograf</el-menu-item>
+          <el-menu-item index="2-2" :route="{path:''}" >Model/Modelka</el-menu-item>
+        </el-submenu>
+        <el-submenu index="3">
+          <template slot="title">Profile</template>
+          <el-menu-item index="3-1" @click="$router.push('/photographers')">
+            Fotograf
+          </el-menu-item>
+          <el-menu-item index="3-2" @click="$router.push('/models')">
+            Model/Modelka
+          </el-menu-item>
+        </el-submenu>
 
-      <div class="navbar-nav ml-auto" v-if="!currentUser">
-        <li class="nav-item">
-          <a href="/register" class="nav-link">
-            <font-awesome-icon icon="user-plus" /> Sign Up
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="/login" class="nav-link">
-            <font-awesome-icon icon="sign-in-alt" /> Login
-          </a>
-        </li>
-      </div>
+        <el-submenu index="4" v-if="showAdminBoard">
+          <template slot="title">Panel administratora</template>
+          <el-menu-item index="4-1" @click="$router.push('/admin/comments')">
+            Komentarze
+          </el-menu-item>
+          <el-menu-item index="4-2" @click="$router.push('/admin/users')">
+            Użytkownicy
+          </el-menu-item>
+        </el-submenu>
 
-      <div class="navbar-nav ml-auto" v-if="currentUser">
-        <li class="nav-item">
-          <a href="/profile" class="nav-link">
-            <font-awesome-icon icon="user" />
-            {{currentUser.username}}
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href class="nav-link" @click="logOut">
-            <font-awesome-icon icon="sign-out-alt" /> LogOut
-          </a>
-        </li>
-      </div>
-    </nav>
+        <div v-if="!currentUser">
+          <el-menu-item index="6" style="float: right;" @click="$router.push('/login')">
+            <span style="padding: 7em 2em">Logowanie / Rejestracja</span>
+          </el-menu-item>
+        </div>
 
-    <div class="container">
-      <router-view />
-    </div>
+        <div v-if="currentUser">
+          <el-submenu index="5" style="float: right;">
+            <template slot="title">
+              <font-awesome-icon icon="user-circle" size=" fa-2x" style="margin-right: 10px"/>
+              {{currentUser.username}}
+            </template>
+            <el-menu-item v-if="!showAdminBoard" index="4-1" :route="{path:'account'}">
+              <font-awesome-icon icon="user" size=" fa-lg" style="margin-right: 10px"/>
+              <el-badge :value="numberOfNotifications" class="item">
+                Konto
+              </el-badge>
+            </el-menu-item>
+            <el-menu-item index="4-2" @click="logOut">
+              <font-awesome-icon icon="sign-out-alt" size=" fa-lg" style="margin-right: 10px"/>
+              Wyloguj
+            </el-menu-item>
+          </el-submenu>
+        </div>
+      </el-menu>
+    </el-header>
+    <router-view/>
+  </el-container>
   </div>
 </template>
 
 <script>
 //import WelcomePage from "@/components/WelcomePage";
-import AccountSettings from "@/components/AccountSettings";
+import AccountSettings from "@/components/Account/AccountSettings";
 export default {
   name: "App",
   components: {
@@ -80,7 +99,7 @@ export default {
 
 <style>
   #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    font-family: 'Avenir', Helvetica, Arial,sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;

@@ -1,47 +1,5 @@
 <template>
     <el-container>
-        <el-header>
-            <el-menu
-                    :default-active="activeIndex"
-                    class="el-menu"
-                    mode="horizontal"
-                    background-color="#B3C0D1"
-                    text-color="#333"
-                    active-text-color="#333"
-                    :router="true">
-                <el-menu-item index="1" :route="{path:'/'}">
-                    Start
-                </el-menu-item>
-                <el-submenu index="2">
-                    <template slot="title">Portfolio</template>
-                    <el-menu-item index="2-1" :route="{path:''}">Fotograf</el-menu-item>
-                    <el-menu-item index="2-2" :route="{path:''}" >Model/Modelka</el-menu-item>
-                </el-submenu>
-                <el-submenu index="3">
-                    <template slot="title">Profile</template>
-                    <el-menu-item index="3-1" @click="$router.push('/photographers')">
-                        Fotograf
-                    </el-menu-item>
-                    <el-menu-item index="3-2" @click="$router.push('/models')">
-                        Model/Modelka
-                    </el-menu-item>
-                </el-submenu>
-                <el-submenu index="4" style="float: right;">
-                    <template slot="title"><i class="el-icon-setting"></i></template>
-                    <el-menu-item index="4-1" :route="{path:'user'}"><i class="el-icon-user"></i>
-                        <el-badge :value="numberOfNotifications" class="item">
-                            Konto
-                        </el-badge>
-                    </el-menu-item>
-                    <el-menu-item index="4-2"><i class="el-icon-circle-close"></i>
-                        Wyloguj
-                    </el-menu-item>
-                </el-submenu>
-                <el-menu-item index="5" style="float: right;" :route="{path:'login'}">
-                    <span style="padding: 7em 2em">Logowanie</span>
-                </el-menu-item>
-            </el-menu>
-        </el-header>
         <el-container>
             <el-aside width="230px">
                 <el-menu
@@ -53,22 +11,25 @@
                         :router="true">
                     <el-submenu index="1">
                         <template slot="title">
-                            <i class="el-icon-user"></i>
+                            <font-awesome-icon icon="user-cog" size=" fa-lg" style="margin-right: 10px"/>
                             <span>Profil</span>
                         </template>
-                        <el-menu-item index="1-1" @click="$router.push('/user')">Ustawienia profilu</el-menu-item>
-                        <el-menu-item index="1-2" @click="$router.push('/portfolio/user')">Portfolio</el-menu-item>
+                        <el-menu-item @click="$router.push('/user')">Dane osobowe</el-menu-item>
+                        <el-menu-item @click="$router.push('/user/password')">Zmiana hasła</el-menu-item>
+                        <el-menu-item @click="$router.push('/user/model')"
+                                      v-if="showModelBoard">Dane modelki</el-menu-item>
+                        <el-menu-item @click="$router.push('/user/portfolio')">Portfolio</el-menu-item>
                     </el-submenu>
-                    <el-menu-item index="2" :route="{path:'calendar'}">
-                        <i class="el-icon-date"></i>
+                    <el-menu-item index="2" @click="$router.push('/calendar')">
+                        <font-awesome-icon icon="calendar-alt" size=" fa-lg" style="margin-right: 10px"/>
                         <span>Terminarz</span>
                     </el-menu-item>
-                    <el-menu-item index="3" :route="{path:'invitations'}">
-                        <i class="el-icon-message"></i>
-                        <span>Zaproszenia</span>
+                    <el-menu-item index="3" @click="$router.push('/invitations')">
+                        <font-awesome-icon icon="envelope" size=" fa-lg" style="margin-right: 10px"/>
+                        <span>Sesje zdjęciowe</span>
                     </el-menu-item>
-                    <el-menu-item index="4" :route="{path:'notifications'}">
-                        <i class="el-icon-bell"></i>
+                    <el-menu-item index="4" @click="$router.push('/notifications')">
+                        <font-awesome-icon icon="bell" size=" fa-lg" style="margin-right: 10px"/>
                         <span>Powiadomienia</span>
                     </el-menu-item>
                 </el-menu>
@@ -117,11 +78,18 @@
             }
         },
          methods: {
-                onDelete() {
-                    console.log('error submit!!');
-                    return false;
-                },
-        }
+             onDelete() {
+                 return false;
+             }
+        },
+        computed: {
+            showModelBoard() {
+                if (this.currentUser) {
+                    return this.currentUser.role.includes('MODEL');
+                }
+                return false;
+            },
+        },
     }
 </script>
 
