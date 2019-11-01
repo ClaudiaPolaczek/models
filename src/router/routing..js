@@ -19,8 +19,8 @@ import Home from "@/components/headers/Home";
 import PasswordChange from "@/components/Account/PasswordChange";
 import ModelAdditionalData from "@/components/Account/ModelAdditionalData";
 import PhotoshootInvitation from "@/components/PhotoshootInvitation";
-import AdminComments from "@/admin/AdminComments";
-import AdminUsers from "@/admin/AdminUsers";
+import AdminComments from "@/components/admin/AdminComments";
+import AdminUsers from "@/components/admin/AdminUsers";
 
 Vue.use(VueRouter)
 

@@ -153,4 +153,22 @@ export class APIService{
         const url = `${API_URL}/users/delete/${username}`;
         return axios.delete(url).then(response => response.data);
     }
+
+    getNotificationsByUser(username) {
+        const url = `${API_URL}/notifications/${username}`;
+        return axios.get(url).then(response => response.data);
+    }
+
+    readNotification(id) {
+        const url = `${API_URL}/notifications/read/${id}`;
+        return axios.patch(url).then(response => response.data);
+    }
+
+    addNotification(notification) {
+        const url = `${API_URL}/notifications`;
+        return axios.post(url, {
+            username: notification.username,
+            content: notification.content,
+        }).then(response => response.data);
+    }
 }

@@ -18,7 +18,8 @@ import {
   faSignOutAlt,
   faCalendarAlt,
     faEnvelope,
-    faBell
+    faBell,
+    faCameraRetro
 } from '@fortawesome/free-solid-svg-icons';
 import VeeValidate from 'vee-validate';
 
@@ -28,7 +29,7 @@ Vue.use(VeeValidate);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.prototype.$http = axios
 library.add(faHome, faUser, faUserCircle,faUserCog, faUserPlus, faSignInAlt, faSignOutAlt , faCalendarAlt, faEnvelope,
-    faBell);
+    faBell,faCameraRetro);
 
 new Vue({
   el: '#app',

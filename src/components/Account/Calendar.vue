@@ -18,7 +18,6 @@
                         <el-menu-item @click="$router.push('/user/password')">Zmiana hasła</el-menu-item>
                         <el-menu-item @click="$router.push('/user/model')"
                                       v-if="showModelBoard">Dane modelki</el-menu-item>
-                        <el-menu-item @click="$router.push('/user/portfolio')">Portfolio</el-menu-item>
                     </el-submenu>
                     <el-menu-item index="2" @click="$router.push('/calendar')">
                         <font-awesome-icon icon="calendar-alt" size=" fa-lg" style="margin-right: 10px"/>
@@ -32,6 +31,15 @@
                         <font-awesome-icon icon="bell" size=" fa-lg" style="margin-right: 10px"/>
                         <span>Powiadomienia</span>
                     </el-menu-item>
+                    <el-submenu index="5" >
+                        <template slot="title">
+                            <font-awesome-icon icon="camera-retro" size=" fa-lg" style="margin-right: 10px"/>
+                            <span>Portfolio</span>
+                        </template>
+                        <el-menu-item @click="$router.push('/user/portfolio')">Wszystkie portfolio</el-menu-item>
+                        <el-menu-item @click="$router.push('/')">Dodaj portfolio</el-menu-item>
+                        <el-menu-item @click="$router.push('/')">Dodaj zdjęcia</el-menu-item>
+                    </el-submenu>
                 </el-menu>
             </el-aside>
                 <el-main>

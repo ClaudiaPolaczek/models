@@ -18,7 +18,6 @@
                         <el-menu-item @click="$router.push('/user/password')">Zmiana hasła</el-menu-item>
                         <el-menu-item @click="$router.push('/user/model')"
                                       v-if="showModelBoard">Dane modelki</el-menu-item>
-                        <el-menu-item @click="$router.push('/user/portfolio')">Portfolio</el-menu-item>
                     </el-submenu>
                     <el-menu-item index="2" @click="$router.push('/calendar')">
                         <font-awesome-icon icon="calendar-alt" size=" fa-lg" style="margin-right: 10px"/>
@@ -32,6 +31,15 @@
                         <font-awesome-icon icon="bell" size=" fa-lg" style="margin-right: 10px"/>
                         <span>Powiadomienia</span>
                     </el-menu-item>
+                    <el-submenu index="5" >
+                        <template slot="title">
+                            <font-awesome-icon icon="camera-retro" size=" fa-lg" style="margin-right: 10px"/>
+                            <span>Portfolio</span>
+                        </template>
+                        <el-menu-item @click="$router.push('/user/portfolio')">Wszystkie portfolio</el-menu-item>
+                        <el-menu-item @click="$router.push('/')">Dodaj portfolio</el-menu-item>
+                        <el-menu-item @click="$router.push('/')">Dodaj zdjęcia</el-menu-item>
+                    </el-submenu>
                 </el-menu>
             </el-aside>
                 <el-main>
@@ -41,20 +49,20 @@
                         <el-breadcrumb-item>Powiadomienia</el-breadcrumb-item>
                     </el-breadcrumb>
                     <el-table
-                            :data="tableData"
+                            :data="notifications"
                             style="width: 100%">
                         <el-table-column
                                 fixed
-                                prop="notification"
+                                prop="content"
                                 label="Powiadomienie"
                                 width="800">
                         </el-table-column>
                         <el-table-column
                                 fixed="right"
-                                label="Usuń"
+                                label="Przeczytane"
                                 width="170">
                             <template slot-scope="scope">
-                                <el-button @click="onClickDelete" type="text" size="small">Usuń</el-button>
+                                <el-button @click="onClickRead(scope.row.id)" type="text" size="small">Oznacz jako przeczytane</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -64,10 +72,31 @@
 </template>
 
 <script>
+    import {APIService} from "@/services/APIService";
+    const apiService = new APIService();
     export default {
         methods: {
-            onClickDelete() {
-            }
+            onClickRead(id) {
+                apiService.readNotification(id).then(data => {
+                        this.message = data.message;
+                    },
+                    error => {
+                        this.message = error.message;
+                    });
+            },
+            getNotifications(username) {
+                apiService.getNotificationsByUser(username).then((data) => {
+                    this.notifications = data;
+                });
+            },
+            deleteComment(username) {
+                apiService.deleteComment(username).then(data => {
+                        this.message = data.message;
+                    },
+                    error => {
+                        this.message = error.message;
+                    });
+            },
         },
         computed: {
             showModelBoard() {
@@ -76,20 +105,18 @@
                 }
                 return false;
             },
+            currentUser() {
+                return this.$store.state.auth.user;
+            },
         },
         data() {
             return {
-                tableData: [{
-                    notification: 'Jan zaakceptowal zaproszenie',
-                }, {
-                    notification: 'Jan zaakceptowal zaproszenie',
-                }, {
-                    notification: 'Jan zaakceptowal zaproszenie',
-                }, {
-                    notification: 'Jan zaakceptowal zaproszenie',
-                }]
+                notifications: [],
             }
-        }
+        },
+        mounted() {
+            this.getNotifications(this.currentUser.username);
+        },
     }
 </script>
 

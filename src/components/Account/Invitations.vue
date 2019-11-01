@@ -18,7 +18,6 @@
                         <el-menu-item @click="$router.push('/user/password')">Zmiana hasła</el-menu-item>
                         <el-menu-item @click="$router.push('/user/model')"
                                       v-if="showModelBoard">Dane modelki</el-menu-item>
-                        <el-menu-item @click="$router.push('/user/portfolio')">Portfolio</el-menu-item>
                     </el-submenu>
                     <el-menu-item index="2" @click="$router.push('/calendar')">
                         <font-awesome-icon icon="calendar-alt" size=" fa-lg" style="margin-right: 10px"/>
@@ -32,6 +31,15 @@
                         <font-awesome-icon icon="bell" size=" fa-lg" style="margin-right: 10px"/>
                         <span>Powiadomienia</span>
                     </el-menu-item>
+                    <el-submenu index="5" >
+                        <template slot="title">
+                            <font-awesome-icon icon="camera-retro" size=" fa-lg" style="margin-right: 10px"/>
+                            <span>Portfolio</span>
+                        </template>
+                        <el-menu-item @click="$router.push('/user/portfolio')">Wszystkie portfolio</el-menu-item>
+                        <el-menu-item @click="$router.push('/')">Dodaj portfolio</el-menu-item>
+                        <el-menu-item @click="$router.push('/')">Dodaj zdjęcia</el-menu-item>
+                    </el-submenu>
                 </el-menu>
             </el-aside>
                 <el-main>
@@ -115,8 +123,12 @@
                                 label="Operacje"
                                 width="170">
                             <template slot-scope="scope">
-                                <el-button v-if="canAccept(scope.row.photoShootStatus)" @click="acceptPhotoshoot(scope.row.id)" type="text">Akceptuj</el-button>
-                                <el-button v-if="canCancel(scope.row.photoShootStatus)" @click="cancelPhotoshoot(scope.row.id)" type="text">Odrzuć</el-button>
+                                <el-button v-if="canAccept(scope.row.photoShootStatus)"
+                                           @click="acceptPhotoshoot(scope.row.id, scope.row.invitingUser.username)"
+                                           type="text">Akceptuj</el-button>
+                                <el-button v-if="canCancel(scope.row.photoShootStatus)"
+                                           @click="cancelPhotoshoot(scope.row.id , scope.row.invitingUser.username)"
+                                           type="text">Odrzuć</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -129,6 +141,7 @@
 <script>
     import {APIService} from '../../services/APIService';
     const apiService = new APIService();
+    import Notification from "@/models/notification";
     export default {
         methods: {
             getAllByInvitedUserUsername(username) {
@@ -137,24 +150,49 @@
                     this.filteredInvitations = data;
                 });
             },
-            acceptPhotoshoot(id) {
+            acceptPhotoshoot(id, invitingUsername) {
                 apiService.acceptPhotoshoot(id).then((data) => {
-                    this.comments = data;
+                    this.message = data;
                 });
+                this.notification.username = invitingUsername;
+                this.notification.content = this.currentUser.username + ' zaakceptował twoje zaproszenie';
+
+                apiService.addNotification(this.notification).then(
+                    data => {
+                        this.message = data.message;
+                        this.notification = data;
+                    },
+                    error => {
+                        this.message = error.message;
+                    }
+                );
             },
-            cancelPhotoshoot(id) {
+            cancelPhotoshoot(id, invitingUsername) {
                 apiService.cancelPhotoshoot(id).then((data) => {
-                    this.comments = data;
+                    this.message = data;
                 });
+
+                this.notification.username = invitingUsername;
+                this.notification.content = this.currentUser.username + ' odrzucił twoje zaproszenie' ;
+
+                apiService.addNotification(this.notification).then(
+                    data => {
+                        this.message = data.message;
+                        this.notification = data;
+                    },
+                    error => {
+                        this.message = error.message;
+                    }
+                );
             },
             canCancel(status) {
-                if(status == "CREATED"){
+                if(status == "CREATED" || status == "ACCEPTED" ){
                     return true;
                 } else
                     return false;
             },
             canAccept(status) {
-                if(status == "CREATED" || status == "ACCEPTED" ){
+                if(status == "CREATED"){
                     return true;
                 } else
                     return false;
@@ -201,6 +239,7 @@
         data() {
             return {
                 inviting: '',
+                notification: new Notification('', ''),
                 invitations: [],
                 filteredInvitations: [],
                 statusRequired: '',
