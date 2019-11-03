@@ -171,4 +171,41 @@ export class APIService{
             content: notification.content,
         }).then(response => response.data);
     }
+
+    addPortfolio(portfolio) {
+        const url = `${API_URL}/portfolios`;
+        return axios.post(url, {
+            username: portfolio.username,
+            name: portfolio.name,
+            description: portfolio.description,
+        }).then(response => response.data);
+    }
+
+    deletePortfolio(id) {
+        const url = `${API_URL}/portfolios/delete/${id}`;
+        return axios.delete(url).then(response => response.data);
+    }
+
+    getPortfolios() {
+        const url = `${API_URL}/portfolios`;
+        return axios.get(url).then(response => response.data);
+    }
+
+    getPortfolioById(id) {
+        const url = `${API_URL}/portfolios/${id}`;
+        return axios.get(url).then(response => response.data);
+    }
+
+    deleteImage(fileUrl) {
+        const url = `${API_URL}/images/deleteFile`;
+        return axios.delete(url, fileUrl).then(response => response.data);
+    }
+
+    addImage(image) {
+        const url = `${API_URL}/images`;
+        return axios.post(url, {
+            portfolioId: image.portfolioId,
+            fileUrl: image.fileUrl,
+        }).then(response => response.data);
+    }
 }

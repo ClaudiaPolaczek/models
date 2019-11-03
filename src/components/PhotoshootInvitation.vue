@@ -70,9 +70,9 @@
             },
         },
         mounted() {
-            // if (!this.currentUser) {
-            //    this.$router.push('/login');
-            // }
+            if (!this.currentUser) {
+               this.$router.push('/login');
+            }
             this.id = this.$route.params.id
             this.getPhotographerById(this.id)
         },

@@ -41,7 +41,7 @@
                 </div></el-col>
             </el-row>
             <el-row :gutter="20" style="margin-top: 30px; text-align: left; margin-left: 50px">
-                <el-collapse accordion v-model="activeNames" @change="handleChange">
+                <el-collapse accordion @change="handleChange">
                     <el-collapse-item name="Komentarze">
                         <template slot="title">
                             Komentarze

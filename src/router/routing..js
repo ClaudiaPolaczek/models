@@ -21,6 +21,7 @@ import ModelAdditionalData from "@/components/Account/ModelAdditionalData";
 import PhotoshootInvitation from "@/components/PhotoshootInvitation";
 import AdminComments from "@/components/admin/AdminComments";
 import AdminUsers from "@/components/admin/AdminUsers";
+import AddPortfolio from "@/components/Account/AddPortfolio";
 
 Vue.use(VueRouter)
 
@@ -34,10 +35,11 @@ export default new VueRouter({
         { path: '/notifications', component: Notifications},
         { path: '/calendar', component: Calendar},
         { path: '/user/portfolio', component: UserPortfolio},
+        { path: '/user/new/portfolio', component: AddPortfolio},
         { path: '/user/password', component: PasswordChange},
         { path: '/user/model', component: ModelAdditionalData},
-        { path: '/portfolios/id', component: EditPortfolio},
-        { path: '/portfolios/u/:username', component: Portfolio},
+        { path: '/portfolios/edit/:id', component: EditPortfolio},
+        { path: '/portfolios', component: Portfolio},
         { path: '/photographers', component: PhotographerProfiles},
         { path: '/photographers/:id', component: PhotographerProfile},
         { path: '/models', component: ModelProfiles},

@@ -13,11 +13,16 @@
         <el-menu-item index="1" :route="{path:'/'}">
           <font-awesome-icon icon="home" size=" fa-lg" style="margin-right: 10px"/> Start
         </el-menu-item>
-        <el-submenu index="2">
-          <template slot="title">Portfolio</template>
-          <el-menu-item index="2-1" :route="{path:''}">Fotograf</el-menu-item>
-          <el-menu-item index="2-2" :route="{path:''}" >Model/Modelka</el-menu-item>
-        </el-submenu>
+        <el-menu-item index="2" @click="$router.push('/portfolios')">
+           Portfolio
+        </el-menu-item>
+<!--        <el-submenu index="2" @click="$router.push('/portfolios')">-->
+<!--          <template slot="title" @click="$router.push('/portfolios')">-->
+<!--            Portfolio-->
+<!--          </template>-->
+<!--          <el-menu-item index="2-1" @click="$router.push('/portfolios/photo')">Fotograf</el-menu-item>-->
+<!--          <el-menu-item index="2-2" @click="$router.push('/portfolios/models')" >Model/Modelka</el-menu-item>-->
+<!--        </el-submenu>-->
         <el-submenu index="3">
           <template slot="title">Profile</template>
           <el-menu-item index="3-1" @click="$router.push('/photographers')">
