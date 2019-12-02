@@ -18,7 +18,7 @@
                                     <span class="demonstration"></span>
                                     <el-image
                                             style="width: 200px; height: 200px"
-                                            :src="url"
+                                            :src="portfolio.mainPhotoUrl"
                                             :fit="'fill'">
                                     </el-image>
                                 </div>
@@ -35,7 +35,7 @@
                             <el-col :span="4"><div class="grid-content bg-purple" style="margin-top: 20px">
                                 <el-row>
                                     <el-button type="primary"
-                                               @click="$router.push({ path: `/portfolios/edit//${portfolio.id}` })">
+                                               @click="$router.push({ path: `/portfolios/edit/${portfolio.id}` })">
                                         Edytuj
                                     </el-button>
                                 </el-row>
@@ -60,7 +60,6 @@
         },
         data() {
             return {
-                url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
                 portfolios: [],
                 username: ''
             }

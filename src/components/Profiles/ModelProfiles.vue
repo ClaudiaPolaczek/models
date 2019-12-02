@@ -99,7 +99,7 @@
                             <span class="demonstration"></span>
                             <el-image
                                     style="width: 200px; height: 200px"
-                                    :src="url"
+                                    :src="model.user.mainPhotoUrl"
                                     :fit="'fill'">
                             </el-image>
                         </div>
@@ -277,7 +277,6 @@
                         label: '-'
                     },],
                 },
-                url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
             }
         },
         methods: {

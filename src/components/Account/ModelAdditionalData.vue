@@ -158,44 +158,44 @@
 </script>
 
 <style>
-    #app {
-        font-family: 'Avenir', Helvetica, Arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        text-align: center;
-        color: #2c3e50;
-    }
-    .container{
-        max-width: 1200px;
-        margin: auto;
-    }
+    /*#app {*/
+    /*    font-family: 'Avenir', Helvetica, Arial, sans-serif;*/
+    /*    -webkit-font-smoothing: antialiased;*/
+    /*    -moz-osx-font-smoothing: grayscale;*/
+    /*    text-align: center;*/
+    /*    color: #2c3e50;*/
+    /*}*/
+    /*.container{*/
+    /*    max-width: 1200px;*/
+    /*    margin: auto;*/
+    /*}*/
 
-    .el-header {
-        background-color: #B3C0D1;
-        color: #333;
-        min-height: 61px;
-    }
+    /*.el-header {*/
+    /*    !*background-color: #B3C0D1;*!*/
+    /*    !*color: #333;*!*/
+    /*    min-height: 61px;*/
+    /*}*/
 
-    .el-aside{
-        background: #4E565F;
-        color: white;
-    }
+    /*.el-aside{*/
+    /*    background: #4E565F;*/
+    /*    color: white;*/
+    /*}*/
 
-    .currentuser{
-        text-align: right;
-        font-size: 15px;
-        margin-top: 20px;
-    }
+    /*.currentuser{*/
+    /*    text-align: right;*/
+    /*    font-size: 15px;*/
+    /*    margin-top: 20px;*/
+    /*}*/
 
-    .el-menu{
-        font-size: 25px;
-    }
+    /*.el-menu{*/
+    /*    font-size: 25px;*/
+    /*}*/
 
-    .el-form{
-        max-width: 600px;
-    }
+    /*.el-form{*/
+    /*    max-width: 600px;*/
+    /*}*/
 
-    .breadcrumb-container{
-        margin-bottom: 40px;
-    }
+    /*.breadcrumb-container{*/
+    /*    margin-bottom: 40px;*/
+    /*}*/
 </style>

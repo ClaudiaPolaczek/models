@@ -5,48 +5,39 @@
                 <el-col :span="12">
                 <el-card>
                     <h2>Rejestracja</h2>
-                        <el-form name="form" :rules="rules" label-width="120px" class="demo-ruleForm" label-position="left">
-                            <el-form-item>
-                                <div class="alert alert-danger" role="alert" v-if="message">{{message}}</div>
-                            </el-form-item>
+                        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="150px" :label-position="left">
                             <el-form-item label="Profesja" prop="occupation">
-                                <el-radio-group v-model="occupation">
+                                <el-radio-group v-model="ruleForm.occupation">
                                     <el-radio label="Fotograf"></el-radio>
                                     <el-radio label="Model/Modelka"></el-radio>
                                 </el-radio-group>
                             </el-form-item>
-                            <el-form-item label="Imię" prop="name">
-                                <el-input v-model="user.firstName"></el-input>
+                            <el-form-item label="Imię" prop="firstName">
+                                <el-input v-model="ruleForm.firstName"></el-input>
                             </el-form-item>
-                            <el-form-item label="Nazwisko" prop="surname">
-                                <el-input v-model="user.lastName"></el-input>
+                            <el-form-item label="Nazwisko" prop="lastName">
+                                <el-input v-model="ruleForm.lastName"></el-input>
                             </el-form-item>
                             <el-form-item label="Login" prop="username">
-                                <el-input v-model="user.username"></el-input>
+                                <el-input v-model="ruleForm.username"></el-input>
                             </el-form-item>
                             <el-form-item label="Hasło" prop="password">
-                                <el-input type="password" onkeyup='check();' v-model="user.password"></el-input>
+                                <el-input type="password" v-model="ruleForm.password"></el-input>
                             </el-form-item>
                             <el-form-item label="Potwierdź hasło" prop="passwordConfirmation">
-                                <el-input type="password" onkeyup='check();' v-model="passwordConfirmation"></el-input>
+                                <el-input type="password" v-model="ruleForm.passwordConfirmation"></el-input>
                             </el-form-item>
                             <el-form-item label="Płeć" prop="gender">
-                                <el-radio-group v-model="user.gender">
+                                <el-radio-group v-model="ruleForm.gender">
                                     <el-radio label="Kobieta"></el-radio>
                                     <el-radio label="Mężczyzna"></el-radio>
                                 </el-radio-group>
                             </el-form-item>
-                            <el-form-item label="Wiek" style="align-items: center">
-                                <el-input  v-model="user.age"></el-input>
-<!--                                <el-select v-model="user.age" placeholder="Wybierz">-->
-<!--                                    <el-option-->
-<!--                                            v-for="n in 50"-->
-<!--                                            :key="n.value">-->
-<!--                                    </el-option>-->
-<!--                                </el-select>-->
+                            <el-form-item label="Wiek" prop="age">
+                                <el-input  v-model="ruleForm.age"></el-input>
                             </el-form-item>
-                            <el-form-item label="Województwo">
-                                <el-select v-model="user.region" placeholder="Wybierz">
+                            <el-form-item label="Województwo" prop="region">
+                                <el-select v-model="ruleForm.region" placeholder="Wybierz">
                                     <el-option
                                             v-for="item in ruleForm.options"
                                             :key="item.value"
@@ -56,21 +47,17 @@
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="Miasto" prop="city">
-                                <el-input v-model="user.city"></el-input>
+                                <el-input v-model="ruleForm.city"></el-input>
                             </el-form-item>
-                            <el-form-item label="Numer telefonu">
-                                <el-input v-model="user.phoneNumber"></el-input>
-                            </el-form-item>
-                            <el-form-item label="Kolor włosów">
-                                <el-input v-model="user.hairColor"></el-input>
-                            </el-form-item>
-                            <el-form-item label="Kolor oczu">
-                                <el-input v-model="user.eyesColor"></el-input>
+                            <el-form-item label="Numer telefonu" prop="phoneNumber">
+                                <el-input v-model="ruleForm.phoneNumber"></el-input>
                             </el-form-item>
                             <el-form-item>
                                 <el-form-item>
-                                    <el-button type="primary"  @click="next" v-if="active==1">Dalej</el-button>
-                                <el-button type="primary" @click="handleRegister">Utwórz konto</el-button>
+                                <el-button type="primary" @click="handleRegister('ruleForm')"
+                                           style="background-color: #213159; border-color: #213159;">
+                                    Utwórz konto
+                                </el-button>
                                 <el-button @click="$router.push('/')">Anuluj</el-button>
                                 </el-form-item>
                             </el-form-item>
@@ -94,7 +81,7 @@
         },
         mounted() {
             if (this.loggedIn) {
-               // this.$router.push('/profile');
+                this.$router.push('/account');
             }
         },
         data() {
@@ -103,9 +90,18 @@
                 submitted: false,
                 successful: false,
                 message: '',
-                occupation: '',
-                passwordConfirmation: '',
                 ruleForm: {
+                    occupation: '',
+                    firstName: '',
+                    lastName: '',
+                    username: '',
+                    password: '',
+                    passwordConfirmation:  '',
+                    gender: '',
+                    region: '',
+                    city: '',
+                    age: '',
+                    phoneNumber: '',
                     options: [{
                         value: 'dolnoslaskie',
                         label: 'dolnośląskie'
@@ -160,11 +156,11 @@
                     occupation: [
                         { required: true, message: 'Wybierz profesje', trigger: 'change' }
                     ],
-                    name: [
+                    firstName: [
                         { required: true, message: 'Podaj imię', trigger: 'blur' },
                         { min: 1, message: 'Długość imienia powinna być wieksza niz 1', trigger: 'blur' }
                     ],
-                    surname: [
+                    lastName: [
                         { required: true, message: 'Podaj nazwisko', trigger: 'blur' },
                         { min: 1, message: 'Długość nazwiska powinna być wieksza niz 1', trigger: 'blur' }
                     ],
@@ -189,48 +185,77 @@
                     ],
                     age: [
                         { required: true, message: 'Podaj wiek ', trigger: 'change' }
+                    ],
+                    phoneNumber: [
+                        { required: true, message: 'Podaj wiek ', trigger: 'change' }
                     ]
                 }
             };
         },
         methods: {
-            handleRegister() {
-                this.message = '';
-                this.submitted = true;
-                if (this.user.password == this.passwordConfirmation) {
-                    this.$validator.validate().then(valid => {
-                        if (valid) {
-                            if(this.occupation=="Fotograf"){
-                                this.specifyGender(this.user.gender);
-                                this.$store.dispatch('auth/registerPhotographer', this.user).then(
-                                    data => {
-                                        this.message = data.message;
-                                        this.successful = true;
-                                    },
-                                    error => {
-                                        this.message = error.message;
-                                        this.successful = false;
+            handleRegister(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        this.message = '';
+                        this.submitted = true;
+                        if (this.ruleForm.password == this.ruleForm.passwordConfirmation) {
+                            this.$validator.validate().then(valid => {
+                                if (valid) {
+                                    this.user.username = this.ruleForm.user;
+                                    this.user.password = this.ruleForm.password;
+                                    this.user.firstName = this.ruleForm.firstName;
+                                    this.user.lastName = this.ruleForm.lastName;
+                                    this.user.age = this.ruleForm.age;
+                                    this.user.gender = this.ruleForm.gender;
+                                    this.user.region = this.ruleForm.region;
+                                    this.user.city = this.ruleForm.city;
+                                    this.user.phoneNumber = this.ruleForm.phoneNumber;
+                                    this.user.eyesColor = this.ruleForm.eyesColor;
+                                    this.user.hairColor = this.ruleForm.hairColor;
+                                    if(this.ruleForm.occupation=="Fotograf"){
+                                        this.specifyGender(this.user.gender);
+                                        this.$store.dispatch('auth/registerPhotographer', this.user).then(
+                                            data => {
+                                                this.message = data.message;
+                                                this.successful = true;
+                                            },
+                                            error => {
+                                                this.message = error.message;
+                                                this.successful = false;
+                                            }
+                                        );
+                                    }else if(this.ruleForm.occupation=="Model/Modelka"){
+                                        this.specifyGender(this.user.gender);
+                                        this.$store.dispatch('auth/registerModel', this.user).then(
+                                            data => {
+                                                this.message = data.message;
+                                                this.successful = true;
+                                            },
+                                            error => {
+                                                this.message = error.message;
+                                                this.successful = false;
+                                            }
+                                        );
                                     }
-                                );
-                            }else if(this.occupation=="Model/Modelka"){
-                                this.specifyGender(this.user.gender);
-                                this.$store.dispatch('auth/registerModel', this.user).then(
-                                    data => {
-                                        this.message = data.message;
-                                        this.successful = true;
-                                    },
-                                    error => {
-                                        this.message = error.message;
-                                        this.successful = false;
-                                    }
-                                );
-                            }
+                                }
+                            });
+                        } else {
+                            this.$message({
+                                message: 'Podane hasła nie są takie same',
+                                type: 'error',
+                                offset: 30
+                            });
+                            this.successful = false;
                         }
-                    });
-                } else {
-                    this.message = "Podane hasła nie są takie same";
-                    this.successful = false;
-                }
+                    } else {
+                        this.$message({
+                            message: 'Niepoprawne dane logowania',
+                            type: 'error',
+                            offset: 30
+                        });
+                        return false;
+                    }
+                });
             },
             specifyGender(gender){
                 if(gender=="Kobieta"){
@@ -243,6 +268,10 @@
 
 <style scoped>
 .el-form{
-    margin-left: 50px;
+    margin-left: 40px;
+}
+
+.el-button{
+    border-color: #213159;
 }
 </style>

@@ -1,19 +1,19 @@
 <template>
     <el-container>
         <el-main>
-            <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb-container">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
                 <el-breadcrumb-item :to="{ path: '/' }">Start</el-breadcrumb-item>
                 <el-breadcrumb-item>Portfolio</el-breadcrumb-item>
             </el-breadcrumb>
             <el-row>
-                <el-col :span="6"><div class="grid-content bg-purple">
-                    <el-form ref="form" :model="form" label-width="120px">
+                <el-col :span="6"><div>
+                    <el-form ref="form" :model="form" label-width="120px" style="margin-right: 12px">
                         <el-form-item label="Tytuł">
-                                <el-input v-model="form.addedDate"></el-input>
+                                <el-input v-model="form.title"></el-input>
                         </el-form-item>
                     </el-form>
                 </div></el-col>
-                <el-col :span="6"><div class="grid-content bg-purple">
+                <el-col :span="6"><div >
                     <el-form ref="form" :model="form" label-width="120px">
                         <el-form-item label="Data dodania">
                             <el-date-picker
@@ -24,7 +24,7 @@
                         </el-form-item>
                     </el-form>
                 </div></el-col>
-                <el-col :span="6"><div class="grid-content bg-purple">
+                <el-col :span="6"><div>
                     <el-form ref="form" :model="form" label-width="100px">
                         <el-form-item label="Profesja">
                             <el-select v-model="form.occupation" placeholder="Wybierz">
@@ -44,22 +44,34 @@
             (!form.title || portfolio.name == form.title) &&
             (!form.addedDate || portfolio.addedDate == form.addedDate)">
                 <el-card>
-                    <el-row>
-                        Nazwa: {{portfolio.name}}
-                    </el-row>
-                    <el-row>
-                        Data dodania: {{portfolio.addedDate}}
-                    </el-row>
-                    <el-carousel trigger="click" height="300px">
-                    <el-carousel-item v-for="item in 4" :key="item">
-                        <h3 class="small">{{ item }}</h3>
-                    </el-carousel-item>
-                </el-carousel>
-                <el-col :span="4"><div class="grid-content bg-purple" >
-                    <el-row>
-                        {{portfolio.description}}
-                    </el-row>
-                </div></el-col>
+                    <el-col :span="6"><div class="grid-content bg-purple">
+                        <el-image
+                                style="width: 200px; height: 200px"
+                                :src="portfolio.mainPhotoUrl"
+                                :fit="'fill'">
+                        </el-image>
+                        <el-row style="margin-top: 0px">
+                            <el-button
+                                    type="text"
+                                    class="button"
+                                    @click="$router.push({ path: `/portfolios/${portfolio.id}` })">
+                            Zobacz portfolio
+                            </el-button>
+                        </el-row>
+                    </div></el-col>
+                    <el-col :span="6"><div class="grid-content bg-purple">
+                        <el-row>
+                            Nazwa: {{portfolio.name}}
+                        </el-row>
+                        <el-row>
+                            Data dodania: {{portfolio.addedDate}}
+                        </el-row>
+                    </div></el-col>
+                    <el-col :span="6"><div class="grid-content bg-purple">
+                        <el-row>
+                            {{portfolio.description}}
+                        </el-row>
+                    </div></el-col>
                 </el-card>
             </el-row>
         </el-main>
@@ -77,7 +89,6 @@
         },
         data() {
             return {
-                url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
                 portfolios: [],
                 form: {
                     title: '',

@@ -3,12 +3,7 @@
   <el-container>
     <el-header>
       <el-menu
-              :default-active="activeIndex"
-              class="el-menu"
               mode="horizontal"
-              background-color="#B3C0D1"
-              text-color="#333"
-              active-text-color="#333"
               :router="true">
         <el-menu-item index="1" :route="{path:'/'}">
           <font-awesome-icon icon="home" size=" fa-lg" style="margin-right: 10px"/> Start
@@ -16,13 +11,6 @@
         <el-menu-item index="2" @click="$router.push('/portfolios')">
            Portfolio
         </el-menu-item>
-<!--        <el-submenu index="2" @click="$router.push('/portfolios')">-->
-<!--          <template slot="title" @click="$router.push('/portfolios')">-->
-<!--            Portfolio-->
-<!--          </template>-->
-<!--          <el-menu-item index="2-1" @click="$router.push('/portfolios/photo')">Fotograf</el-menu-item>-->
-<!--          <el-menu-item index="2-2" @click="$router.push('/portfolios/models')" >Model/Modelka</el-menu-item>-->
-<!--        </el-submenu>-->
         <el-submenu index="3">
           <template slot="title">Profile</template>
           <el-menu-item index="3-1" @click="$router.push('/photographers')">
@@ -32,7 +20,6 @@
             Model/Modelka
           </el-menu-item>
         </el-submenu>
-
         <el-submenu index="4" v-if="showAdminBoard">
           <template slot="title">Panel administratora</template>
           <el-menu-item index="4-1" @click="$router.push('/admin/comments')">
@@ -42,23 +29,21 @@
             Użytkownicy
           </el-menu-item>
         </el-submenu>
-
         <div v-if="!currentUser">
           <el-menu-item index="6" style="float: right;" @click="$router.push('/login')">
             <span style="padding: 7em 2em">Logowanie / Rejestracja</span>
           </el-menu-item>
         </div>
-
         <div v-if="currentUser">
-          <el-submenu index="5" style="float: right;">
+          <el-submenu index="5" >
             <template slot="title">
               <font-awesome-icon icon="user-circle" size=" fa-2x" style="margin-right: 10px"/>
               {{currentUser.username}}
             </template>
-            <el-menu-item v-if="!showAdminBoard" index="4-1" :route="{path:'account'}">
+            <el-menu-item v-if="!showAdminBoard" index="4-1" @click="$router.push('/account')" style="margin-top: 5px">
               <font-awesome-icon icon="user" size=" fa-lg" style="margin-right: 10px"/>
-              <el-badge :value="numberOfNotifications" class="item">
                 Konto
+              <el-badge v-if="ifNotificationsNumberNull" :value="notifications.length" class="item" :max="10">
               </el-badge>
             </el-menu-item>
             <el-menu-item index="4-2" @click="logOut">
@@ -75,12 +60,11 @@
 </template>
 
 <script>
-//import WelcomePage from "@/components/WelcomePage";
-import AccountSettings from "@/components/Account/AccountSettings";
+    import {APIService} from "@/services/APIService";
+    const apiService = new APIService();
 export default {
   name: "App",
   components: {
-    AccountSettings
   },
   computed: {
     currentUser() {
@@ -92,22 +76,142 @@ export default {
       }
       return false;
     },
+      ifNotificationsNumberNull() {
+          if(this.length == 0) return false;
+          else return true;
+      }
   },
   methods: {
     logOut() {
       this.$store.dispatch('auth/logout');
       this.$router.push('/');
-    }
-  }
+    },
+      getNotifications(username) {
+          apiService.getNotificationsByUser(username).then((data) => {
+              this.notifications = data;
+              this.length = this.notifications.length;
+          });
+      },
+  },
+    data() {
+        return {
+            notifications: [],
+            length: 0,
+        }
+    },
 };
 </script>
 
 <style>
   #app {
-    font-family: 'Avenir', Helvetica, Arial,sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
+      font-family: Georgia, serif;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      line-height: 22px;
+      text-transform: none;
+      color: black;
+      text-align: center;
+  }
+
+  .el-header{
+      color: #ebd9c8;
+      background-color: #ebd9c8;
+  }
+
+  .el-menu {
+      color: black;
+      background-color: #ebd9c8 ;
+  }
+
+  .el-menu-item{
+      color: black;
+      font-size: 20px;
+  }
+
+  .el-menu-item.is-active {
+    color: black;
+  }
+
+  .el-submenu{
+      float: right;
+      font-size: 20px;
+      color: black;
+      font-family: Georgia, serif;
+      background-color: #ebd9c8 ;
+  }
+
+  .el-submenu__icon-arrow {
+      display: none;
+  }
+
+  .el-menu.el-menu--horizontal {
+      border-bottom: none;
+  }
+
+  .el-menu--horizontal>.el-menu-item.is-active {
+      border-bottom: 2px solid black;
+      color: black;
+  }
+
+  .el-menu--horizontal>.el-menu-item {
+      float: left;
+      height: 60px;
+      line-height: 60px;
+      margin: 0;
+      border-bottom: 2px solid transparent;
+      color: black;
+  }
+
+  .el-menu--horizontal>.el-submenu .el-submenu__title {
+      height: 60px;
+      line-height: 60px;
+      border-bottom: 2px solid transparent;
+      color: black;
+  }
+
+  .el-submenu__title {
+      font-size: 21px;
+      color: black;
+      padding: 0 20px;
+      cursor: pointer;
+      -webkit-transition: border-color .3s,background-color .3s,color .3s;
+      transition: border-color .3s,background-color .3s,color .3s;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+  }
+
+  .el-menu--horizontal>.el-submenu.is-active .el-submenu__title {
+      border-bottom: 2px solid black;
+      color: black;
+  }
+
+  .el-menu--horizontal .el-menu .el-menu-item, .el-menu--horizontal .el-menu .el-submenu__title {
+      background-color: #ebd9c8;
+      font-size: 17px;
+      height: 36px;
+      font-family: Georgia, serif;
+      font-style: normal;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: black;
+      margin-bottom: 10px;
+  }
+
+  .el-menu--horizontal>.el-menu-item:not(.is-disabled):focus, .el-menu--horizontal>.el-menu-item:not(.is-disabled):hover, .el-menu--horizontal>.el-submenu .el-submenu__title:hover {
+    background-color: #ebd9c8;
+  }
+
+  .el-menu--horizontal .el-menu-item:not(.is-disabled):focus, .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
+    outline: 0;
+    background-color: #ebd9c8;
+    color: black;
+  }
+
+  .item {
+      margin-top: 0px;
+      margin-right: 10px;
+      margin-bottom: 20px;
   }
 </style>

@@ -196,9 +196,14 @@ export class APIService{
         return axios.get(url).then(response => response.data);
     }
 
-    deleteImage(fileUrl) {
-        const url = `${API_URL}/images/deleteFile`;
-        return axios.delete(url, fileUrl).then(response => response.data);
+    deleteImage(id) {
+        const url = `${API_URL}/images/deleteFile/${id}`;
+        return axios.delete(url).then(response => response.data);
+    }
+
+    deleteImageFromDatabase(id) {
+        const url = `${API_URL}/images/delete/${id}`;
+        return axios.delete(url).then(response => response.data);
     }
 
     addImage(image) {
@@ -206,6 +211,38 @@ export class APIService{
         return axios.post(url, {
             portfolioId: image.portfolioId,
             fileUrl: image.fileUrl,
+        }).then(response => response.data);
+    }
+
+    getImagesByPortfolioId(id) {
+        const url = `${API_URL}/images/portfolio/${id}`;
+        return axios.get(url).then(response => response.data);
+    }
+
+    editPortfolio(id, portfolio) {
+        const url = `${API_URL}/portfolios/edit/${id}`;
+        return axios.patch(url, {
+            username: portfolio.username,
+            name: portfolio.name,
+            description: portfolio.description,
+        }).then(response => response.data);
+    }
+
+    setMainProfilePhotoUrl(username, image) {
+        const url = `${API_URL}/users/photo/${username}`;
+        return axios.patch(url, {
+            portfolioId : image.portfolioId,
+            fileUrl : image.fileUrl
+        }).then(response => response.data);
+    }
+
+    setMainPortfolioPhotoUrl(id, portfolio) {
+        const url = `${API_URL}/portfolios/photo/${id}`;
+        return axios.patch(url, {
+            username: portfolio.username,
+            name: portfolio.name,
+            description: portfolio.description,
+            mainPhotoUrl: portfolio.mainPhotoUrl,
         }).then(response => response.data);
     }
 }

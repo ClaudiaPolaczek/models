@@ -35,7 +35,6 @@
                         </template>
                         <el-menu-item @click="$router.push('/user/portfolio')">Zobacz portfolio</el-menu-item>
                         <el-menu-item @click="$router.push('/user/new/portfolio')">Dodaj nowy album</el-menu-item>
-                        <el-menu-item @click="$router.push('/')">Dodaj zdjęcia</el-menu-item>
                     </el-submenu>
                 </el-menu>
 </template>

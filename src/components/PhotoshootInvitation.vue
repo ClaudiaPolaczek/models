@@ -130,7 +130,7 @@
 </script>
 
 <style scoped>
-    .el-form{
-        margin-left: 50px;
-    }
+    /*.el-form{*/
+    /*    margin-left: 50px;*/
+    /*}*/
 </style>
