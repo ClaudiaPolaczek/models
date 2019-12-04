@@ -159,6 +159,11 @@ export class APIService{
         return axios.get(url).then(response => response.data);
     }
 
+    getNonReadNotificationsByUser(username) {
+        const url = `${API_URL}/notifications/n/${username}`;
+        return axios.get(url).then(response => response.data);
+    }
+
     readNotification(id) {
         const url = `${API_URL}/notifications/read/${id}`;
         return axios.patch(url).then(response => response.data);

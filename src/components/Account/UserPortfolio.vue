@@ -6,13 +6,13 @@
             </el-aside>
             <el-container>
                 <el-main>
-                    <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb-container" style="margin-bottom: 50px">
+                    <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 50px">
                         <el-breadcrumb-item :to="{ path: '/' }">Start</el-breadcrumb-item>
                         <el-breadcrumb-item>Konto</el-breadcrumb-item>
                         <el-breadcrumb-item>Portfolio</el-breadcrumb-item>
                     </el-breadcrumb>
                     <el-row :gutter="20"  v-for="portfolio in portfolios" :key="portfolio.portfolios">
-                        <el-card>
+                        <el-card style="margin-left: 40px; margin-right: 100px">
                             <el-col :span="6" style="margin-bottom: 20px"><div class="grid-content bg-purple">
                                 <div class="demo-image" style="margin-bottom: 15px">
                                     <span class="demonstration"></span>
@@ -24,15 +24,16 @@
                                 </div>
                                 {{portfolio.name}}
                             </div></el-col>
-                            <el-col :span="4"><div class="grid-content bg-purple">
+                            <el-col :span="12"><div class="grid-content bg-purple">
+                                <el-row>
+                                    <h4 style="display: inline">  Data utworzenia:  </h4>
+                                    {{portfolio.addedDate}}
+                                </el-row>
                                 <el-row>
                                     {{portfolio.description}}
                                 </el-row>
-                                <el-row>
-                                    {{portfolio.addedDate}}
-                                </el-row>
                             </div></el-col>
-                            <el-col :span="4"><div class="grid-content bg-purple" style="margin-top: 20px">
+                            <el-col :span="6"><div class="grid-content bg-purple" style="margin-top: 20px">
                                 <el-row>
                                     <el-button type="primary"
                                                @click="$router.push({ path: `/portfolios/edit/${portfolio.id}` })">
@@ -67,14 +68,28 @@
          methods: {
              onDelete(id) {
                  this.message = '';
-                 apiService.deletePortfolio(id).then(
-                     data => {
-                         this.message = data.message;
-                     },
-                     error => {
-                         this.message = error.message;
-                     }
-                 );
+                 this.$confirm('Czy na pewno chcesz usunąć portfolio?', 'Potwierdzenie', {
+                     confirmButtonText: 'Usuń',
+                     cancelButtonText: 'Anuluj',
+                     type: 'warning',
+                     center: true
+                 }).then(() => {
+                     apiService.deletePortfolio(id).then(
+                         data => {
+                             this.message = data.message;
+                             location.reload();
+                             this.$message({
+                                 type: 'success',
+                                 message: 'Usunięto portfolio'
+                             });
+                         },
+                         error => {
+                             this.message = error.message;
+                         }
+                     );
+
+                 }).catch(() => {
+                 });
              },
              getPortfoliosByUser(){
                  apiService.getPortfoliosByUser(this.currentUser.username).then((data) => {

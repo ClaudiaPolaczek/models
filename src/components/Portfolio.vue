@@ -44,30 +44,29 @@
             (!form.title || portfolio.name == form.title) &&
             (!form.addedDate || portfolio.addedDate == form.addedDate)">
                 <el-card>
-                    <el-col :span="6"><div class="grid-content bg-purple">
+                    <el-col :span="6">
                         <el-image
                                 style="width: 200px; height: 200px"
-                                :src="portfolio.mainPhotoUrl"
-                                :fit="'fill'">
+                                :src="portfolio.mainPhotoUrl">
                         </el-image>
                         <el-row style="margin-top: 0px">
-                            <el-button
-                                    type="text"
-                                    class="button"
-                                    @click="$router.push({ path: `/portfolios/${portfolio.id}` })">
-                            Zobacz portfolio
-                            </el-button>
+                            <el-link @click="$router.push({ path: `/portfolios/${portfolio.id}` })" type="info">
+                                Zobacz portfolio
+                                <i class="el-icon-view el-icon--right"></i> </el-link>
+                        </el-row>
+                    </el-col>
+                    <el-col :span="12"><div class="portfolio">
+                        <el-row class="portfolio" style="margin-top: 20px">
+                            <h3 style="display: inline;">Nazwa portfolio: </h3> {{portfolio.name}}
+                        </el-row>
+                        <el-row class="portfolio" style="margin-top: 40px">
+                            <h3 style="display: inline">Nazwa użytkownika: </h3> {{portfolio.user.username}}
+                        </el-row>
+                        <el-row class="portfolio" style="margin-top: 40px">
+                            <h3 style="display: inline">Data dodania: </h3> {{portfolio.addedDate}}
                         </el-row>
                     </div></el-col>
-                    <el-col :span="6"><div class="grid-content bg-purple">
-                        <el-row>
-                            Nazwa: {{portfolio.name}}
-                        </el-row>
-                        <el-row>
-                            Data dodania: {{portfolio.addedDate}}
-                        </el-row>
-                    </div></el-col>
-                    <el-col :span="6"><div class="grid-content bg-purple">
+                    <el-col :span="6"><div>
                         <el-row>
                             {{portfolio.description}}
                         </el-row>
@@ -119,5 +118,12 @@
 </script>
 
 <style scoped>
+.el-link{
+    color: black;
+}
+
+    .portfolio{
+        text-align: left;
+    }
 
 </style>

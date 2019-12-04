@@ -1,15 +1,15 @@
 <template>
     <el-container>
         <el-main>
-            <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb-container">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
                 <el-breadcrumb-item :to="{ path: '/' }">Start</el-breadcrumb-item>
                 <el-breadcrumb-item>Użytkownicy</el-breadcrumb-item>
             </el-breadcrumb>
             <el-row>
-                <el-col :span="5"><div class="grid-content bg-purple">
-                    <el-form ref="form" :model="form" label-width="120px">
-                        <el-form-item label="Profesja">
-                            <el-select v-model="form.role" placeholder="Wybierz">
+                <el-col :span="8"><div>
+                    <el-form ref="form" :model="form" label-width="150px" :label-position="left">
+                        <el-form-item label="Profesja" >
+                            <el-select v-model="form.role">
                                 <el-option
                                         v-for="item in form.roleOptions"
                                         :key="item.value"
@@ -20,7 +20,7 @@
                         </el-form-item>
                     </el-form>
                 </div></el-col>
-                <el-col :span="5"><div class="grid-content bg-purple">
+                <el-col :span="8"><div class="grid-content bg-purple">
                     <el-form ref="form" :model="form" label-width="180px">
                         <el-form-item label="Nazwa użytkownika">
                             <el-input v-model="form.username"></el-input>
@@ -32,16 +32,18 @@
                     v-if="(!form.role || user.role == form.role) &&
                     (!form.username || user.username == form.username)">
                 <el-card>
-                    <el-col :span="6">
-                        Nazwa użytkownika: {{user.username}}
+                    <el-col :span="8" style="margin-bottom: 15px; margin-top: 10px">
+                        <h4 style="display: inline"> Nazwa użytkownika:</h4>
+                        {{user.username}}
                     </el-col>
-                    <el-col :span="8">
-                        Profesja:  {{user.role}}
+                    <el-col :span="8" style="margin-bottom: 15px; margin-top: 10px">
+                        <h4 style="display: inline">  Profesja:  </h4>
+                       {{getOccupation(user)}}
                     </el-col>
-                    <el-col :span="4" style="margin-bottom: 10px">
-                        <el-button type="primary" @click="$router.push({ path: `/photographers/${photographer.id}` })">Wejdź na profil</el-button>
+                    <el-col :span="3" style="margin-bottom: 15px">
+                        <el-button type="primary" @click="goToProfile(user)">Wejdź na profil</el-button>
                     </el-col>
-                    <el-col :span="4">
+                    <el-col :span="3" style="margin-bottom: 15px">
                         <el-button type="primary" @click="deleteUser(user.username)">Usuń profil</el-button>
                     </el-col>
                 </el-card>
@@ -62,6 +64,10 @@
         data() {
             return {
                 users: [],
+                model:[],
+                photographer: [],
+                id: 0,
+                gender: 'U',
                 form: {
                     username: '',
                     role: '',
@@ -84,20 +90,65 @@
                     this.users = data;
                 });
             },
-            deleteUser(username) {
-                apiService.deleteUser(username).then(data => {
-                        this.message = data.message;
-                    },
-                    error => {
-                        this.message = error.message;
+            getOccupation(user) {
+                if(user.role.includes('ADMIN')){
+                    return "administrator";
+                }
+                else if(user.role.includes('MODEL')){
+                    apiService.getModelByUsername(user.username).then((data) => {
+                        this.id = data.id;
                     });
+                    return "model/modelka";
+                }
+                else if(user.role.includes('PHOTOGRAPHER')){
+                    apiService.getPhotographerByUsername(user.username).then((data) => {
+                        this.id = data.id;
+                    });
+                    return "fotograf";
+                }
             },
-
+            goToProfile(user){
+                if(user.role.includes('ADMIN')){
+                    this.$router.push({ path: `/` })
+                }
+                else if(user.role.includes('MODEL')){
+                    apiService.getModelByUsername(user.username).then((data) => {
+                        this.$router.push({ path: `/models/${data.id}` })
+                    });
+                }
+                else if(user.role.includes('PHOTOGRAPHER')){
+                    apiService.getPhotographerByUsername(user.username).then((data) => {
+                        this.$router.push({ path: `/photographers/${data.id}` })
+                    });
+                }
+            },
+            deleteUser(username) {
+                this.$confirm('Czy na pewno chcesz usunąć tego użytkownika?', 'Potwierdzenie', {
+                    confirmButtonText: 'Usuń',
+                    cancelButtonText: 'Anuluj',
+                    type: 'warning',
+                    center: true
+                }).then(() => {
+                    apiService.deleteUser(username).then(data => {
+                            this.message = data.message;
+                            location.reload();
+                            this.$message({
+                                type: 'success',
+                                message: 'Usunięto użytkownika'
+                            });
+                        },
+                        error => {
+                            this.message = error.message;
+                        });
+                }).catch(() => {
+                });
+            },
         },
         computed: {}
     }
 </script>
 
 <style scoped>
+
 
 </style>

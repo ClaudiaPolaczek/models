@@ -6,12 +6,12 @@
             </el-aside>
             <el-container>
                 <el-main>
-                    <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb-container">
+                    <el-breadcrumb separator-class="el-icon-arrow-right">
                         <el-breadcrumb-item :to="{ path: '/' }">Start</el-breadcrumb-item>
                         <el-breadcrumb-item>Konto</el-breadcrumb-item>
                     </el-breadcrumb>
-                    <el-card style="text-align: left">
-                        <h3>{{currentUser.username}}</h3>
+                    <el-card style="text-align: left; margin-top: 20px; margin-bottom: 20px">
+                        <h3 style="margin-top: 0px">{{currentUser.username}}</h3>
                         <p><strong>Imię: </strong>{{user.survey.firstName}}</p>
                         <p><strong>Nazwisko: </strong>{{user.survey.lastName}}</p>
                         <p><strong>Wiek: </strong>{{user.survey.age}}</p>
@@ -19,7 +19,7 @@
                         <p><strong>Województwo: </strong>{{user.survey.region}}</p>
                         <p><strong>Miasto: </strong>{{user.survey.city}}</p>
                         <p><strong>Numer telefonu: </strong>{{user.survey.phoneNumber}}</p>
-                        <strong>Rola: </strong>{{currentUser.role}}
+                        <strong>Rola: </strong>{{getOccupation(currentUser)}}
                     </el-card>
                     <el-button type="primary" @click="deleteUser(currentUser.username)">Usuń profil</el-button>
                 </el-main>
@@ -77,11 +77,43 @@
                 else if (gender=='M') return "Mężczyzna"
             },
             deleteUser(username) {
-                apiService.deleteUser(username).then((data) => {
-                    this.message = data;
+                this.$confirm('Czy na pewno chcesz usunąć konto w serwisie?', 'Potwierdzenie', {
+                    confirmButtonText: 'Usuń',
+                    cancelButtonText: 'Anuluj',
+                    type: 'warning',
+                    center: true
+                }).then(() => {
+                    apiService.deleteUser(username).then(data => {
+                            this.message = data.message;
+                            this.$store.dispatch('auth/logout');
+                            this.$router.push('/');
+                            this.$message({
+                                type: 'success',
+                                message: 'Usunięto konto'
+                            });
+                        },
+                        error => {
+                            this.message = error.message;
+                        });
+                }).catch(() => {
                 });
-                this.$store.dispatch('auth/logout');
-                this.$router.push('/');
+            },
+            getOccupation(user) {
+                if(user.role.includes('ADMIN')){
+                    return "administrator";
+                }
+                else if(user.role.includes('MODEL')){
+                    apiService.getModelByUsername(user.username).then((data) => {
+                        this.id = data.id;
+                    });
+                    return "model/modelka";
+                }
+                else if(user.role.includes('PHOTOGRAPHER')){
+                    apiService.getPhotographerByUsername(user.username).then((data) => {
+                        this.id = data.id;
+                    });
+                    return "fotograf";
+                }
             },
         }
     };

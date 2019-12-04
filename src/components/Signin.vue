@@ -9,15 +9,14 @@
                             <el-form-item label="Login" prop="user">
                                 <el-input v-model="ruleForm.user"></el-input>
                             </el-form-item>
-                            <el-form-item label="Hasło" prop="password">
-                                <el-input v-model="ruleForm.password"></el-input>
+                            <el-form-item label="Hasło" prop="password" >
+                                <el-input v-model="ruleForm.password" type="password"></el-input>
                             </el-form-item>
                             <el-form-item>
-                                <el-button type="primary" @click="handleLogin('ruleForm')"
-                                           style="background-color: #213159; border-color: #213159;">
+                                <el-button type="primary" @click="handleLogin('ruleForm')">
                                     <span>Login</span>
                                 </el-button>
-                                <el-button @click="$router.push('signup')">Załóż konto</el-button>
+                                <el-button type="primary" @click="$router.push('signup')">Załóż konto</el-button>
                             </el-form-item>
                         </el-form>
                     </el-card>
@@ -108,7 +107,4 @@
         text-align: left;
     }
 
-    .el-button{
-        border-color: #213159;
-    }
 </style>

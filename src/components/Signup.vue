@@ -158,18 +158,19 @@
                     ],
                     firstName: [
                         { required: true, message: 'Podaj imię', trigger: 'blur' },
-                        { min: 1, message: 'Długość imienia powinna być wieksza niz 1', trigger: 'blur' }
+                        { min: 3, message: 'Długość imienia powinna być dłuższa niż 3 litery', trigger: 'blur' }
                     ],
                     lastName: [
                         { required: true, message: 'Podaj nazwisko', trigger: 'blur' },
-                        { min: 1, message: 'Długość nazwiska powinna być wieksza niz 1', trigger: 'blur' }
+                        { min: 3, message: 'Długość nazwiska powinna być dłuższa niż 3 litery', trigger: 'blur' }
                     ],
                     username: [
                         { required: true, message: 'Podaj login', trigger: 'blur' },
                         { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' }
                     ],
                     password: [
-                        { required: true, message: 'Podaj hasło', trigger: 'change' }
+                        { required: true, message: 'Podaj hasło', trigger: 'change' },
+                        { min: 5, message: 'Długość hasła musi być dłuższa niż 3 litery', trigger: 'blur' }
                     ],
                     passwordConfirmation:  [
                          { required: true, message: 'Podaj hasło ponownie', trigger: 'change' }
@@ -181,7 +182,8 @@
                         { required: true, message: 'Wybierz wojewódźtwo', trigger: 'change' }
                     ],
                     city: [
-                        { required: true, message: 'Podaj miasto', trigger: 'change' }
+                        { required: true, message: 'Podaj miasto', trigger: 'change' },
+                        { min: 3, message: 'Nazwa miasta musi być dłuższa niż 3 litery', trigger: 'blur' }
                     ],
                     age: [
                         { required: true, message: 'Podaj wiek ', trigger: 'change' }
@@ -249,7 +251,7 @@
                         }
                     } else {
                         this.$message({
-                            message: 'Niepoprawne dane logowania',
+                            message: 'Nieuzupełnione wymagane dane',
                             type: 'error',
                             offset: 30
                         });

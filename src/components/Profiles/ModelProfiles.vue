@@ -1,12 +1,12 @@
 <template>
     <el-container>
         <el-main>
-            <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb-container">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
                 <el-breadcrumb-item :to="{ path: '/' }">Start</el-breadcrumb-item>
                 <el-breadcrumb-item>Profile</el-breadcrumb-item>
             </el-breadcrumb>
-            <el-row>
-                <el-col :span="5"><div class="grid-content bg-purple">
+            <el-row style="margin-bottom: 5px">
+                <el-col :span="5"><div>
                     <el-form ref="form" :model="form" label-width="120px">
                         <el-form-item label="Województwo">
                             <el-select v-model="form.region" placeholder="Wybierz">
@@ -20,17 +20,17 @@
                         </el-form-item>
                     </el-form>
                 </div></el-col>
-                <el-col :span="5"><div class="grid-content bg-purple">
+                <el-col :span="5"><div>
                     <el-form ref="form" :model="form" label-width="120px">
                         <el-form-item label="Miasto">
                             <el-input v-model="form.city"></el-input>
                         </el-form-item>
                     </el-form>
                 </div></el-col>
-                <el-col :span="5"><div class="grid-content bg-purple">
+                <el-col :span="5"><div>
                     <el-form ref="form" :model="form" label-width="100px">
                         <el-form-item label="Płeć">
-                            <el-select v-model="form.gender" placeholder="Wybierz">
+                            <el-select v-model="form.gender">
                                 <el-option
                                         v-for="item in form.genderOptions"
                                         :key="item.value"
@@ -41,22 +41,23 @@
                         </el-form-item>
                     </el-form>
                 </div></el-col>
-                <el-col :span="5"><div class="grid-content bg-purple">
+                <el-col :span="5"><div>
                     <el-form ref="form" :model="form" label-width="120px">
                         <el-form-item label="Wiek">
-                            <el-select v-model="form.age" placeholder="Wybierz">
+                            <el-select v-model="form.age">
                                 <el-option
-                                        v-for="n in 50"
-                                        :key="n.id">
-                                    {{n}}
+                                        v-for="item in form.ageOptions"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
                                 </el-option>
                             </el-select>
                         </el-form-item>
                     </el-form>
                 </div></el-col>
             </el-row>
-            <el-row>
-                <el-col :span="5"><div class="grid-content bg-purple">
+            <el-row style="margin-top: 0px">
+                <el-col :span="5"><div>
                     <el-form ref="form" :model="form" label-width="120px">
                         <el-form-item label="Kolor włosów">
                             <el-select v-model="form.hairColor" placeholder="Wybierz">
@@ -91,12 +92,10 @@
             (!form.region || model.survey.region == form.region) &&
             (!form.age || model.survey.age == form.age) &&
             (!form.hairColor || model.hairColor == form.hairColor) &&
-            (!form.eyesColor || model.eyesColor == form.eyesColor)"
-            >
+            (!form.eyesColor || model.eyesColor == form.eyesColor)">
                 <el-card>
-                    <el-col :span="6" style="margin-bottom: 20px"><div class="grid-content bg-purple">
-                        <div class="demo-image" style="margin-bottom: 15px">
-                            <span class="demonstration"></span>
+                    <el-col :span="6" style="margin-bottom: 20px"><div>
+                        <div class="image">
                             <el-image
                                     style="width: 200px; height: 200px"
                                     :src="model.user.mainPhotoUrl"
@@ -105,23 +104,24 @@
                         </div>
                         {{model.user.username}}
                     </div></el-col>
-                    <el-col :span="4"><div class="grid-content bg-purple">
-                        <el-row>
+                    <el-col :span="6"><div class="grid-content bg-purple">
+                        <el-row style="margin-top: 0px" class="profile">
+                            <h3 style="margin-top: 0px"> Informacje o profilu: </h3>
                             {{model.survey.firstName}} {{model.survey.lastName}}
                         </el-row>
-                        <el-row>
-                            {{model.survey.city}}, {{model.survey.region}}
+                        <el-row class="profile">
+                            {{model.survey.city}} ({{model.survey.region}})
                         </el-row>
-                        <el-row>
+                        <el-row class="profile">
                             {{getGender(model.survey.gender)}}
                         </el-row>
-                        <el-row>
-                            {{model.survey.age}}
+                        <el-row class="profile">
+                            Wiek - {{model.survey.age}}
                         </el-row>
                     </div></el-col>
-                    <el-col :span="4"><div class="grid-content bg-purple" style="margin-top: 20px">
+                    <el-col :span="6">
                         <el-button type="primary" @click="$router.push({ path: `/models/${model.id}` })">Zobacz profil</el-button>
-                    </div></el-col>
+                    </el-col>
                 </el-card>
             </el-row>
         </el-main>
@@ -294,5 +294,19 @@
 </script>
 
 <style scoped>
+
+    .image{
+    margin-bottom: 15px;
+}
+    .profile{
+        margin-top: 10px;
+        text-align: left;
+    }
+
+.el-button{
+    border-color: #213159;
+    background-color: #213159;
+    margin-top: 150px;
+}
 
 </style>

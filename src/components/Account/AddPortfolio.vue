@@ -4,34 +4,26 @@
             <el-aside width="230px">
                 <Menu/>
             </el-aside>
-            <el-container>
                 <el-main>
-                    <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb-container" style="margin-bottom: 50px">
+                    <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 50px">
                         <el-breadcrumb-item :to="{ path: '/' }">Start</el-breadcrumb-item>
                         <el-breadcrumb-item>Konto</el-breadcrumb-item>
                         <el-breadcrumb-item>Nowy album</el-breadcrumb-item>
                     </el-breadcrumb>
-                    <el-row>
-                        <el-col span="12"><h2>Nowy album</h2></el-col>
-                        <el-form :rules="rules" label-width="120px" class="demo-ruleForm" label-position="left">
-                            <el-form-item>
-                                <div class="alert alert-danger" role="alert" v-if="addedPortfolio">{{addedPortfolio.id}}</div>
-                            </el-form-item>
+                        <el-col span="10"><h2 style="margin-top: 10px">Nowy album</h2>
+                        <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
                             <el-form-item label="Nazwa" prop="name">
-                                <el-input v-model="portfolio.name"></el-input>
+                                <el-input v-model="ruleForm.name"></el-input>
                             </el-form-item>
-                            <el-form-item label="Opis" prop="notes">
-                                <el-input type="textarea" v-model="portfolio.description"></el-input>
+                            <el-form-item label="Opis" prop="description">
+                                <el-input type="textarea" v-model="ruleForm.description"></el-input>
                             </el-form-item>
                             <el-form-item>
-                                <el-form-item>
-                                    <el-button type="primary" @click="handleAddNewAlbum">Utwórz album</el-button>
-                                </el-form-item>
+                                <el-button type="primary" @click="handleAddNewAlbum('ruleForm')">Utwórz album</el-button>
                             </el-form-item>
                         </el-form>
-                    </el-row>
+                        </el-col>
                 </el-main>
-            </el-container>
         </el-container>
     </el-container>
 </template>
@@ -50,7 +42,20 @@
             return {
                 portfolio: new Portfolio('','',''),
                 addedPortfolio: [],
-                message: ''
+                message: '',
+                ruleForm: {
+                    name: '',
+                    description: '',
+                },
+                rules: {
+                    name: [
+                        {required: true, message: 'Podaj nazwę', trigger: 'change'},
+                        { min: 3, message: 'Nazwa musi być dłuższa niż 3 litery', trigger: 'blur' }
+                    ],
+                    description: [
+                        {required: true, message: 'Podaj nazwę', trigger: 'change'},
+                    ]
+                }
             }
         },
         computed: {
@@ -59,19 +64,24 @@
             },
         },
         methods: {
-            handleAddNewAlbum() {
-                this.message = '';
-                this.portfolio.username = this.currentUser.username;
-                apiService.addPortfolio(this.portfolio).then(
-                    data => {
-                        this.addedPortfolio = data;
-                        this.$router.push({ path: `/portfolios/edit/${data.id}` })
-                    },
-                    error => {
-                        this.message = error.message;
+            handleAddNewAlbum(ruleForm) {
+                this.$refs[ruleForm].validate((valid) => {
+                    if(valid){
+                        this.message = '';
+                        this.portfolio.username = this.currentUser.username;
+                        this.portfolio.name = this.ruleForm.name;
+                        this.portfolio.description = this.ruleForm.description;
+                        apiService.addPortfolio(this.portfolio).then(
+                            data => {
+                                this.addedPortfolio = data;
+                                this.$router.push({path: `/portfolios/edit/${data.id}`})
+                            },
+                            error => {
+                                this.message = error.message;
+                            }
+                        );
                     }
-                );
-
+                });
             }
         }
     }

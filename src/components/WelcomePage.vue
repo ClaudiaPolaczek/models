@@ -4,7 +4,7 @@
             <el-row :gutter="20">
                 <el-col :span="12"><div>
                     <div class="block">
-                        <el-card> Top portfolia </el-card>
+                        <el-card> Top profile w tym tygodniu </el-card>
                         <el-carousel trigger="click" height="400px">
                             <el-carousel-item v-for="item in 4" :key="item">
                                 <h3 class="small">{{ item }}</h3>
@@ -14,7 +14,7 @@
                 </div></el-col>
                 <el-col :span="12"><div>
                     <div class="block">
-                        <el-card> Top profile </el-card>
+                        <el-card> Top profile w tym miesiącu </el-card>
                         <el-carousel trigger="click" height="400px">
                             <el-carousel-item v-for="item in 4" :key="item">
                                 <h3 class="small">{{ item }}</h3>
@@ -34,7 +34,6 @@
 </script>
 
 <style>
-
     .container{
         max-width: 1200px;
         margin: auto;

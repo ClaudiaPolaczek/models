@@ -10,20 +10,19 @@
                     <el-breadcrumb-item>Konto</el-breadcrumb-item>
                     <el-breadcrumb-item>Zmiana hasła</el-breadcrumb-item>
                 </el-breadcrumb>
-                <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-position="left">
+                <el-col span="10">
+                <el-form :model="ruleForm" :rules="rules" ref="ruleForm" >
                     <el-form-item label="Nowe hasło" prop="password">
-                        <el-input v-model="ruleForm.password"></el-input>
+                        <el-input type="password" v-model="ruleForm.password"></el-input>
                     </el-form-item>
                     <el-form-item label="Potwierdź hasło" prop="passwordConfirmation">
-                        <el-input v-model="ruleForm.passwordConfirmation"></el-input>
+                        <el-input type="password" v-model="ruleForm.passwordConfirmation"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="changePassword">Zapisz</el-button>
-                    </el-form-item>
-                    <el-form-item>
-                        <div class="alert alert-danger" role="alert" v-if="message">{{message}}</div>
+                        <el-button type="primary" @click="changePassword('ruleForm')">Zapisz</el-button>
                     </el-form-item>
                 </el-form>
+                </el-col>
             </el-main>
         </el-container>
     </el-container>
@@ -48,33 +47,46 @@
                 ruleForm: {
                     password: '',
                     passwordConfirmation: '',
-                    rules: {
-                        password: [
-                            {required: true, message: 'Podaj hasło', trigger: 'change'}
-                        ],
-                        passwordConfirmation: [
-                            {required: true, message: 'Podaj hasło ponownie', trigger: 'change'}
-                        ],
-                    }
+                },
+                rules: {
+                    password: [
+                        {required: true, message: 'Podaj hasło', trigger: 'change'},
+                        { min: 5, message: 'Długość hasła musi być dłuższa niż 5 liter', trigger: 'blur' }
+                    ],
+                    passwordConfirmation: [
+                        {required: true, message: 'Podaj hasło ponownie', trigger: 'change'}
+                    ],
                 }
             };
         },
         methods: {
-            changePassword() {
-                if(this.ruleForm.password != this.ruleForm.passwordConfirmation){
-                    this.message = "Podane hasła nie są takie same";
-                }else{
-                    this.user.username = this.currentUser.username;
-                    this.user.password = this.ruleForm.password;
-                    apiService.changePassword(this.user).then(
-                        data => {
-                            this.message = data.message;
-                        },
-                        error => {
-                            this.message = error.message;
+            changePassword(ruleForm) {
+                this.$refs[ruleForm].validate((valid) => {
+                    if(valid){
+                        if(this.ruleForm.password != this.ruleForm.passwordConfirmation){
+                            this.$message.error('Podane hasła nie są takie same');
+                            this.ruleForm.password = '';
+                            this.ruleForm.passwordConfirmation = '';
+                        }else{
+                            this.user.username = this.currentUser.username;
+                            this.user.password = this.ruleForm.password;
+                            apiService.changePassword(this.user).then(
+                                data => {
+                                    this.message = data.message;
+                                    this.$message({
+                                        message: 'Hasło zostało zmienione',
+                                        type: 'success'
+                                    });
+                                    this.ruleForm.password = '';
+                                    this.ruleForm.passwordConfirmation = '';
+                                },
+                                error => {
+                                    this.message = error.message;
+                                }
+                            );
                         }
-                    );
-                }
+                    }
+                });
             }
         },
         computed: {
@@ -91,44 +103,5 @@
 </script>
 
 <style>
-    /*#app {*/
-    /*    font-family: 'Avenir', Helvetica, Arial, sans-serif;*/
-    /*    -webkit-font-smoothing: antialiased;*/
-    /*    -moz-osx-font-smoothing: grayscale;*/
-    /*    text-align: center;*/
-    /*    color: #2c3e50;*/
-    /*}*/
-    /*.container{*/
-    /*    max-width: 1200px;*/
-    /*    margin: auto;*/
-    /*}*/
 
-    /*.el-header {*/
-    /*    !*background-color: #B3C0D1;*!*/
-    /*    !*color: #333;*!*/
-    /*    min-height: 61px;*/
-    /*}*/
-
-    /*.el-aside{*/
-    /*    background: #4E565F;*/
-    /*    color: white;*/
-    /*}*/
-
-    /*.currentuser{*/
-    /*    text-align: right;*/
-    /*    font-size: 15px;*/
-    /*    margin-top: 20px;*/
-    /*}*/
-
-    /*.el-menu{*/
-    /*    font-size: 25px;*/
-    /*}*/
-
-    /*.el-form{*/
-    /*    max-width: 600px;*/
-    /*}*/
-
-    /*.breadcrumb-container{*/
-    /*    margin-bottom: 40px;*/
-    /*}*/
 </style>

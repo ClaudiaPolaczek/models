@@ -10,19 +10,18 @@
                             <el-breadcrumb-item>Konto</el-breadcrumb-item>
                             <el-breadcrumb-item>Dane osobowe</el-breadcrumb-item>
                         </el-breadcrumb>
-                        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px" class="demo-ruleForm" label-position="left">
-                            <el-form-item label="Imię" prop="name">
-                                <el-input v-model="downloadUser.survey.firstName"></el-input>
+                        <el-col span="10">
+                        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="180px" class="demo-ruleForm" label-position="left">
+                            <el-form-item label="Imię" prop="firstName">
+                                <el-input v-model="ruleForm.firstName"></el-input>
                             </el-form-item>
-                            <el-form-item label="Nazwisko" prop="surname">
-                                <el-input v-model="downloadUser.survey.lastName"></el-input>
+                            <el-form-item label="Nazwisko" prop="lastName">
+                                <el-input v-model="ruleForm.lastName"></el-input>
                             </el-form-item>
-                            <el-form-item label="Data urodzenia" style="align-items: center">
-                                <el-col  :span="11">
-                                    <el-input  v-model="ruleForm.age"></el-input>
-                                </el-col>
+                            <el-form-item label="Rok urodzenia" style="align-items: center" prop="age">
+                                    <el-input  v-model.number="ruleForm.age"></el-input>
                             </el-form-item>
-                            <el-form-item label="Województwo">
+                            <el-form-item label="Województwo" prop="region">
                                 <el-select v-model="ruleForm.region" placeholder="Wybierz">
                                     <el-option
                                             v-for="item in ruleForm.options"
@@ -35,14 +34,14 @@
                             <el-form-item label="Miasto" prop="city">
                                 <el-input v-model="ruleForm.city"></el-input>
                             </el-form-item>
-                            <el-form-item label="Numer telefonu" prop="city">
+                            <el-form-item label="Numer telefonu" prop="phoneNumber">
                                 <el-input v-model="ruleForm.phoneNumber"></el-input>
                             </el-form-item>
                             <el-form-item>
                                 <el-button type="primary" @click="editData">Zapisz</el-button>
                             </el-form-item>
-                            <div>{{this.currentUser.role.includes('MODEL')}}</div>
                         </el-form>
+                        </el-col>
                     </el-main>
         </el-container>
     </el-container>
@@ -69,6 +68,8 @@
                     age: '',
                     city: '',
                     phoneNumber: '',
+                    firstName: '',
+                    lastName: '',
                     options: [{
                         value: 'dolnoslaskie',
                         label: 'dolnośląskie'
@@ -120,15 +121,28 @@
                     }],
                 },
                 rules: {
-                    username: [
-                        { required: true, message: 'Podaj login', trigger: 'blur' },
-                        { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' }
-                    ],
                     region: [
-                        { required: true, message: 'Please select Activity zone', trigger: 'change' }
+                        { required: true, message: 'Wybierz wojewódźtwo', trigger: 'change' }
                     ],
                     city: [
-                        { required: true, message: 'Please pick a date', trigger: 'change' }
+                        { required: true, message: 'Podaj miasto', trigger: 'change' },
+                        { min: 3, message: 'Nazwa miasta musi być dłuższa niż 3 litery', trigger: 'blur' }
+                    ],
+                    firstName: [
+                        { required: true, message: 'Podaj imię', trigger: 'blur' },
+                        { min: 3, message: 'Długość imienia powinna być dłuższa niż 3 litery', trigger: 'blur' }
+                    ],
+                    lastName: [
+                        { required: true, message: 'Podaj nazwisko', trigger: 'blur' },
+                        { min: 3, message: 'Długość nazwiska powinna być dłuższa niż 3 litery', trigger: 'blur' }
+                    ],
+                    age: [
+                        { required: true, message: 'Podaj wiek ', trigger: 'change' },
+                        { type: 'number', message: 'Wiek musi być liczbą'}
+                    ],
+                    phoneNumber: [
+                        { required: true, message: 'Podaj numer telefonu ', trigger: 'change' },
+                        { min: 7, message: 'Numer telefonu nie może być krótszy niż 7 cyfr', trigger: 'blur' },
                     ]
                 }
             };
@@ -144,6 +158,8 @@
             getModelByUsername(username) {
                 apiService.getModelByUsername(username).then((data) => {
                     this.downloadUser = data;
+                    this.ruleForm.firstName = this.downloadUser.survey.firstName;
+                    this.ruleForm.lastName = this.downloadUser.survey.lastName;
                     this.ruleForm.age = this.downloadUser.survey.age;
                     this.ruleForm.region = this.downloadUser.survey.region;
                     this.ruleForm.city = this.downloadUser.survey.city;
@@ -153,6 +169,8 @@
             getPhotographerByUsername(username) {
                 apiService.getPhotographerByUsername(username).then((data) => {
                     this.downloadUser = data;
+                    this.ruleForm.firstName = this.downloadUser.survey.firstName;
+                    this.ruleForm.lastName = this.downloadUser.survey.lastName;
                     this.ruleForm.age = this.downloadUser.survey.age;
                     this.ruleForm.region = this.downloadUser.survey.region;
                     this.ruleForm.city = this.downloadUser.survey.city;
@@ -175,6 +193,7 @@
                     data => {
                         this.message = data.message;
                         this.user = data;
+                        location.reload();
                     },
                     error => {
                         this.message = error.message;
@@ -223,44 +242,7 @@
 </script>
 
 <style>
-    /*#app {*/
-    /*    font-family: 'Avenir', Helvetica, Arial, sans-serif;*/
-    /*    -webkit-font-smoothing: antialiased;*/
-    /*    -moz-osx-font-smoothing: grayscale;*/
-    /*    text-align: center;*/
-    /*    color: #2c3e50;*/
-    /*}*/
-    /*.container{*/
-    /*    max-width: 1200px;*/
-    /*    margin: auto;*/
-    /*}*/
-
-    /*.el-header {*/
-    /*    !*background-color: #B3C0D1;*!*/
-    /*    !*color: #333;*!*/
-    /*    min-height: 61px;*/
-    /*}*/
-
-    /*.el-aside{*/
-    /*    !*background: #4E565F;*!*/
-    /*    !*color: white;*!*/
-    /*}*/
-
-    /*.currentuser{*/
-    /*    text-align: right;*/
-    /*    font-size: 15px;*/
-    /*    margin-top: 20px;*/
-    /*}*/
-
-    /*.el-menu{*/
-    /*    font-size: 25px;*/
-    /*}*/
-
-    /*.el-form{*/
-    /*    max-width: 600px;*/
-    /*}*/
-
-    /*.breadcrumb-container{*/
-    /*    margin-bottom: 40px;*/
-    /*}*/
+    .breadcrumb-container{
+        margin-bottom: 40px;
+    }
 </style>

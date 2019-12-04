@@ -5,26 +5,37 @@
                 <Menu/>
             </el-aside>
                 <el-main>
-                    <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb-container">
+                    <el-breadcrumb separator-class="el-icon-arrow-right">
                         <el-breadcrumb-item :to="{ path: '/' }">Start</el-breadcrumb-item>
                         <el-breadcrumb-item>Konto</el-breadcrumb-item>
                         <el-breadcrumb-item>Powiadomienia</el-breadcrumb-item>
                     </el-breadcrumb>
                     <el-table
                             :data="notifications"
-                            style="width: 100%">
+                            style="width: 100%; margin-top: 40px"
+                            :default-sort = "{prop: 'addedDate', order: 'descending'}">
+                        <el-table-column
+                                fixed
+                                prop="addedDate"
+                                label="Data"
+                                width="300"
+                                sortable>
+                        </el-table-column>
                         <el-table-column
                                 fixed
                                 prop="content"
                                 label="Powiadomienie"
-                                width="800">
+                                width="640">
                         </el-table-column>
                         <el-table-column
                                 fixed="right"
                                 label="Przeczytane"
-                                width="170">
+                                width="200">
                             <template slot-scope="scope">
-                                <el-button @click="onClickRead(scope.row.id)" type="text" size="small">Oznacz jako przeczytane</el-button>
+                                <el-button v-if="ifNotificationIsAlreadyRead(scope.row.readValue)" type="primary"
+                                           @click="onClickRead(scope.row.id)" size="small">
+                                    Oznacz jako przeczytane
+                                </el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -45,6 +56,7 @@
             onClickRead(id) {
                 apiService.readNotification(id).then(data => {
                         this.message = data.message;
+                        location.reload();
                     },
                     error => {
                         this.message = error.message;
@@ -63,6 +75,14 @@
                         this.message = error.message;
                     });
             },
+            ifNotificationIsAlreadyRead(readValue){
+                if (readValue === 1) {
+                    return false;
+                } else if (readValue === 0) {
+                    return true;
+                }
+                return '';
+            }
         },
         computed: {
             currentUser() {
@@ -81,5 +101,4 @@
 </script>
 
 <style scoped>
-
 </style>

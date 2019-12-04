@@ -11,13 +11,17 @@
                         <el-breadcrumb-item>Zaproszenia</el-breadcrumb-item>
                     </el-breadcrumb>
                     <el-row>
-                        <el-col :span="15"><div class="grid-content bg-purple">
-                            <el-form label-width="300px">
-                                <el-form-item label="Nazwa użytkownika zapraszającego ">
-                                    <el-input v-model="inviting"></el-input>
+                        <el-col :span="10" style="margin-right: 50px"><div>
+                            <el-form label-width="250px">
+                                <el-form-item label="Zapraszający użytkownik">
+                                    <el-input v-model="search"></el-input>
                                 </el-form-item>
+                            </el-form>
+                        </div></el-col>
+                        <el-col :span="8"><div>
+                            <el-form label-width="200px">
                                 <el-form-item label="Status sesji zdjęciowej">
-                                    <el-select v-model="statusRequired" placeholder="Wybierz">
+                                    <el-select v-model="statusRequired">
                                         <el-option
                                                 v-for="item in statusOptions"
                                                 :key="item.value"
@@ -28,69 +32,53 @@
                                 </el-form-item>
                             </el-form>
                         </div></el-col>
-                        <el-button @click="filterHandler">Filtruj</el-button>
-                        <el-button @click="clearFilter">Usuń filtry</el-button>
                     </el-row>
                     <el-row>
                         <el-table
-                                :data="invitations"
-                                style="width: 100%">
+                                :data="invitations.filter(data => !search && data.photoShootStatus.toLowerCase().startsWith(statusRequired.toLowerCase()) && data.invitingUser.username.toLowerCase().startsWith(search.toLowerCase()))"
+                                style="width: 100%"
+                                :default-sort = "{prop: 'meetingDate', order: 'descending'}">
+                            <el-table-column type="expand">
+                                <template slot-scope="props">
+                                    <p>Czas trwania sesji: {{ props.row.duration }} h</p>
+                                    <p>Tematyka: {{ props.row.topic }}</p>
+                                    <p>Address: {{ props.row.city }} ul. {{ props.row.street }} {{ props.row.houseNumber }}</p>
+                                    <p>Notatki: {{ props.row.notes }}</p>
+                                </template>
+                            </el-table-column>
                         <el-table-column
                                 prop="invitingUser.username"
-                                label="Zaproszenie od"
-                                width="150">
+                                label="Użytkownik"
+                                width="250"
+                                align="center">
                         </el-table-column>
                         <el-table-column
                                 prop="meetingDate"
+                                sortable
                                 label="Data sesji"
-                                width="100">
-                        </el-table-column>
-                        <el-table-column
-                                prop="duration"
-                                label="Czas trwania"
-                                width="110">
-                        </el-table-column>
-                        <el-table-column
-                                prop="topic"
-                                label="Temat sesji"
-                                width="120">
-                        </el-table-column>
-                        <el-table-column
-                                prop="city"
-                                label="Miasto"
-                                width="120">
-                        </el-table-column>
-                        <el-table-column
-                                prop="street"
-                                label="Ulica"
-                                width="120">
-                        </el-table-column>
-                        <el-table-column
-                                prop="houseNumber"
-                                label="Numer domu"
-                                width="110">
+                                width="250"
+                                align="center">
                         </el-table-column>
                         <el-table-column
                                 prop="photoShootStatus"
                                 label="Status"
-                                width="100">
+                                width="250"
+                                align="center">
+                            <template slot-scope="x">
+                                <p>{{translateStatus(x.row.photoShootStatus)}}</p>
+                            </template>
                         </el-table-column>
-                            <el-table-column
-                                    prop="notes"
-                                    label="Notatki"
-                                    width="180">
-                            </el-table-column>
                         <el-table-column
                                 fixed="right"
                                 label="Operacje"
-                                width="170">
+                                width="250">
                             <template slot-scope="scope">
                                 <el-button v-if="canAccept(scope.row.photoShootStatus)"
                                            @click="acceptPhotoshoot(scope.row.id, scope.row.invitingUser.username)"
-                                           type="text">Akceptuj</el-button>
+                                           type="primary">Akceptuj</el-button>
                                 <el-button v-if="canCancel(scope.row.photoShootStatus)"
                                            @click="cancelPhotoshoot(scope.row.id , scope.row.invitingUser.username)"
-                                           type="text">Odrzuć</el-button>
+                                           type="danger">Odrzuć</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -113,7 +101,6 @@
             getAllByInvitedUserUsername(username) {
                 apiService.getAllByInvitedUserUsername(username).then((data) => {
                     this.invitations = data;
-                    this.filteredInvitations = data;
                 });
             },
             acceptPhotoshoot(id, invitingUsername) {
@@ -165,28 +152,22 @@
             },
             translateStatus(status) {
                 if(status == "CREATED"){
-                    return 'Wysłane zaproszenie';
+                    return "Utworzone";
                 } else if (status == "ACCEPTED"){
                     return 'Zaakceptowane';
                 } else if (status == "CANCELED"){
                     return 'Anulowane';
                 }
             },
-            // filterHandler() {
-            //     this.filteredInvitations.filter(theSame(,this.inviting))
-            //     this.invitations.forEach((item) => {
-            //         if(item.invitingUser.username == this.inviting){ this.filteredInvitations.push({item})}
-            //     })
-            // },
-            // theSame(valueOne, valueTwo) {
-            //     return valueOne == valueTwo;
-            // },
-            // resetDateFilter() {
-            //     this.$refs.filterTable.clearFilter('date');
-            // },
-            // clearFilter() {
-            //     this.$refs.filterTable.clearFilter();
-            // },
+            translateStatusOnEnglish(status) {
+                if(status == "Utworzone"){
+                    return "CERATED";
+                } else if (status == "Zaakceptowane"){
+                    return 'ACCEPTED';
+                } else if (status == "Anulowane"){
+                    return 'CANCELED';
+                }
+            },
         },
         computed: {
             currentUser() {
@@ -198,17 +179,16 @@
         },
         data() {
             return {
-                inviting: '',
+                search: '',
                 notification: new Notification('', ''),
                 invitations: [],
-                filteredInvitations: [],
                 statusRequired: '',
                 statusOptions: [{
                     value: 'ACCEPTED',
                     label: 'Zaakceptowne'
                 }, {
                     value: 'CANCELED',
-                    label: 'Anlowane'
+                    label: 'Anulowane'
                 }, {
                     value: 'CREATED',
                     label: 'Wysłane zaproszenie'
@@ -222,5 +202,26 @@
 </script>
 
 <style scoped>
+.el-table{
+    font-size: 15px;
+    text-align: center;
+}
 
+.el-button--primary {
+    color: #FFF;
+    background-color: #213159;
+    border-color: #213159;
+}
+
+.el-button--danger {
+    color: #FFF;
+    background-color: darkred;
+    border-color: darkred;
+}
+
+.el-button--primary:focus, .el-button--primary:hover {
+    background: #4466BA;
+    border-color: #4466BA;
+    color: #FFF;
+}
 </style>

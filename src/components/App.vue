@@ -36,14 +36,14 @@
         </div>
         <div v-if="currentUser">
           <el-submenu index="5" >
-            <template slot="title">
+            <template slot="title" >
               <font-awesome-icon icon="user-circle" size=" fa-2x" style="margin-right: 10px"/>
               {{currentUser.username}}
             </template>
             <el-menu-item v-if="!showAdminBoard" index="4-1" @click="$router.push('/account')" style="margin-top: 5px">
               <font-awesome-icon icon="user" size=" fa-lg" style="margin-right: 10px"/>
                 Konto
-              <el-badge v-if="ifNotificationsNumberNull" :value="notifications.length" class="item" :max="10">
+              <el-badge v-if="ifNotificationsNumberNull" :value="length" class="item" :max="10">
               </el-badge>
             </el-menu-item>
             <el-menu-item index="4-2" @click="logOut">
@@ -87,7 +87,7 @@ export default {
       this.$router.push('/');
     },
       getNotifications(username) {
-          apiService.getNotificationsByUser(username).then((data) => {
+          apiService.getNonReadNotificationsByUser(username).then((data) => {
               this.notifications = data;
               this.length = this.notifications.length;
           });
@@ -99,6 +99,9 @@ export default {
             length: 0,
         }
     },
+  mounted() {
+    this.getNotifications(this.currentUser.username)
+  },
 };
 </script>
 
@@ -136,9 +139,6 @@ export default {
 
   .el-submenu{
       float: right;
-      font-size: 20px;
-      color: black;
-      font-family: Georgia, serif;
       background-color: #ebd9c8 ;
   }
 
@@ -178,7 +178,7 @@ export default {
       cursor: pointer;
       -webkit-transition: border-color .3s,background-color .3s,color .3s;
       transition: border-color .3s,background-color .3s,color .3s;
-      -webkit-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
       box-sizing: border-box;
   }
 
@@ -213,5 +213,27 @@ export default {
       margin-top: 0px;
       margin-right: 10px;
       margin-bottom: 20px;
+  }
+
+  .el-submenu__title:hover {
+    background-color: #ebd9c8;
+  }
+
+  .el-button{
+    color: #FFF;
+    border-color: #213159;
+    background-color: #213159;
+  }
+
+  .el-button--primary {
+    color: #FFF;
+    background-color: #213159;
+    border-color: #213159;
+  }
+
+  .el-button--primary:focus, .el-button--primary:hover {
+    background: #4466BA;
+    border-color: #4466BA;
+    color: #FFF;
   }
 </style>

@@ -1,12 +1,12 @@
 <template>
     <el-container>
         <el-main>
-            <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb-container">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
                 <el-breadcrumb-item :to="{ path: '/' }">Start</el-breadcrumb-item>
                 <el-breadcrumb-item>Profile</el-breadcrumb-item>
             </el-breadcrumb>
             <el-row>
-                <el-col :span="5"><div class="grid-content bg-purple">
+                <el-col :span="5"><div>
                     <el-form ref="form" :model="form" label-width="120px">
                         <el-form-item label="Województwo">
                             <el-select v-model="form.region" placeholder="Wybierz">
@@ -20,14 +20,14 @@
                         </el-form-item>
                     </el-form>
                 </div></el-col>
-                <el-col :span="5"><div class="grid-content bg-purple">
+                <el-col :span="5"><div>
                     <el-form ref="form" :model="form" label-width="120px">
-                        <el-form-item label="Miasto">
-                            <el-input v-model="form.city"></el-input>
+                        <el-form-item label="Miasto" >
+                            <el-input v-model="form.city" placeholder="Dowolne"></el-input>
                         </el-form-item>
                     </el-form>
                 </div></el-col>
-                <el-col :span="5"><div class="grid-content bg-purple">
+                <el-col :span="5"><div>
                     <el-form ref="form" :model="form" label-width="100px">
                         <el-form-item label="Płeć">
                             <el-select v-model="form.gender" placeholder="Wybierz">
@@ -41,10 +41,10 @@
                         </el-form-item>
                     </el-form>
                 </div></el-col>
-                <el-col :span="5"><div class="grid-content bg-purple">
+                <el-col :span="5"><div>
                     <el-form ref="form" :model="form" label-width="120px">
                         <el-form-item label="Wiek">
-                            <el-select v-model="form.age" placeholder="Wybierz">
+                            <el-select v-model="form.age">
                                 <el-option
                                         v-for="item in form.ageOptions"
                                         :key="item.value"
@@ -60,37 +60,37 @@
             v-if="(!form.gender || photographer.survey.gender == form.gender) &&
             (!form.city || photographer.survey.city == form.city) &&
             (!form.region || photographer.survey.region == form.region) &&
-            (!form.age || photographer.survey.age == form.age)"
-            >
+            (!form.age || photographer.survey.age == form.age)">
                 <el-card>
-                <el-col :span="6" style="margin-bottom: 20px"><div class="grid-content bg-purple">
-                    <div class="demo-image" style="margin-bottom: 15px">
+                    <el-col :span="6" style="margin-bottom: 20px"><div class="grid-content bg-purple">
+                    <div class="image">
                         <span class="demonstration"></span>
-                        <el-image
+                            <el-image
                                 style="width: 200px; height: 200px"
-                                :src="model.user.mainPhotoUrl"
+                                :src="photographer.user.mainPhotoUrl"
                                 :fit="'fill'">
-                        </el-image>
-                    </div>
-                    {{photographer.user.username}}
-                </div></el-col>
-                <el-col :span="4"><div class="grid-content bg-purple">
-                    <el-row>
-                        {{photographer.survey.firstName}} {{photographer.survey.lastName}}
-                    </el-row>
-                    <el-row>
-                        {{photographer.survey.city}}, {{photographer.survey.region}}
-                    </el-row>
-                    <el-row>
-                        {{getGender(photographer.survey.gender)}}
-                    </el-row>
-                    <el-row>
-                        Wiek: {{photographer.survey.age}}
-                    </el-row>
-                </div></el-col>
-                <el-col :span="4"><div class="grid-content bg-purple" style="margin-top: 20px">
-                    <el-button type="primary" @click="$router.push({ path: `/photographers/${photographer.id}` })">Zobacz profil</el-button>
-                </div></el-col>
+                            </el-image>
+                        </div>
+                        {{photographer.user.username}}
+                    </div></el-col>
+                    <el-col :span="6"><div class="grid-content bg-purple">
+                        <el-row style="margin-top: 0px" class="profile">
+                            <h3 style="margin-top: 0px"> Informacje o profilu: </h3>
+                            {{photographer.survey.firstName}} {{photographer.survey.lastName}}
+                        </el-row>
+                        <el-row class="profile">
+                            {{photographer.survey.city}} ({{photographer.survey.region}})
+                        </el-row>
+                        <el-row class="profile">
+                            {{getGender(photographer.survey.gender)}}
+                        </el-row>
+                        <el-row class="profile">
+                            Wiek - {{photographer.survey.age}}
+                        </el-row>
+                    </div></el-col>
+                    <el-col :span="6">
+                        <el-button type="primary" @click="$router.push({ path: `/photographers/${photographer.id}` })">Zobacz profil</el-button>
+                    </el-col>
                 </el-card>
             </el-row>
         </el-main>
@@ -99,7 +99,6 @@
 
 <script>
     import {APIService} from '../../services/APIService';
-    const API_URL = 'http://localhost:8080';
     const apiService = new APIService();
     export default {
         mounted() {
@@ -213,12 +212,22 @@
                 if(gender=='W') return "Kobieta"
                 else if (gender=='M') return "Mężczyzna"
             },
-        },
-        computed: {
         }
     }
 </script>
 
 <style scoped>
+    .image{
+        margin-bottom: 15px;
+    }
+    .profile{
+        margin-top: 10px;
+        text-align: left;
+    }
 
+    .el-button{
+        border-color: #213159;
+        background-color: #213159;
+        margin-top: 150px;
+    }
 </style>

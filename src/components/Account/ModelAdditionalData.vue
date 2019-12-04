@@ -10,6 +10,7 @@
                     <el-breadcrumb-item>Konto</el-breadcrumb-item>
                     <el-breadcrumb-item>Dane modelki</el-breadcrumb-item>
                 </el-breadcrumb>
+                <el-col span="8">
                 <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px" class="demo-ruleForm" label-position="left">
                     <el-form-item label="Kolor włosów">
                         <el-select v-model="ruleForm.hairColor" placeholder="Wybierz">
@@ -38,6 +39,7 @@
                         <div class="alert alert-danger" role="alert" v-if="message">{{message}}</div>
                     </el-form-item>
                 </el-form>
+                </el-col>
             </el-main>
         </el-container>
     </el-container>
@@ -59,8 +61,8 @@
                 labelPosition: 'left',
                 model: [],
                 ruleForm: {
-                    hairColor: '',
-                    eyesColor: '',
+                    hairColor: '-',
+                    eyesColor: '-',
                     eyesColors: [{
                         value: 'niebieskie',
                         label: 'niebieskie'
@@ -132,6 +134,12 @@
                     data => {
                         this.message = data.message;
                         this.user = data;
+                        this.$message({
+                            message: 'Dane zostały zmienione',
+                            type: 'success'
+                        });
+                        this.ruleForm.hairColor = data.hairColor;
+                        this.ruleForm.eyesColor = data.eyesColor;
                     },
                     error => {
                         this.message = error.message;
@@ -158,44 +166,5 @@
 </script>
 
 <style>
-    /*#app {*/
-    /*    font-family: 'Avenir', Helvetica, Arial, sans-serif;*/
-    /*    -webkit-font-smoothing: antialiased;*/
-    /*    -moz-osx-font-smoothing: grayscale;*/
-    /*    text-align: center;*/
-    /*    color: #2c3e50;*/
-    /*}*/
-    /*.container{*/
-    /*    max-width: 1200px;*/
-    /*    margin: auto;*/
-    /*}*/
 
-    /*.el-header {*/
-    /*    !*background-color: #B3C0D1;*!*/
-    /*    !*color: #333;*!*/
-    /*    min-height: 61px;*/
-    /*}*/
-
-    /*.el-aside{*/
-    /*    background: #4E565F;*/
-    /*    color: white;*/
-    /*}*/
-
-    /*.currentuser{*/
-    /*    text-align: right;*/
-    /*    font-size: 15px;*/
-    /*    margin-top: 20px;*/
-    /*}*/
-
-    /*.el-menu{*/
-    /*    font-size: 25px;*/
-    /*}*/
-
-    /*.el-form{*/
-    /*    max-width: 600px;*/
-    /*}*/
-
-    /*.breadcrumb-container{*/
-    /*    margin-bottom: 40px;*/
-    /*}*/
 </style>
