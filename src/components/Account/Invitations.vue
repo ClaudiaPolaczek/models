@@ -35,34 +35,49 @@
                     </el-row>
                     <el-row>
                         <el-table
-                                :data="invitations.filter(data => !search && data.photoShootStatus.toLowerCase().startsWith(statusRequired.toLowerCase()) && data.invitingUser.username.toLowerCase().startsWith(search.toLowerCase()))"
+                                :data="invitations.filter(data => !statusRequired ||
+                                data.photoShootStatus.toLowerCase().startsWith(statusRequired.toLowerCase()))
+                                .filter(data => !search ||
+                                data.invitingUser.username.toLowerCase().startsWith(search.toLowerCase()))"
                                 style="width: 100%"
                                 :default-sort = "{prop: 'meetingDate', order: 'descending'}">
                             <el-table-column type="expand">
                                 <template slot-scope="props">
                                     <p>Czas trwania sesji: {{ props.row.duration }} h</p>
                                     <p>Tematyka: {{ props.row.topic }}</p>
-                                    <p>Address: {{ props.row.city }} ul. {{ props.row.street }} {{ props.row.houseNumber }}</p>
+                                    <p>Adres: {{ props.row.city }} ul. {{ props.row.street }} {{ props.row.houseNumber }}</p>
                                     <p>Notatki: {{ props.row.notes }}</p>
                                 </template>
                             </el-table-column>
                         <el-table-column
                                 prop="invitingUser.username"
                                 label="Użytkownik"
-                                width="250"
+                                width="240"
                                 align="center">
                         </el-table-column>
-                        <el-table-column
-                                prop="meetingDate"
-                                sortable
-                                label="Data sesji"
-                                width="250"
-                                align="center">
-                        </el-table-column>
+                            <el-table-column
+                                    prop="meetingDate"
+                                    label="Data sesji"
+                                    sortable
+                                    align="center"
+                                    width="200">
+                                <template slot-scope="x">
+                                    <p>{{getDate(x.row.meetingDate)}}</p>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                    prop="meetingDate"
+                                    label="Godzina spotkania"
+                                    align="center"
+                                    width="210">
+                                <template slot-scope="x">
+                                    <p>{{getTime(x.row.meetingDate)}}</p>
+                                </template>
+                            </el-table-column>
                         <el-table-column
                                 prop="photoShootStatus"
                                 label="Status"
-                                width="250"
+                                width="fill"
                                 align="center">
                             <template slot-scope="x">
                                 <p>{{translateStatus(x.row.photoShootStatus)}}</p>
@@ -109,7 +124,6 @@
                 });
                 this.notification.username = invitingUsername;
                 this.notification.content = this.currentUser.username + ' zaakceptował twoje zaproszenie';
-
                 apiService.addNotification(this.notification).then(
                     data => {
                         this.message = data.message;
@@ -119,6 +133,7 @@
                         this.message = error.message;
                     }
                 );
+                location.reload();
             },
             cancelPhotoshoot(id, invitingUsername) {
                 apiService.cancelPhotoshoot(id).then((data) => {
@@ -167,6 +182,12 @@
                 } else if (status == "Anulowane"){
                     return 'CANCELED';
                 }
+            },
+            getDate(date){
+                return date.slice(0,10)
+            },
+            getTime(date){
+                return date.slice(11,19)
             },
         },
         computed: {

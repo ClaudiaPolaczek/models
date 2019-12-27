@@ -19,7 +19,8 @@
                             <el-date-picker
                                     v-model="form.addedDate"
                                     type="date"
-                                    placeholder="Pick a day">
+                                    placeholder="Wybierz dzień"
+                                    value-format="yyyy-MM-dd">
                             </el-date-picker>
                         </el-form-item>
                     </el-form>
@@ -39,19 +40,22 @@
                     </el-form>
                 </div></el-col>
             </el-row>
+            <el-row>
+            </el-row>
             <el-row :gutter="20" v-for="portfolio in portfolios" :key="portfolio.portfolios"
                     v-if="(!form.occupation || portfolio.user.role == form.occupation) &&
             (!form.title || portfolio.name == form.title) &&
-            (!form.addedDate || portfolio.addedDate == form.addedDate)">
+            (!form.addedDate || getDate(portfolio.addedDate) == form.addedDate)">
                 <el-card>
                     <el-col :span="6">
                         <el-image
                                 style="width: 200px; height: 200px"
-                                :src="portfolio.mainPhotoUrl">
+                                :src="portfolio.mainPhotoUrl"
+                                :fit="'contain'">
                         </el-image>
                         <el-row style="margin-top: 0px">
                             <el-link @click="$router.push({ path: `/portfolios/${portfolio.id}` })" type="info">
-                                Zobacz portfolio
+                                Zobacz album
                                 <i class="el-icon-view el-icon--right"></i> </el-link>
                         </el-row>
                     </el-col>
@@ -63,7 +67,7 @@
                             <h3 style="display: inline">Nazwa użytkownika: </h3> {{portfolio.user.username}}
                         </el-row>
                         <el-row class="portfolio" style="margin-top: 40px">
-                            <h3 style="display: inline">Data dodania: </h3> {{portfolio.addedDate}}
+                            <h3 style="display: inline">Data dodania: </h3> {{getDate(portfolio.addedDate)}}
                         </el-row>
                     </div></el-col>
                     <el-col :span="6"><div>
@@ -112,7 +116,10 @@
                 apiService.getPortfolios().then((data) => {
                     this.portfolios = data;
                 });
-            }
+            },
+            getDate(date){
+                return date.slice(0,10)
+            },
         }
     }
 </script>

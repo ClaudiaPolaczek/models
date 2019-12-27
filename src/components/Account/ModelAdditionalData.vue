@@ -123,9 +123,9 @@
                 this.user.lastName = this.model.survey.lastName;
                 this.user.region = this.model.survey.region;
                 this.user.city = this.model.survey.city;
-                this.user.age = this.model.survey.age;
                 this.user.gender = this.model.survey.gender;
                 this.user.phoneNumber = this.model.survey.phoneNumber;
+                this.user.birthdayYear = this.model.survey.birthdayYear;
                 this.user.username = this.model.user.username;
                 this.user.password = this.model.user.password;
                 this.user.hairColor = this.ruleForm.hairColor;

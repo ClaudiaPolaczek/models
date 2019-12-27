@@ -90,7 +90,7 @@
                     v-if="(!form.gender || model.survey.gender == form.gender) &&
             (!form.city || model.survey.city == form.city) &&
             (!form.region || model.survey.region == form.region) &&
-            (!form.age || model.survey.age == form.age) &&
+            (!form.age || getBirthdayYear(form.age,model.survey.birthdayYear)) &&
             (!form.hairColor || model.hairColor == form.hairColor) &&
             (!form.eyesColor || model.eyesColor == form.eyesColor)">
                 <el-card>
@@ -99,7 +99,7 @@
                             <el-image
                                     style="width: 200px; height: 200px"
                                     :src="model.user.mainPhotoUrl"
-                                    :fit="'fill'">
+                                    :fit="'contain'">
                             </el-image>
                         </div>
                         {{model.user.username}}
@@ -116,7 +116,7 @@
                             {{getGender(model.survey.gender)}}
                         </el-row>
                         <el-row class="profile">
-                            Wiek - {{model.survey.age}}
+                            Wiek - {{getAge(model.survey.birthdayYear)}}
                         </el-row>
                     </div></el-col>
                     <el-col :span="6">
@@ -280,6 +280,29 @@
             }
         },
         methods: {
+            getBirthdayYear(requiredAge, year){
+                const date = new Date();
+                const age = date.getFullYear() - year;
+                if(requiredAge=='20'){
+                    if(age < 20) return true;
+                    else return false;
+                }else if(requiredAge=='2030'){
+                    if(age >= 20 && age < 30) return true;
+                    else return false;
+                }else if(requiredAge=='3040'){
+                    if(age >= 30 && age < 40) return true;
+                    else return false;
+                }else if(requiredAge=='4050'){
+                    if(age >= 40 && age < 50) return true;
+                    else return false;
+                }else if(requiredAge=='5060'){
+                    if(age >= 50 && age < 60) return true;
+                    else return false;
+                }else if(requiredAge=='60'){
+                    if(age >= 60) return true;
+                    else return false;
+                }else return false;
+            },
             getModels(){
                 apiService.getModels().then((data) => {
                     this.models = data;
@@ -288,6 +311,10 @@
             getGender(gender){
                 if(gender=='W') return "kobieta"
                 else if (gender=='M') return "mężczyzna"
+            },
+            getAge(year){
+                const date = new Date();
+                return  date.getFullYear() - year;
             },
         },
     }

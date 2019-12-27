@@ -1,76 +1,81 @@
 <template>
     <el-container>
         <el-main>
-            <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb-container">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
                 <el-breadcrumb-item :to="{ path: '/' }">Start</el-breadcrumb-item>
                 <el-breadcrumb-item>Profile</el-breadcrumb-item>
                 <el-breadcrumb-item>{{photographer.user.username}}</el-breadcrumb-item>
             </el-breadcrumb>
             <el-row :gutter="20">
-                <el-col :span="6"><div class="grid-content bg-purple">
+                <el-col :span="8"><div>
                     <div class="demo-image" style="margin-bottom: 15px">
-                        <span class="demonstration"></span>
                         <el-image
-                                style="width: 200px; height: 200px"
-                                :src="model.user.mainPhotoUrl"
-                                :fit="'fill'">
+                                style="width: 300px; height: 300px"
+                                :src="photographer.user.mainPhotoUrl"
+                                :fit="'contain'">
                         </el-image>
                     </div>
                     {{photographer.user.username}}
                 </div></el-col>
-                <el-col :span="4"><div>
+                <el-col :span="6"><div>
+                    <el-row style="margin-top: 0px" class="profile">
+                        <h3 style="margin-top: 0px"> Informacje o profilu: </h3>
                         {{photographer.survey.firstName}} {{photographer.survey.lastName}}
-                    <el-row style="margin-top: 20px">
-                        {{photographer.survey.city}}, {{photographer.survey.region}}
                     </el-row>
-                    <el-row style="margin-top: 10px">
-                        {{getGender(photographer.survey.gender)}},
+                    <el-row class="profile">
+                        {{photographer.survey.city}} ({{photographer.survey.region}})
                     </el-row>
-                    <el-row style="margin-top: 10px">
-                        {{photographer.survey.age}}
+                    <el-row class="profile">
+                        Wiek - {{getAge(photographer.survey.birthdayYear)}},  {{getGender(photographer.survey.gender)}}
                     </el-row>
-                    <el-row style="margin-top: 10px">
+                    <el-row class="profile">
                         Tel: {{photographer.survey.phoneNumber}}
                     </el-row>
                 </div></el-col>
-                <el-col :span="8"><div class="grid-content bg-purple" style="margin-top: 20px">
-                    <el-button type="primary"
-                               @click="$router.push({ path: `/portfolios/u/${photographer.user.username}` })">Zobacz portfolio</el-button>
-                    <el-button v-if="addCommentPossible" type="primary"
-                               @click="$router.push({ path: `/photoshoot/${id}` })">Zaproś na sesję</el-button>
+                <el-col :span="8"><div style="margin-top: 20px">
+                    <el-row class="profile">
+                        <el-button type="primary"
+                                   @click="$router.push({ path: `/portfolios/u/${photographer.user.username}` })">Zobacz portfolio</el-button>
+                    </el-row>
+                    <el-row class="profile">
+                        <el-button v-if="addCommentPossible" type="primary"
+                                   @click="$router.push({ path: `/photoshoot/${photographer.user.username}` })">Zaproś na sesję</el-button>
+                    </el-row>
                 </div></el-col>
             </el-row>
             <el-row :gutter="20" style="margin-top: 30px; text-align: left; margin-left: 50px">
                 <el-collapse accordion @change="handleChange">
                     <el-collapse-item name="Komentarze">
                         <template slot="title">
-                            Komentarze
-                            <el-button v-if="addCommentPossible" style="margin-left: 30px" @click="dialogFormVisible = true">Dodaj komentarz</el-button>
-                            <el-dialog title="Nowy komentarz" :visible.sync="dialogFormVisible">
-                                <el-form :model="form">
-                                    <el-form-item label="Ocena" :label-width="formLabelWidth">
-                                        <div class="block">
-                                            <el-rate v-model="comment.rating"></el-rate>
-                                        </div>
+                            <h3>Komentarze</h3>
+                            <el-button type="primary" size="small" v-if="addCommentPossible" style="margin-left: 30px"
+                                       @click="dialogFormVisible = true">Dodaj komentarz</el-button>
+                            <el-dialog :visible.sync="dialogFormVisible" width="40%">
+                                <h2 style="margin-top: 0px; text-align: center">Nowy komentarz</h2>
+                                <el-form :model="form" ref="form" :label-position="top" >
+                                    <el-form-item label="Ocena">
+                                        <el-rate v-model="form.stars"></el-rate>
                                     </el-form-item>
                                     <el-form-item label="Treść">
-                                        <el-input type="textarea" v-model="comment.content"></el-input>
+                                        <el-input type="textarea"
+                                                  maxlength="100"
+                                                  show-word-limit
+                                                  :rows="6" v-model="form.content"></el-input>
                                     </el-form-item>
                                 </el-form>
                                 <span slot="footer" class="dialog-footer">
-                        <el-button @click="dialogFormVisible = false">Anuluj</el-button>
-                            <el-button type="success" @click="addComment">Dodaj</el-button>
-                        </span>
+                                <el-button type="primary" @click="dialogFormVisible = false">Anuluj</el-button>
+                                    <el-button type="primary" @click="addComment('form')">Dodaj</el-button>
+                                </span>
                             </el-dialog>
                         </template>
                         <el-table
                                 :data="comments"
-                                stripe
-                                style="width: 100%">
+                                style="width: 100%; margin-top: 20px">
                             <el-table-column
                                     prop="ratingUser.username"
                                     label="Nazwa użytkownika"
-                                    width="180">
+                                    width="220">
                             </el-table-column>
                             <el-table-column
                                     prop="content"
@@ -80,14 +85,20 @@
                             <el-table-column
                                     label="Ocena"
                                     width="180">
-                                <el-rate
-                                        v-model="comments.rating" disabled>
-                                </el-rate>
+                                <template slot-scope="x">
+                                    <el-rate
+                                            v-model="x.row.rating"
+                                            disabled>
+                                    </el-rate>
+                                </template>
                             </el-table-column>
                             <el-table-column
                                     prop="addedDate"
                                     label="Data dodania"
                                     width="180">
+                                <template slot-scope="x">
+                                    <p>{{getDate(x.row.addedDate)}}</p>
+                                </template>
                             </el-table-column>
                             <el-table-column
                                     fixed="right"
@@ -95,7 +106,7 @@
                                     width="170">
                                 <template slot-scope="scope">
                                     <el-button v-if="deleteCommentPossible(scope.row.ratingUser.username)"  @click="deleteComment(scope.row.id)"
-                                               type="text">Usuń</el-button>
+                                               type="primary">Usuń</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -130,7 +141,6 @@
                     stars: '',
                     content: '',
                 },
-                formLabelWidth: '120px'
             };
         },
         methods: {
@@ -152,21 +162,34 @@
                 this.username = this.photographer.user.username
                 this.getCommentsByRatedUser( this.username )
             },
-            addComment() {
-                this.comment.ratingUserUsername = this.currentUser.username;
-                this.comment.ratedUserUsername = this.photographer.user.username;
-                if(this.comment.ratingUserUsername != this.comment.ratedUserUsername) {
-                    apiService.addComment(this.comment).then(
-                        data => {
-                            this.message = data.message;
-                            this.comment = data;
-                            this.dialogFormVisible = false
-                        },
-                        error => {
-                            this.message = error.message;
-                        }
-                    );
-                } else this.dialogFormVisible = false
+            addComment(form) {
+                this.$refs[form].validate((valid) => {
+                    if (valid) {
+                        this.comment.ratingUserUsername = this.currentUser.username;
+                        this.comment.ratedUserUsername = this.photographer.user.username;
+                        if(this.comment.ratingUserUsername != this.comment.ratedUserUsername) {
+                            this.comment.rating = this.form.stars;
+                            this.comment.content = this.form.content;
+                            apiService.addComment(this.comment).then(
+                                data => {
+                                    this.message = data.message;
+                                    this.comment = data;
+                                    this.dialogFormVisible = false
+                                },
+                                error => {
+                                    this.message = error.message;
+                                }
+                            );
+                        } else this.dialogFormVisible = false
+                    } else {
+                        this.$message({
+                            message: 'Nieuzupełnione wymagane dane',
+                            type: 'error',
+                            offset: 30
+                        });
+                        return false;
+                    }
+                })
             },
             deleteComment(id) {
                 apiService.deleteComment(id).then(
@@ -183,6 +206,13 @@
                     return true;
                 }
                 else return false;
+            },
+            getDate(date){
+                return date.slice(0,10)
+            },
+            getAge(year){
+                const date = new Date();
+                return  date.getFullYear() - year;
             },
         },
         computed: {
@@ -201,5 +231,25 @@
 </script>
 
 <style scoped>
+    .profile{
+        text-align: left;
+        margin-top: 15px;
+    }
 
+    .el-dialog__title{
+        font-size: 30px;
+    }
+
+    .el-form-item{
+        margin-bottom: 0px;
+        margin-top: 0px;
+    }
+
+    .el-form{
+        margin-bottom: 0px;
+    }
+
+    .el-form-item__label{
+        font-size: 30px;
+    }
 </style>

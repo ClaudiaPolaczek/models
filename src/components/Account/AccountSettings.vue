@@ -18,8 +18,8 @@
                             <el-form-item label="Nazwisko" prop="lastName">
                                 <el-input v-model="ruleForm.lastName"></el-input>
                             </el-form-item>
-                            <el-form-item label="Rok urodzenia" style="align-items: center" prop="age">
-                                    <el-input  v-model.number="ruleForm.age"></el-input>
+                            <el-form-item label="Rok urodzenia" style="align-items: center" prop="birthdayYear">
+                                    <el-input  v-model="ruleForm.birthdayYear"></el-input>
                             </el-form-item>
                             <el-form-item label="Województwo" prop="region">
                                 <el-select v-model="ruleForm.region" placeholder="Wybierz">
@@ -65,7 +65,7 @@
                 downloadUser: [],
                 ruleForm: {
                     region: '',
-                    age: '',
+                    birthdayYear: '',
                     city: '',
                     phoneNumber: '',
                     firstName: '',
@@ -136,9 +136,9 @@
                         { required: true, message: 'Podaj nazwisko', trigger: 'blur' },
                         { min: 3, message: 'Długość nazwiska powinna być dłuższa niż 3 litery', trigger: 'blur' }
                     ],
-                    age: [
-                        { required: true, message: 'Podaj wiek ', trigger: 'change' },
-                        { type: 'number', message: 'Wiek musi być liczbą'}
+                    birthdayYear: [
+                        { required: true, message: 'Podaj rok urodzenia ', trigger: 'change' },
+                        { min: 4, max: 4, message: 'Rok urodzenia musi być 4 cyfrową liczbą'}
                     ],
                     phoneNumber: [
                         { required: true, message: 'Podaj numer telefonu ', trigger: 'change' },
@@ -160,7 +160,7 @@
                     this.downloadUser = data;
                     this.ruleForm.firstName = this.downloadUser.survey.firstName;
                     this.ruleForm.lastName = this.downloadUser.survey.lastName;
-                    this.ruleForm.age = this.downloadUser.survey.age;
+                    this.ruleForm.birthdayYear = this.downloadUser.survey.birthdayYear;
                     this.ruleForm.region = this.downloadUser.survey.region;
                     this.ruleForm.city = this.downloadUser.survey.city;
                     this.ruleForm.phoneNumber = this.downloadUser.survey.phoneNumber;
@@ -171,7 +171,7 @@
                     this.downloadUser = data;
                     this.ruleForm.firstName = this.downloadUser.survey.firstName;
                     this.ruleForm.lastName = this.downloadUser.survey.lastName;
-                    this.ruleForm.age = this.downloadUser.survey.age;
+                    this.ruleForm.birthdayYear = this.downloadUser.survey.birthdayYear;
                     this.ruleForm.region = this.downloadUser.survey.region;
                     this.ruleForm.city = this.downloadUser.survey.city;
                     this.ruleForm.phoneNumber = this.downloadUser.survey.phoneNumber;
@@ -182,7 +182,7 @@
                 this.user.lastName = this.downloadUser.survey.lastName;
                 this.user.region = this.ruleForm.region;
                 this.user.city = this.ruleForm.city;
-                this.user.age = this.ruleForm.age;
+                this.user.birthdayYear = this.ruleForm.birthdayYear;
                 this.user.gender = this.downloadUser.survey.gender;
                 this.user.phoneNumber = this.ruleForm.phoneNumber;
                 this.user.username = this.downloadUser.user.username;
@@ -205,7 +205,7 @@
                 this.user.lastName = this.downloadUser.survey.lastName;
                 this.user.region = this.ruleForm.region;
                 this.user.city = this.ruleForm.city;
-                this.user.age = this.ruleForm.age;
+                this.user.birthdayYear = this.ruleForm.birthdayYear;
                 this.user.gender = this.downloadUser.survey.gender;
                 this.user.phoneNumber = this.ruleForm.phoneNumber;
                 this.user.username = this.downloadUser.user.username;
@@ -214,6 +214,7 @@
                     data => {
                         this.message = data.message;
                         this.user = data;
+                        location.reload();
                     },
                     error => {
                         this.message = error.message;

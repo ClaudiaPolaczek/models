@@ -8,7 +8,7 @@
             <el-row>
                 <el-col :span="10" ><div>
                     <el-form ref="form" :model="form" label-width="300px">
-                        <el-form-item label="Komentujący użytkownik">
+                        <el-form-item label="Oceniający użytkownik">
                             <el-input v-model="form.ratingUserUsername"></el-input>
                         </el-form-item>
                     </el-form>
@@ -40,7 +40,7 @@
                 <el-card>
                     <el-col :span="6">
                         <el-row style="margin-top: 5px">
-                            Komentujący użytkownik: {{comment.ratingUser.username}}
+                            Oceniający użytkownik: {{comment.ratingUser.username}}
                         </el-row>
                         <el-row style="margin-top: 5px;">
                             Oceniany użytkownik: {{comment.ratedUser.username}}

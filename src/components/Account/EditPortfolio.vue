@@ -6,61 +6,73 @@
             </el-aside>
             <el-container>
                 <el-main>
-                    <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb-container" style="margin-bottom: 50px">
+                    <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 50px">
                         <el-breadcrumb-item :to="{ path: '/' }">Start</el-breadcrumb-item>
                         <el-breadcrumb-item>Konto</el-breadcrumb-item>
-                        <el-breadcrumb-item>Portfolio</el-breadcrumb-item>
-                        <el-breadcrumb-item>Nazwa</el-breadcrumb-item>
+                        <el-breadcrumb-item>Albumy</el-breadcrumb-item>
+                        <el-breadcrumb-item>{{this.portfolio.name}}</el-breadcrumb-item>
                     </el-breadcrumb>
                     <el-row>
-                        <el-col :span="6"><div class="grid-content bg-purple">
-                            <div class="demo-image" style="margin-bottom: 15px">
-                                <span class="demonstration"></span>
+                        <el-col :span="6"><div>
+                            <div>
                                 <el-image
-                                        style="width: 200px; height: 200px"
+                                        style="width: 250px; height: 250px"
                                         :src="portfolio.mainPhotoUrl"
-                                        :fit="'fill'">
+                                        :fit="'contain'">
                                 </el-image>
-
                             </div>
-                            <span class="demonstration">{{portfolio.name}}</span>
                         </div></el-col>
-                        <el-col :span="8">
-                            <el-row>
-                                Data dodania: {{portfolio.addedDate}}
-                            </el-row>
-                            <el-row>
-                                Opis : {{portfolio.description}}
-                            </el-row>
-                            <el-row>
+                            <el-col :span="9"><div class="portfolio">
+                                <el-row style="margin-top: 0px" class="profile">
+                                    <h3 style="margin-top: 15px; text-align: left"> {{portfolio.name}} </h3>
+                                </el-row>
+                                <el-row class="portfolio" style="margin-top: 10px">
+                                    <h4 style="display: inline">Data utworzenia: </h4> {{getDate(portfolio.addedDate)}}
+                                </el-row>
+                                <el-row class="portfolio" style="margin-top: 20px">
+                                    <h4 style="margin-top: 5px">Opis </h4> {{portfolio.description}}
+                                </el-row>
+                            </div></el-col>
+                            <el-col :span="6"><div class="portfolio" style="margin-top: 10px">
                                 <el-button type="primary" @click="dialogEditFormVisible = true">Edytuj dane</el-button>
-
-                            <el-dialog title="Edycja albumu" :visible.sync="dialogEditFormVisible">
-                                <el-form :model="form">
-                                    <el-form-item label="Ocena" :label-width="formLabelWidth">
-                                        <el-input v-model="form.name"></el-input>
-                                    </el-form-item>
-                                    <el-form-item label="Treść">
-                                        <el-input type="textarea" v-model="form.description"></el-input>
-                                    </el-form-item>
-                                </el-form>
-                                <span slot="footer" class="dialog-footer">
-                                            <el-button @click="dialogEditFormVisible = false">Anuluj</el-button>
-                                            <el-button type="success" @click="editPortfolio">Edytuj</el-button>
+                                <el-dialog :visible.sync="dialogEditFormVisible" width="40%">
+                                    <h2 style="margin-top: 0px; text-align: center; margin-bottom: 40px;">Edycja albumu</h2>
+                                    <el-form :model="form" :rules="rules" ref="form">
+                                        <el-form-item label="Ocena" label-width="80px" prop="name">
+                                            <el-input v-model="form.name"></el-input>
+                                        </el-form-item>
+                                        <el-form-item label="Treść" prop="description">
+                                            <el-input
+                                                    type="textarea"
+                                                    maxlength="300"
+                                                    show-word-limit
+                                                    :rows="6"
+                                                    v-model="form.description"/>
+                                        </el-form-item>
+                                    </el-form>
+                                    <span slot="footer" class="dialog-footer">
+                                            <el-button type="primary" @click="dialogEditFormVisible = false">Anuluj</el-button>
+                                            <el-button type="primary" @click="editPortfolio('form')">Edytuj</el-button>
                                 </span>
-                            </el-dialog>
-                            </el-row>
+                                </el-dialog>
+                            </div>
                         </el-col>
+                    </el-row>
+
+                    <el-row >
+                        {{this.srcList}}
                     </el-row>
                     <el-row :gutter="20" style="margin-top: 30px; text-align: left; margin-left: 50px">
                         <el-collapse accordion v-model="activeNames" @change="handleChange">
                             <el-collapse-item name="Zdjęcia">
                                 <template slot="title">
-                                    Zdjęcia
-                                    <el-button style="margin-left: 30px" @click="dialogFormVisible = true">
+                                    <h3>Zdjęcia</h3>
+                                    <el-button style="margin-left: 30px" @click="dialogFormVisible = true"
+                                               type="primary" size="small">
                                         Dodaj zdjęcia
                                     </el-button>
-                                    <el-dialog title="Nowe zdjęcia" :visible.sync="dialogFormVisible">
+                                    <el-dialog :visible.sync="dialogFormVisible" width="40%">
+                                        <h2 style="margin-top: 0px; text-align: center; margin-bottom: 40px;">Nowe zdjęcia</h2>
                                         <el-upload
                                                 class="upload-demo"
                                                 action="http://localhost:8080/images/uploadFile"
@@ -70,32 +82,32 @@
                                                 :before-remove="beforeRemove"
                                                 :file-list="fileList"
                                                 list-type="picture">
-                                            <el-button size="small" type="primary">Click to upload</el-button>
+                                            <el-button size="small" type="primary">Wybierz zdjęcie</el-button>
                                             <div slot="tip" class="el-upload__tip">Pliki do 10MB</div>
                                         </el-upload>
                                         <span slot="footer" class="dialog-footer">
-                                            <el-button @click="dialogFormVisible = false">Anuluj</el-button>
-                                            <el-button type="success" @click="addImages">Dodaj</el-button>
+                                            <el-button type="primary" @click="addImages">Dodaj</el-button>
                                         </span>
                                     </el-dialog>
                                 </template>
                                 <div class="demo-image__preview" v-for="image in images" :key="image.images">
                                     <el-row>
-                                    <el-col :span="6">
+                                    <el-col :span="5">
                                     <el-image
-                                            style="width: 100px; height: 100px"
+                                            style="width: 150px; height: 150px"
                                             :src="image.fileUrl"
-                                            :preview-src-list="srcList">
+                                            :preview-src-list="srcList"
+                                            :fit="'contain'">
                                     </el-image>
                                     </el-col>
-                                    <el-col :span="6">
-                                        <el-button @click="setMainProfilePhotoUrl(image.fileUrl)">Ustaw jako profilowe</el-button>
+                                    <el-col :span="5" style="margin-top: 25px">
+                                        <el-button type="primary" v-if="ifMainProfilePhoto(image.fileUrl)" @click="setMainProfilePhotoUrl(image.fileUrl, image.name)">Ustaw jako profilowe</el-button>
                                     </el-col>
-                                    <el-col :span="6">
-                                        <el-button @click="setMainPortfolioPhotoUrl(image.fileUrl)">Ustaw jako zdjęcie główne albumu</el-button>
+                                    <el-col :span="5" style="margin-top: 25px">
+                                        <el-button type="primary" v-if="ifMainPortfolioPhoto(image.fileUrl)" @click="setMainPortfolioPhotoUrl(image.fileUrl)">Ustaw jako zdjęcie główne albumu</el-button>
                                     </el-col>
-                                    <el-col :span="6">
-                                        <el-button @click="deletePhoto(image.id, image.fileUrl)">Usuń zdjęcie</el-button>
+                                    <el-col :span="5" style="margin-top: 25px">
+                                        <el-button type="primary" @click="deletePhoto(image.id, image.fileUrl)">Usuń zdjęcie</el-button>
                                     </el-col></el-row>
                                 </div>
                             </el-collapse-item>
@@ -119,13 +131,14 @@
             this.id = this.$route.params.id
             this.getAlbumById(this.id)
             this.getImagesByPortfolioId();
+            this.getSrcList();
         },
         components: {
             Menu
         },
         data() {
             return {
-                srcList: [],
+                srcList: '',
                 image: new Image('', ''),
                 photo: new Photo(''),
                 portfolioEdit: new Portfolio('', '', '', ''),
@@ -143,8 +156,16 @@
                     name: '',
                     description: '',
                 },
-                fileList: [],
-                formLabelWidth: '120px'
+                rules: {
+                    name: [
+                        {required: true, message: 'Podaj nazwę', trigger: 'change'},
+                        { min: 3, message: 'Nazwa musi być dłuższa niż 3 litery', trigger: 'blur' }
+                    ],
+                    description: [
+                        {required: true, message: 'Podaj opis albumu', trigger: 'change'},
+                    ]
+                },
+                fileList: []
             }
         },
         computed: {
@@ -168,13 +189,21 @@
             getImagesByPortfolioId() {
                 apiService.getImagesByPortfolioId(this.id).then((data) => {
                     this.images = data;
-                    this.srcList.push(this.images.fileUrl)
+
                 });
             },
+            getSrcList() {
+                this.images.forEach(function(entry) {
+                    this.srcList.push(entry.fileUrl)
+                });
+            },
+            beforeRemove(file, fileList) {
+                this.$confirm(`Czy na pewno anulować przesyłanie pliku ${ file.name } ?`);
+            },
             handleRemove(file, fileList) {
-                apiService.deleteImage(file.url).then(
+                apiService.deleteImageByUrl(file.name).then(
                     data => {
-                        this.portfolio = data;
+                        this.message = data;
                     },
                     error => {
                         this.message = error.message;
@@ -186,8 +215,8 @@
             },
             addImage(response, file, fileList){
                 this.image.portfolioId = this.portfolio.id;
-                file.url = response;
                 this.image.fileUrl = response;
+                this.image.name = file.name;
                 apiService.addImage(this.image).then(
                     data => {
                         this.image = data;
@@ -197,29 +226,43 @@
                     }
                 );
             },
-            beforeRemove(file, fileList) {
-                return this.$confirm(`Cancel the transfert of ${ file.name } ?`);
+            addImages(){
+                location.reload();
             },
-            editPortfolio(){
-                this.portfolioEdit.username = this.currentUser.username;
-                this.portfolioEdit.name = this.form.name;
-                this.portfolioEdit.description = this.form.description;
-                apiService.editPortfolio(this.id, this.portfolioEdit).then(
-                    data => {
-                        this.portfolio = data;
-                        this.dialogEditFormVisible = false
-                    },
-                    error => {
-                        this.message = error.message;
+            editPortfolio(ruleForm){
+                this.$refs[ruleForm].validate((valid) => {
+                    if (valid) {
+                        this.portfolioEdit.username = this.currentUser.username;
+                        this.portfolioEdit.name = this.form.name;
+                        this.portfolioEdit.description = this.form.description;
+                        apiService.editPortfolio(this.id, this.portfolioEdit).then(
+                            data => {
+                                this.portfolio = data;
+                                this.dialogEditFormVisible = false
+                                location.reload();
+                            },
+                            error => {
+                                this.message = error.message;
+                            }
+                        );
+                    } else {
+                        this.$message({
+                            message: 'Niepoprawne dane ',
+                            type: 'error',
+                            offset: 30
+                        });
+                        return false;
                     }
-                );
+                })
             },
-            setMainProfilePhotoUrl(url){
+            setMainProfilePhotoUrl(url, name){
                 this.image.portfolioId = this.id;
                 this.image.fileUrl = url;
+                this.image.name = name;
                 apiService.setMainProfilePhotoUrl(this.currentUser.username, this.image).then(
                     data => {
                         this.user = data;
+                        location.reload();
                     },
                     error => {
                         this.message = error.message;
@@ -234,34 +277,42 @@
                 apiService.setMainPortfolioPhotoUrl(this.id, this.portfolioEdit).then(
                     data => {
                         this.portfolio = data;
+                        location.reload();
                     },
                     error => {
                         this.message = error.message;
                     }
                 );
             },
-            deletePhoto(id, fileUrl){
-                // apiService.deleteImage(fileUrl).then(
-                //     data => {
-                //         this.message = data;
-                //     },
-                //     error => {
-                //         this.message = error.message;
-                //     }
-                // );
+            ifMainPortfolioPhoto(fileUrl){
+                if(this.portfolio.mainPhotoUrl == fileUrl) return false;
+                else return true
+            },
+            ifMainProfilePhoto(fileUrl){
+                if(this.portfolio.user.mainPhotoUrl == fileUrl) return false;
+                else return true
+            },
+            deletePhoto(id){
                 apiService.deleteImageFromDatabase(id).then(
                     data => {
                         this.message = data;
+                        location.reload();
                     },
                     error => {
                         this.message = error.message;
                     }
                 );
-            }
+            },
+            getDate(date){
+                return date.slice(0,10)
+            },
         }
     }
 </script>
 
 <style scoped>
+    .portfolio{
+        text-align: left;
+    }
 
 </style>

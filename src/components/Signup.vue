@@ -33,8 +33,8 @@
                                     <el-radio label="Mężczyzna"></el-radio>
                                 </el-radio-group>
                             </el-form-item>
-                            <el-form-item label="Wiek" prop="age">
-                                <el-input  v-model="ruleForm.age"></el-input>
+                            <el-form-item label="Rok urodzenia" prop="birthdayYear">
+                                <el-input  v-model="ruleForm.birthdayYear"></el-input>
                             </el-form-item>
                             <el-form-item label="Województwo" prop="region">
                                 <el-select v-model="ruleForm.region" placeholder="Wybierz">
@@ -100,7 +100,7 @@
                     gender: '',
                     region: '',
                     city: '',
-                    age: '',
+                    birthdayYear: '',
                     phoneNumber: '',
                     options: [{
                         value: 'dolnoslaskie',
@@ -185,11 +185,13 @@
                         { required: true, message: 'Podaj miasto', trigger: 'change' },
                         { min: 3, message: 'Nazwa miasta musi być dłuższa niż 3 litery', trigger: 'blur' }
                     ],
-                    age: [
-                        { required: true, message: 'Podaj wiek ', trigger: 'change' }
+                    birthdayYear: [
+                        { required: true, message: 'Podaj rok urodzenia ', trigger: 'change' },
+                        { min: 4, max: 4, message: 'Rok urodzenia musi być 4 cyfrową liczbą'}
                     ],
                     phoneNumber: [
-                        { required: true, message: 'Podaj wiek ', trigger: 'change' }
+                        { required: true, message: 'Podaj wiek ', trigger: 'change' },
+                        { min: 7, message: 'Numer telefonu nie może być krótszy niż 7 cyfr', trigger: 'blur' },
                     ]
                 }
             };

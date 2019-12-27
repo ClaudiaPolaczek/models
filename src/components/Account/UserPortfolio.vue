@@ -9,40 +9,34 @@
                     <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 50px">
                         <el-breadcrumb-item :to="{ path: '/' }">Start</el-breadcrumb-item>
                         <el-breadcrumb-item>Konto</el-breadcrumb-item>
-                        <el-breadcrumb-item>Portfolio</el-breadcrumb-item>
+                        <el-breadcrumb-item>Albumy</el-breadcrumb-item>
                     </el-breadcrumb>
                     <el-row :gutter="20"  v-for="portfolio in portfolios" :key="portfolio.portfolios">
                         <el-card style="margin-left: 40px; margin-right: 100px">
                             <el-col :span="6" style="margin-bottom: 20px"><div class="grid-content bg-purple">
-                                <div class="demo-image" style="margin-bottom: 15px">
-                                    <span class="demonstration"></span>
+                                <div style="margin-bottom: 15px">
                                     <el-image
                                             style="width: 200px; height: 200px"
                                             :src="portfolio.mainPhotoUrl"
-                                            :fit="'fill'">
+                                            :fit="'contain'">
                                     </el-image>
                                 </div>
-                                {{portfolio.name}}
+                                <h3 style="display: inline;">{{portfolio.name}}</h3>
                             </div></el-col>
-                            <el-col :span="12"><div class="grid-content bg-purple">
-                                <el-row>
-                                    <h4 style="display: inline">  Data utworzenia:  </h4>
-                                    {{portfolio.addedDate}}
+                            <el-col :span="12" style="margin-right: 20px"><div class="portfolio">
+                                <el-row class="portfolio" style="margin-top: 10px">
+                                    <h4 style="display: inline">Data utworzenia: </h4> {{getDate(portfolio.addedDate)}}
                                 </el-row>
-                                <el-row>
-                                    {{portfolio.description}}
+                                <el-row class="portfolio" style="margin-top: 20px">
+                                    <h4 style="margin-top: 5px">Opis </h4> {{portfolio.description}}
                                 </el-row>
                             </div></el-col>
-                            <el-col :span="6"><div class="grid-content bg-purple" style="margin-top: 20px">
-                                <el-row>
+                            <el-col :span="6"><div class="portfolio" style="margin-top: 10px">
                                     <el-button type="primary"
                                                @click="$router.push({ path: `/portfolios/edit/${portfolio.id}` })">
                                         Edytuj
                                     </el-button>
-                                </el-row>
-                                <el-row>
-                                    <el-button type="primary" @click="onDelete(portfolio.id)">Usuń</el-button>
-                                </el-row>                            </div></el-col>
+                                    <el-button type="primary" @click="onDelete(portfolio.id)">Usuń</el-button></div></el-col>
                         </el-card>
                     </el-row>
                 </el-main>
@@ -96,6 +90,9 @@
                      this.portfolios = data;
                  });
              },
+             getDate(date){
+                 return date.slice(0,10)
+             },
         },
         computed: {
             currentUser() {
@@ -109,5 +106,7 @@
 </script>
 
 <style scoped>
-
+    .portfolio{
+        text-align: left;
+    }
 </style>

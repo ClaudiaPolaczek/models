@@ -18,7 +18,7 @@
         </el-menu-item>
         <el-menu-item index="3" @click="$router.push('/invitations')">
             <font-awesome-icon icon="envelope" size=" fa-lg" style="margin-right: 10px"/>
-            <span>Sesje zdjęciowe</span>
+            <span>Zaproszenia</span>
         </el-menu-item>
         <el-menu-item index="4" @click="$router.push('/notifications')">
             <font-awesome-icon icon="bell" size=" fa-lg" style="margin-right: 10px"/>
@@ -29,8 +29,8 @@
                 <font-awesome-icon icon="camera-retro" size=" fa-mg" style="margin-right: 10px"/>
                 <span style="font-size: 17px">Portfolio</span>
             </template>
-            <el-menu-item @click="$router.push('/user/portfolio')">Zobacz portfolio</el-menu-item>
-            <el-menu-item @click="$router.push('/user/new/portfolio')">Dodaj nowy album</el-menu-item>
+            <el-menu-item @click="$router.push('/user/portfolio')">Albumy</el-menu-item>
+            <el-menu-item @click="$router.push('/user/new/portfolio')">Nowy album</el-menu-item>
         </el-submenu>
     </el-menu>
 </template>

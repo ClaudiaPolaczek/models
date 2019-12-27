@@ -1,10 +1,10 @@
 export default class User {
-    constructor(username, password,firstName, lastName, age, gender, region, city, phoneNumber,  eyesColor ,hairColor) {
+    constructor(username, password,firstName, lastName, birthdayYear, gender, region, city, phoneNumber,  eyesColor ,hairColor) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.age = age;
+        this.birthdayYear = birthdayYear;
         this.gender = gender;
         this.region = region;
         this.city = city;

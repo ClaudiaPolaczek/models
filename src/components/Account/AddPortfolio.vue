@@ -16,7 +16,12 @@
                                 <el-input v-model="ruleForm.name"></el-input>
                             </el-form-item>
                             <el-form-item label="Opis" prop="description">
-                                <el-input type="textarea" v-model="ruleForm.description"></el-input>
+                                <el-input
+                                        type="textarea"
+                                        maxlength="300"
+                                        show-word-limit
+                                        :rows="6"
+                                        v-model="ruleForm.description"></el-input>
                             </el-form-item>
                             <el-form-item>
                                 <el-button type="primary" @click="handleAddNewAlbum('ruleForm')">Utwórz album</el-button>
@@ -53,7 +58,7 @@
                         { min: 3, message: 'Nazwa musi być dłuższa niż 3 litery', trigger: 'blur' }
                     ],
                     description: [
-                        {required: true, message: 'Podaj nazwę', trigger: 'change'},
+                        {required: true, message: 'Podaj opis albumu', trigger: 'change'},
                     ]
                 }
             }

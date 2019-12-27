@@ -60,7 +60,7 @@
             v-if="(!form.gender || photographer.survey.gender == form.gender) &&
             (!form.city || photographer.survey.city == form.city) &&
             (!form.region || photographer.survey.region == form.region) &&
-            (!form.age || photographer.survey.age == form.age)">
+            (!form.age || getBirthdayYear(form.age,photographer.survey.birthdayYear))">
                 <el-card>
                     <el-col :span="6" style="margin-bottom: 20px"><div class="grid-content bg-purple">
                     <div class="image">
@@ -68,7 +68,7 @@
                             <el-image
                                 style="width: 200px; height: 200px"
                                 :src="photographer.user.mainPhotoUrl"
-                                :fit="'fill'">
+                                :fit="'contain'">
                             </el-image>
                         </div>
                         {{photographer.user.username}}
@@ -85,7 +85,7 @@
                             {{getGender(photographer.survey.gender)}}
                         </el-row>
                         <el-row class="profile">
-                            Wiek - {{photographer.survey.age}}
+                            Wiek - {{getAge(photographer.survey.birthdayYear)}}
                         </el-row>
                     </div></el-col>
                     <el-col :span="6">
@@ -203,6 +203,29 @@
             }
         },
         methods: {
+            getBirthdayYear(requiredAge, year){
+                const date = new Date();
+                const age = date.getFullYear() - year;
+                if(requiredAge=='20'){
+                    if(age < 20) return true;
+                    else return false;
+                }else if(requiredAge=='2030'){
+                    if(age >= 20 && age < 30) return true;
+                    else return false;
+                }else if(requiredAge=='3040'){
+                    if(age >= 30 && age < 40) return true;
+                    else return false;
+                }else if(requiredAge=='4050'){
+                    if(age >= 40 && age < 50) return true;
+                    else return false;
+                }else if(requiredAge=='5060'){
+                    if(age >= 50 && age < 60) return true;
+                    else return false;
+                }else if(requiredAge=='60'){
+                    if(age >= 60) return true;
+                    else return false;
+                }else return false;
+            },
             getPhotographers(){
                 apiService.getPhotographers().then((data) => {
                     this.photographers = data;
@@ -211,6 +234,10 @@
             getGender(gender){
                 if(gender=='W') return "Kobieta"
                 else if (gender=='M') return "Mężczyzna"
+            },
+            getAge(year){
+                const date = new Date();
+                return  date.getFullYear() - year;
             },
         }
     }

@@ -17,6 +17,11 @@ export class APIService{
         return axios.get(url).then(response => response.data);
     }
 
+    getUserById(id) {
+        const url = `${API_URL}/users/${id}`;
+        return axios.get(url).then(response => response.data);
+    }
+
     getPhotographerByUsername(username) {
         const url = `${API_URL}/photographers/u/${username}`;
         return axios.get(url).then(response => response.data);
@@ -29,7 +34,7 @@ export class APIService{
             password: user.password,
             firstName: user.firstName,
             lastName: user.lastName,
-            age: user.age,
+            birthdayYear: user.birthdayYear,
             gender: user.gender,
             region: user.region,
             city: user.city,
@@ -61,7 +66,7 @@ export class APIService{
             password: user.password,
             firstName: user.firstName,
             lastName: user.lastName,
-            age: user.age,
+            birthdayYear: user.birthdayYear,
             gender: user.gender,
             region: user.region,
             city: user.city,
@@ -87,6 +92,11 @@ export class APIService{
     getCommentsByRatedUser(username) {
         const url = `${API_URL}/comments/rated/${username}`;
         return axios.get(url).then(response => response.data);
+    }
+
+    getAvgOfRating() {
+        const url = `${API_URL}/comments/avg`;
+        return axios.patch(url).then(response => response.data);
     }
 
     getComments() {
@@ -206,6 +216,11 @@ export class APIService{
         return axios.delete(url).then(response => response.data);
     }
 
+    deleteImageByUrl(file) {
+        const url = `${API_URL}/images/delete/url/${file}`;
+        return axios.delete(url).then(response => response.data);
+    }
+
     deleteImageFromDatabase(id) {
         const url = `${API_URL}/images/delete/${id}`;
         return axios.delete(url).then(response => response.data);
@@ -216,6 +231,7 @@ export class APIService{
         return axios.post(url, {
             portfolioId: image.portfolioId,
             fileUrl: image.fileUrl,
+            name: image.name,
         }).then(response => response.data);
     }
 
@@ -237,7 +253,8 @@ export class APIService{
         const url = `${API_URL}/users/photo/${username}`;
         return axios.patch(url, {
             portfolioId : image.portfolioId,
-            fileUrl : image.fileUrl
+            fileUrl : image.fileUrl,
+            name: image.name
         }).then(response => response.data);
     }
 

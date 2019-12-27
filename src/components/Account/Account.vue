@@ -10,18 +10,29 @@
                         <el-breadcrumb-item :to="{ path: '/' }">Start</el-breadcrumb-item>
                         <el-breadcrumb-item>Konto</el-breadcrumb-item>
                     </el-breadcrumb>
-                    <el-card style="text-align: left; margin-top: 20px; margin-bottom: 20px">
-                        <h3 style="margin-top: 0px">{{currentUser.username}}</h3>
-                        <p><strong>Imię: </strong>{{user.survey.firstName}}</p>
-                        <p><strong>Nazwisko: </strong>{{user.survey.lastName}}</p>
-                        <p><strong>Wiek: </strong>{{user.survey.age}}</p>
-                        <p><strong>Płeć: </strong>{{getGender(user.survey.gender)}}</p>
-                        <p><strong>Województwo: </strong>{{user.survey.region}}</p>
-                        <p><strong>Miasto: </strong>{{user.survey.city}}</p>
-                        <p><strong>Numer telefonu: </strong>{{user.survey.phoneNumber}}</p>
-                        <strong>Rola: </strong>{{getOccupation(currentUser)}}
-                    </el-card>
-                    <el-button type="primary" @click="deleteUser(currentUser.username)">Usuń profil</el-button>
+                        <el-card style="text-align: left; margin-top: 20px; margin-bottom: 20px">
+                            <el-col span="16" style="text-align: left; margin-top: 20px; margin-bottom: 20px">
+                            <h3 style="margin-top: 0px">{{currentUser.username}}</h3>
+                            <p><strong>Imię: </strong>{{user.survey.firstName}}</p>
+                            <p><strong>Nazwisko: </strong>{{user.survey.lastName}}</p>
+                            <p><strong>Rok urodzenia: </strong>{{user.survey.birthdayYear}}</p>
+                            <p><strong>Płeć: </strong>{{getGender(user.survey.gender)}}</p>
+                            <p><strong>Województwo: </strong>{{user.survey.region}}</p>
+                            <p><strong>Miasto: </strong>{{user.survey.city}}</p>
+                            <p><strong>Numer telefonu: </strong>{{user.survey.phoneNumber}}</p>
+                            <strong>Rola: </strong>{{getOccupation(currentUser)}}
+                            </el-col>
+                            <el-col span="8">
+                                <div style="margin-bottom: 15px">
+                                    <el-image
+                                            style="width: 300px; height: 300px"
+                                            :src="user.user.mainPhotoUrl"
+                                            :fit="'contain'">
+                                    </el-image>
+                                </div>
+                            </el-col>
+                        </el-card>
+                    <el-row><el-button type="primary" @click="deleteUser(currentUser.username)">Usuń profil</el-button></el-row>
                 </el-main>
             </el-container>
         </el-container>

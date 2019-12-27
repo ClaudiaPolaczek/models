@@ -2,34 +2,63 @@
     <el-container>
         <el-main>
             <el-row :gutter="20">
-                <el-col :span="12"><div>
+                <el-row style="margin-top: 10px"><div>
                     <div class="block">
-                        <el-card> Top profile w tym tygodniu </el-card>
-                        <el-carousel trigger="click" height="400px">
-                            <el-carousel-item v-for="item in 4" :key="item">
-                                <h3 class="small">{{ item }}</h3>
+                        <el-card> Top profile modelek </el-card>
+                        <el-carousel :interval="5000" type="card" height="400px" arrow="always">
+                            <el-carousel-item v-for="model in models" :key="model" :label="model.user.username">
+                                <el-image :src="model.user.mainPhotoUrl"></el-image>
                             </el-carousel-item>
                         </el-carousel>
                     </div>
-                </div></el-col>
-                <el-col :span="12"><div>
+                </div></el-row>
+                <el-row><div>
                     <div class="block">
-                        <el-card> Top profile w tym miesiącu </el-card>
-                        <el-carousel trigger="click" height="400px">
-                            <el-carousel-item v-for="item in 4" :key="item">
-                                <h3 class="small">{{ item }}</h3>
+                        <el-card style="margin-top: 20px"> Top profile fotografów </el-card>
+                        <el-carousel :interval="5000" type="card" height="400px" arrow="always">
+                            <el-carousel-item v-for="photographer in photographers" :key="photographer" :label="photographer.user.username">
+                                <el-image :src="photographer.user.mainPhotoUrl"></el-image>
                             </el-carousel-item>
                         </el-carousel>
                     </div>
-                </div></el-col>
+                </div></el-row>
             </el-row>
         </el-main>
     </el-container>
 </template>
 
 <script>
+    import {APIService} from "@/services/APIService";
+    const apiService = new APIService();
     export default {
-        name: "WelcomePage"
+        name: "WelcomePage",
+        mounted() {
+            this.getAvgOfRating();
+        },
+        data() {
+            return {
+                users: [],
+                models: [],
+                photographers: [],
+                x: [],
+                maxAvgUsers: '',
+            };
+        },
+        methods: {
+            getAvgOfRating(){
+                apiService.getAvgOfRating().then((data) => {
+                    this.users = data.sort((a, b) => b.avgRate - a.avgRate ).filter(((item, i) => i < 5));
+                });
+
+                apiService.getModels().then((data) => {
+                    this.models = data.sort((a, b) => b.user.avgRate - a.user.avgRate ).filter(((item, i) => i < 2));
+                });
+
+                apiService.getPhotographers().then((data) => {
+                    this.photographers = data.sort((a, b) => b.user.avgRate - a.user.avgRate ).filter(((item, i) => i < 2));
+                });
+            },
+        },
     }
 </script>
 
@@ -56,17 +85,17 @@
     }
 
     .el-carousel__item h3 {
-        color: black;
-        opacity: 0;
-        line-height: 500px;
+        color: #475669;
+        font-size: 14px;
+        opacity: 0.75;
+        line-height: 200px;
         margin: 0;
     }
-
     .el-carousel__item:nth-child(2n) {
-        background-color: #EAD3BE;
+        background-color: white;
     }
 
     .el-carousel__item:nth-child(2n+1) {
-        background-color: #EAD3BE;
+        background-color: white;
     }
 </style>

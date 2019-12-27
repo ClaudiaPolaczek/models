@@ -11,39 +11,41 @@
                 <el-col :span="12">
                     <el-card>
                         <h2>Zaproszenie na sesję</h2>
-                        <el-form name="form" :rules="rules" label-width="120px" class="demo-ruleForm" label-position="left">
-                            <el-form-item>
-                                <div class="alert alert-danger" role="alert" v-if="message">{{message}}</div>
-                            </el-form-item>
+                        <el-form name="form" :rules="rules"  ref="form" :model="form" label-width="150px" :label-position="left">
                             <el-form-item label="Miasto" prop="city">
-                                <el-input v-model="invitation.city"></el-input>
+                                <el-input v-model="form.city"></el-input>
                             </el-form-item>
                             <el-form-item label="Ulica" prop="street">
-                                <el-input v-model="invitation.street"></el-input>
+                                <el-input v-model="form.street"></el-input>
                             </el-form-item>
                             <el-form-item label="Numer domu" prop="houseNumber">
-                                <el-input v-model="invitation.houseNumber"></el-input>
+                                <el-input v-model="form.houseNumber"></el-input>
                             </el-form-item>
                             <el-form-item label="Tematyka sesji" prop="topic">
-                                <el-input v-model="invitation.topic"></el-input>
+                                <el-input v-model="form.topic"></el-input>
                             </el-form-item>
                             <el-form-item label="Data" prop="meetingDate">
                                 <el-date-picker
-                                        v-model="invitation.meetingDate"
-                                        type="date"
-                                        placeholder="Pick a day">
+                                        v-model="form.meetingDate"
+                                        type="datetime"
+                                        value-format="yyyy-MM-ddTHH:mm:ss"
+                                        placeholder="Wybierz datę i godzinę">
                                 </el-date-picker>
                             </el-form-item>
                             <el-form-item label="Czas trwania" prop="duration">
-                                <el-input  v-model="invitation.duration"></el-input>
+                                <el-input  v-model.number="form.duration"></el-input>
                             </el-form-item>
-                            <el-form-item label="Notatka" prop="notes">
-                                <el-input type="textarea" v-model="invitation.notes"></el-input>
+                            <el-form-item label="Notatka">
+                                <el-input type="textarea"
+                                          maxlength="200"
+                                          show-word-limit
+                                          :rows="4"
+                                          v-model="form.notes"></el-input>
                             </el-form-item>
                             <el-form-item>
                                 <el-form-item>
-                                    <el-button type="primary" @click="handleRegisterNewPhotoShoot">Wyślij zaproszenie</el-button>
-                                    <el-button @click="$router.push('/')">Anuluj</el-button>
+                                    <el-button type="primary" @click="handleRegisterNewPhotoShoot('form')">Wyślij zaproszenie</el-button>
+                                    <el-button type="primary" @click="$router.push('/')">Anuluj</el-button>
                                 </el-form-item>
                             </el-form-item>
                         </el-form>
@@ -73,56 +75,108 @@
             if (!this.currentUser) {
                this.$router.push('/login');
             }
-            this.id = this.$route.params.id
-            this.getPhotographerById(this.id)
+            this.username = this.$route.params.username
+            this.getFullUser(this.username);
         },
         data() {
             return {
                 user: [],
-                id: '',
+                occupation: '',
+                username: '',
                 invitation: new Invitation('', '', '', '', '', '', '', '', ''),
                 message: '',
+                form: {
+                    invitingUserUsername: '',
+                    invitedUserUsername: '',
+                    city: '',
+                    street: '',
+                    houseNumber: '',
+                    topic: '',
+                    notes: '',
+                    meetingDate: '',
+                    duration: '',
+                },
                 rules: {
-                    meetingDate: [
-                        { required: true, message: 'Podaj imię', trigger: 'blur' },
-                        { min: 1, message: 'Długość imienia powinna być wieksza niz 1', trigger: 'blur' }
-                    ],
-                    duration: [
-                        { required: true, message: 'Podaj nazwisko', trigger: 'blur' },
-                        { min: 1, message: 'Długość nazwiska powinna być wieksza niz 1', trigger: 'blur' }
-                    ],
                     city: [
-                        { required: true, message: 'Podaj miasto', trigger: 'change' }
+                        { required: true, message: 'Podaj miasto', trigger: 'change' },
+                        { min: 3, message: 'Długość nazwy miasta powinna być wieksza niz 3', trigger: 'blur' }
                     ],
                     street: [
-                        { required: true, message: 'Podaj ulice', trigger: 'change' }
+                        { required: true, message: 'Podaj ulice', trigger: 'change' },
+                        { min: 3, message: 'Długość nazwy ulicy powinna być wieksza niz 3', trigger: 'blur' }
                     ],
                     houseNumber: [
                         { required: true, message: 'Podaj numer domu ', trigger: 'change' }
                     ],
                     topic: [
                         { required: true, message: 'Podaj temat sesji', trigger: 'change' }
-                    ]
+                    ],
+                    meetingDate: [
+                        { required: true, message: 'Wybierz datę sesji ', trigger: 'blur' }
+                    ],
+                    duration: [
+                        { required: true, message: 'Wybierz długość trwania sesji ', trigger: 'blur' },
+                        { type: 'number', message: 'Czas musi być liczbą'}
+                    ],
                 }
             };
         },
         methods: {
-            handleRegisterNewPhotoShoot() {
-                this.message = '';
-                this.invitation.invitingUserUsername = this.currentUser.username;
-                this.invitation.invitedUserUsername = this.user.user.username;
-                apiService.addPhotoshoot(this.invitation).then(
-                    data => {
-                        this.message = data.message;
-                    },
-                    error => {
-                        this.message = error.message;
+            handleRegisterNewPhotoShoot(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        this.message = '';
+                        this.invitation.invitingUserUsername = this.currentUser.username;
+                        this.invitation.invitedUserUsername = this.user.user.username;
+                        this.invitation.city = this.form.city;
+                        this.invitation.street = this.form.street;
+                        this.invitation.houseNumber = this.form.houseNumber;
+                        this.invitation.topic = this.form.topic;
+                        this.invitation.notes = this.form.notes;
+                        this.invitation.meetingDate = this.form.meetingDate;
+                        this.invitation.duration = this.form.duration;
+                        apiService.addPhotoshoot(this.invitation).then(
+                            data => {
+                                this.message = data.message;
+                                location.reload()
+                            },
+                            error => {
+                                this.message = error.message;
+                            }
+                        );
+                    } else {
+                        this.$message({
+                            message: 'Niepoprawne dane ',
+                            type: 'error',
+                            offset: 30
+                        });
+                        return false;
                     }
-                );
+                })
             },
             getPhotographerById(id) {
                 apiService.getPhotographerById(id).then((data) => {
                     this.user = data;
+                });
+            },
+            getModelById(id) {
+                apiService.getModelById(id).then((data) => {
+                    this.user = data;
+                });
+            },
+            getFullUser(username) {
+                apiService.getUserById(username).then((data) => {
+                    this.user = data;
+                    if(this.user.role.includes('MODEL')){
+                        apiService.getModelByUsername(username).then((data) => {
+                            this.user = data;
+                        });
+                    }
+                    else if(this.user.role.includes('PHOTOGRAPHER')){
+                        apiService.getPhotographerByUsername(username).then((data) => {
+                            this.user = data;
+                        });
+                    }
                 });
             },
         }

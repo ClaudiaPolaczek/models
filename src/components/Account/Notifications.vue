@@ -15,11 +15,14 @@
                             style="width: 100%; margin-top: 40px"
                             :default-sort = "{prop: 'addedDate', order: 'descending'}">
                         <el-table-column
-                                fixed
                                 prop="addedDate"
                                 label="Data"
-                                width="300"
-                                sortable>
+                                sortable
+                                align="center"
+                                width="300">
+                            <template slot-scope="x">
+                                <p>{{getDate(x.row.addedDate)}}</p>
+                            </template>
                         </el-table-column>
                         <el-table-column
                                 fixed
@@ -82,7 +85,10 @@
                     return true;
                 }
                 return '';
-            }
+            },
+            getDate(date){
+                return date.slice(0,10)
+            },
         },
         computed: {
             currentUser() {
