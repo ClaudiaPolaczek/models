@@ -258,6 +258,13 @@ export class APIService{
         }).then(response => response.data);
     }
 
+    editInstagramName(username, user) {
+        const url = `${API_URL}/users/instagram/${username}`;
+        return axios.patch(url,{
+            instagramName : user.instagramName,
+        }).then(response => response.data);
+    }
+
     setMainPortfolioPhotoUrl(id, portfolio) {
         const url = `${API_URL}/portfolios/photo/${id}`;
         return axios.patch(url, {

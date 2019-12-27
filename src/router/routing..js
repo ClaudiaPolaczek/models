@@ -5,6 +5,7 @@ import AccountSettings from "@/components/Account/AccountSettings";
 import Signin from "@/components/Signin";
 import Invitations from "@/components/Account/Invitations";
 import Signup from "@/components/Signup";
+import InstagramName from "@/components/Account/InstagramName";
 import Notifications from "@/components/Account/Notifications";
 import Calendar from "@/components/Account/Calendar";
 import UserPortfolio from "@/components/Account/UserPortfolio";
@@ -39,6 +40,7 @@ export default new VueRouter({
         { path: '/user/portfolio', component: UserPortfolio},
         { path: '/user/new/portfolio', component: AddPortfolio},
         { path: '/user/password', component: PasswordChange},
+        { path: '/user/instagram', component: InstagramName},
         { path: '/user/model', component: ModelAdditionalData},
         { path: '/portfolios/edit/:id', component: EditPortfolio},
         { path: '/portfolios/u/:username', component: PortfolioList},

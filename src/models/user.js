@@ -1,7 +1,8 @@
 export default class User {
-    constructor(username, password,firstName, lastName, birthdayYear, gender, region, city, phoneNumber,  eyesColor ,hairColor) {
+    constructor(username, password, instagramName, firstName, lastName, birthdayYear, gender, region, city, phoneNumber,  eyesColor ,hairColor) {
         this.username = username;
         this.password = password;
+        this.instagramName = instagramName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthdayYear = birthdayYear;

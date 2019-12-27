@@ -40,8 +40,6 @@
         data() {
             return {
                 user: new User('', ''),
-                activeIndex: '1',
-                numberOfNotifications: '2',
                 labelPosition: 'left',
                 message:'',
                 ruleForm: {

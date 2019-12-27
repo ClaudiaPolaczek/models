@@ -38,7 +38,7 @@
                         Włosy - {{model.hairColor}}
                     </el-row>
                 </div></el-col>
-                <el-col :span="8"><div style="margin-top: 20px">
+                <el-col :span="4"><div style="margin-top: 20px">
                     <el-row class="profile">
                         <el-button type="primary"
                                    @click="$router.push({ path: `/portfolios/u/${model.user.username}` })">Zobacz portfolio</el-button>
@@ -48,6 +48,14 @@
                                     @click="$router.push({ path: `/photoshoot/${model.user.username}` })">Zaproś na sesję</el-button>
                     </el-row>
                 </div></el-col>
+                <el-col :span="2" style=" text-align: center">
+                    <el-row style="margin-top: 15px;">
+                        <font-awesome-icon v-if="ifHasInstagram" :icon="['fab', 'instagram']" size=" fa-3x" style="color: #213169" @click="goToInstagram"/>
+                    </el-row>
+                    <el-row style="margin-top: 0px; text-align: center; color: #213169">
+                        {{this.model.user.instagramName}}
+                    </el-row>
+                </el-col>
             </el-row>
             <el-row :gutter="20" style="margin-top: 30px; text-align: left; margin-left: 50px">
                 <el-collapse accordion @change="handleChange">
@@ -140,6 +148,8 @@
                 message: '',
                 id: 0,
                 username: '',
+                instagram: "https://www.instagram.com/",
+                tabUrl: '',
                 comments: [],
                 dialogTableVisible: false,
                 dialogFormVisible: false,
@@ -153,6 +163,7 @@
             getModelById(id) {
                 apiService.getModelById(id).then((data) => {
                     this.model = data;
+                    this.tabUrl = this.instagram.concat(this.model.user.instagramName)
                 });
             },
             getCommentsByRatedUser(username) {
@@ -162,7 +173,7 @@
             },
             getGender(gender){
                 if(gender=='W') return "kobieta"
-                else if (gender=='M') return "mężzzyzna"
+                else if (gender=='M') return "mężczyzna"
             },
             handleChange() {
                 this.username = this.model.user.username
@@ -221,6 +232,9 @@
             getDate(date){
                 return date.slice(0,10)
             },
+            goToInstagram(){
+                window.open(this.tabUrl)
+            }
         },
         computed: {
             currentUser() {
@@ -233,6 +247,10 @@
                 }
                 else return false;
             },
+            ifHasInstagram(){
+                if(this.model.user.instagramName!=null) return true;
+                else return false
+            }
         }
     }
 </script>
@@ -259,4 +277,5 @@
 .el-form-item__label{
     font-size: 30px;
 }
+
 </style>

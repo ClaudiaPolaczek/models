@@ -8,6 +8,7 @@ import App from "@/components/App";
 import axios from 'axios'
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faFacebookSquare, faInstagram } from '@fortawesome/free-brands-svg-icons'
 import {
   faHome,
   faUser,
@@ -17,10 +18,11 @@ import {
   faSignInAlt,
   faSignOutAlt,
   faCalendarAlt,
-    faEnvelope,
-    faBell,
-    faCameraRetro
+  faEnvelope,
+  faBell,
+  faCameraRetro
 } from '@fortawesome/free-solid-svg-icons';
+
 import VeeValidate from 'vee-validate';
 
 Vue.config.productionTip = false
@@ -30,7 +32,7 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.prototype.$http = axios
 library.add(faHome, faUser, faUserCircle,faUserCog, faUserPlus, faSignInAlt, faSignOutAlt , faCalendarAlt, faEnvelope,
     faBell,faCameraRetro);
-
+library.add(faFacebookSquare, faInstagram)
 new Vue({
   el: '#app',
   router,

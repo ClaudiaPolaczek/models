@@ -9,6 +9,7 @@
             </template>
             <el-menu-item @click="$router.push('/user')">Dane osobowe</el-menu-item>
             <el-menu-item @click="$router.push('/user/password')">Zmiana hasła</el-menu-item>
+            <el-menu-item @click="$router.push('/user/instagram')">Instagram</el-menu-item>
             <el-menu-item @click="$router.push('/user/model')"
                           v-if="showModelBoard">Dane modelki</el-menu-item>
         </el-submenu>

@@ -24,6 +24,12 @@
                 </div></el-row>
             </el-row>
         </el-main>
+        <el-footer>
+            Korzystanie z portalu oznacza akceptację
+            <el-button type="text" style="border: #ebd9c8; background-color: #ebd9c8; color: #1989FA; font-size: 16px; font-family: Georgia, serif;
+            font-style: normal;font-weight: 500;letter-spacing: 0.1em;" @click="$router.push('/')"> Regulaminu</el-button> oraz<el-button type="text" style="border: #ebd9c8; background-color: #ebd9c8; color: #1989FA; font-size: 16px; font-family: Georgia, serif;
+            font-style: normal;font-weight: 500;letter-spacing: 0.1em;" @click="$router.push('/')">Polityki prywatności</el-button>.
+        </el-footer>
     </el-container>
 </template>
 
@@ -66,6 +72,18 @@
     .container{
         max-width: 1200px;
         margin: auto;
+    }
+
+    .el-footer {
+        background-color: #ebd9c8;
+        color: black;
+        text-align: right;
+        line-height: 60px;
+        font-family: Georgia, serif;
+        font-style: normal;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        font-size: 16px;
     }
 
     .span{
