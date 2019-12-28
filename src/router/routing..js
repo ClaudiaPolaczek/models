@@ -25,12 +25,14 @@ import AdminUsers from "@/components/admin/AdminUsers";
 import AddPortfolio from "@/components/Account/AddPortfolio";
 import PortfolioImages from "@/components/PortfolioImages";
 import PortfolioList from "@/components/Portfolios/PortfolioList";
+import Regulations from "@/components/Regulations";
 
 Vue.use(VueRouter)
 
 export default new VueRouter({
     routes: [
         { path: '/', component: WelcomePage},
+        { path: '/regulations', component: Regulations},
         { path: '/user', component: AccountSettings},
         { path: '/login', component: Signin},
         { path: '/signup', component: Signup},

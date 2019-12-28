@@ -28,13 +28,14 @@ class AuthService {
             password: user.password,
             firstName: user.firstName,
             lastName: user.lastName,
-            age: user.age,
+            birthdayYear: user.birthdayYear,
             gender: user.gender,
             region: user.region,
             city: user.city,
             phoneNumber: user.phoneNumber,
             hairColor: user.hairColor,
             eyesColor: user.eyesColor,
+            regulationsAgreement : user.regulationsAgreement
         });
     }
 
@@ -44,11 +45,12 @@ class AuthService {
             password: user.password,
             firstName: user.firstName,
             lastName: user.lastName,
-            age: user.age,
+            birthdayYear: user.birthdayYear,
             gender: user.gender,
             region: user.region,
             city: user.city,
             phoneNumber: user.phoneNumber,
+            regulationsAgreement : user.regulationsAgreement
         });
     }
 

@@ -32,7 +32,7 @@
                         Tel: {{photographer.survey.phoneNumber}}
                     </el-row>
                 </div></el-col>
-                <el-col :span="8"><div style="margin-top: 20px">
+                <el-col :span="4"><div style="margin-top: 20px">
                     <el-row class="profile">
                         <el-button type="primary"
                                    @click="$router.push({ path: `/portfolios/u/${photographer.user.username}` })">Zobacz portfolio</el-button>
@@ -42,6 +42,14 @@
                                    @click="$router.push({ path: `/photoshoot/${photographer.user.username}` })">Zaproś na sesję</el-button>
                     </el-row>
                 </div></el-col>
+                <el-col :span="2" style=" text-align: center">
+                    <el-row style="margin-top: 15px;">
+                        <font-awesome-icon v-if="ifHasInstagram" :icon="['fab', 'instagram']" size=" fa-3x" style="color: #213169" @click="goToInstagram"/>
+                    </el-row>
+                    <el-row style="margin-top: 0px; text-align: center; color: #213169">
+                        {{this.photographer.survey.instagramName}}
+                    </el-row>
+                </el-col>
             </el-row>
             <el-row :gutter="20" style="margin-top: 30px; text-align: left; margin-left: 50px">
                 <el-collapse accordion @change="handleChange">
@@ -121,6 +129,7 @@
     import {APIService} from '../../services/APIService';
     const apiService = new APIService();
     import Comment from "@/models/comment";
+    import Notification from "@/models/notification";
     export default {
         mounted() {
             this.id = this.$route.params.id
@@ -129,11 +138,14 @@
         data() {
             return {
                 comment: new Comment('', '', '', ''),
+                notification: new Notification('', ''),
                 photographer: [],
                 user: [],
                 message: '',
                 id: 0,
                 username: '',
+                instagram: "https://www.instagram.com/",
+                tabUrl: '',
                 comments: [],
                 dialogTableVisible: false,
                 dialogFormVisible: false,
@@ -147,6 +159,7 @@
             getPhotographerById(id) {
                 apiService.getPhotographerById(id).then((data) => {
                     this.photographer = data;
+                    this.tabUrl = this.instagram.concat(this.photographer.survey.instagramName)
                 });
             },
             getCommentsByRatedUser(username) {
@@ -180,6 +193,20 @@
                                     this.message = error.message;
                                 }
                             );
+
+                            this.notification.username = this.comment.ratedUserUsername;
+                            this.notification.content = 'Nowy komentarz od ' + this.comment.ratingUserUsername + ': ' + this.comment.content;
+
+                            apiService.addNotification(this.notification).then(
+                                data => {
+                                    this.message = data.message;
+                                    this.notification = data;
+                                },
+                                error => {
+                                    this.message = error.message;
+                                }
+                            );
+
                         } else this.dialogFormVisible = false
                     } else {
                         this.$message({
@@ -214,6 +241,9 @@
                 const date = new Date();
                 return  date.getFullYear() - year;
             },
+            goToInstagram(){
+                window.open(this.tabUrl)
+            }
         },
         computed: {
             currentUser() {
@@ -225,6 +255,10 @@
                     else return true;
                 }
                 else return false;
+            },
+            ifHasInstagram(){
+                if(this.photographer.survey.instagramName!=null) return true;
+                else return false
             }
         }
     }

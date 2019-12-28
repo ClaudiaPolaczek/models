@@ -52,6 +52,10 @@
                             <el-form-item label="Numer telefonu" prop="phoneNumber">
                                 <el-input v-model="ruleForm.phoneNumber"></el-input>
                             </el-form-item>
+                            <el-form-item label="" prop="regulationsAgreement" style="text-align: justify" label-width="0px">
+                                <el-checkbox v-model="ruleForm.regulationsAgreement"></el-checkbox>
+                                 Oświadczam, że zapoznałem się z regulaminem serwisu i zobowiązuję się do jego przestrzegania
+                            </el-form-item>
                             <el-form-item>
                                 <el-form-item>
                                 <el-button type="primary" @click="handleRegister('ruleForm')"
@@ -102,6 +106,7 @@
                     city: '',
                     birthdayYear: '',
                     phoneNumber: '',
+                    regulationsAgreement: '',
                     options: [{
                         value: 'dolnoslaskie',
                         label: 'dolnośląskie'
@@ -166,7 +171,7 @@
                     ],
                     username: [
                         { required: true, message: 'Podaj login', trigger: 'blur' },
-                        { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' }
+                        { min: 3, max: 15, message: 'Length should be 3 to 5', trigger: 'blur' }
                     ],
                     password: [
                         { required: true, message: 'Podaj hasło', trigger: 'change' },
@@ -192,6 +197,9 @@
                     phoneNumber: [
                         { required: true, message: 'Podaj wiek ', trigger: 'change' },
                         { min: 7, message: 'Numer telefonu nie może być krótszy niż 7 cyfr', trigger: 'blur' },
+                    ],
+                    regulationsAgreement: [
+                        { required: true, message: 'Wyrażenie zgody jest konieczne do utworzenia konta w serwisie ', trigger: 'change' }
                     ]
                 }
             };
@@ -205,26 +213,33 @@
                         if (this.ruleForm.password == this.ruleForm.passwordConfirmation) {
                             this.$validator.validate().then(valid => {
                                 if (valid) {
-                                    this.user.username = this.ruleForm.user;
+                                    this.user.username = this.ruleForm.username;
                                     this.user.password = this.ruleForm.password;
                                     this.user.firstName = this.ruleForm.firstName;
                                     this.user.lastName = this.ruleForm.lastName;
-                                    this.user.age = this.ruleForm.age;
+                                    this.user.birthdayYear = this.ruleForm.birthdayYear;
                                     this.user.gender = this.ruleForm.gender;
                                     this.user.region = this.ruleForm.region;
                                     this.user.city = this.ruleForm.city;
                                     this.user.phoneNumber = this.ruleForm.phoneNumber;
-                                    this.user.eyesColor = this.ruleForm.eyesColor;
-                                    this.user.hairColor = this.ruleForm.hairColor;
+                                    if(this.ruleForm.regulationsAgreement==true) {
+                                        this.user.regulationsAgreement = '1'
+                                    } else this.user.regulationsAgreement = '0'
                                     if(this.ruleForm.occupation=="Fotograf"){
                                         this.specifyGender(this.user.gender);
                                         this.$store.dispatch('auth/registerPhotographer', this.user).then(
                                             data => {
-                                                this.message = data.message;
-                                                this.successful = true;
+                                                location.reload();
                                             },
                                             error => {
                                                 this.message = error.message;
+                                                if(this.message.startsWith("User with username")){
+                                                    this.$message({
+                                                        message: 'Podana nazwa użytkownika jest już zajęta!',
+                                                        type: 'error',
+                                                        offset: 30
+                                                    });
+                                                }
                                                 this.successful = false;
                                             }
                                         );
@@ -232,11 +247,17 @@
                                         this.specifyGender(this.user.gender);
                                         this.$store.dispatch('auth/registerModel', this.user).then(
                                             data => {
-                                                this.message = data.message;
-                                                this.successful = true;
+                                                location.reload();
                                             },
                                             error => {
                                                 this.message = error.message;
+                                                if(this.message.startsWith("User with username")){
+                                                    this.$message({
+                                                        message: 'Podana nazwa użytkownika jest już zajęta!',
+                                                        type: 'error',
+                                                        offset: 30
+                                                    });
+                                                }
                                                 this.successful = false;
                                             }
                                         );

@@ -29,7 +29,8 @@
                                         v-model="form.meetingDate"
                                         type="datetime"
                                         value-format="yyyy-MM-ddTHH:mm:ss"
-                                        placeholder="Wybierz datę i godzinę">
+                                        placeholder="Wybierz datę i godzinę"
+                                        :picker-options="pickerOptions">
                                 </el-date-picker>
                             </el-form-item>
                             <el-form-item label="Czas trwania" prop="duration">
@@ -95,6 +96,11 @@
                     notes: '',
                     meetingDate: '',
                     duration: '',
+                },
+                pickerOptions: {
+                    disabledDate(time) {
+                        return time.getTime() < Date.now();
+                    },
                 },
                 rules: {
                     city: [

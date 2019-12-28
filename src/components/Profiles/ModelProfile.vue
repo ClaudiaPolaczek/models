@@ -53,7 +53,7 @@
                         <font-awesome-icon v-if="ifHasInstagram" :icon="['fab', 'instagram']" size=" fa-3x" style="color: #213169" @click="goToInstagram"/>
                     </el-row>
                     <el-row style="margin-top: 0px; text-align: center; color: #213169">
-                        {{this.model.user.instagramName}}
+                        {{this.model.survey.instagramName}}
                     </el-row>
                 </el-col>
             </el-row>
@@ -135,6 +135,7 @@
     import {APIService} from '../../services/APIService';
     const apiService = new APIService();
     import Comment from "@/models/comment";
+    import Notification from "@/models/notification";
     export default {
         mounted() {
             this.id = this.$route.params.id
@@ -143,6 +144,7 @@
         data() {
             return {
                 comment: new Comment('', '', '', ''),
+                notification: new Notification('', ''),
                 model: [],
                 user: [],
                 message: '',
@@ -163,7 +165,7 @@
             getModelById(id) {
                 apiService.getModelById(id).then((data) => {
                     this.model = data;
-                    this.tabUrl = this.instagram.concat(this.model.user.instagramName)
+                    this.tabUrl = this.instagram.concat(this.model.survey.instagramName)
                 });
             },
             getCommentsByRatedUser(username) {
@@ -197,6 +199,20 @@
                                         this.message = error.message;
                                     }
                                 );
+
+                                this.notification.username = this.comment.ratedUserUsername;
+                                this.notification.content = 'Nowy komentarz od ' + this.comment.ratingUserUsername + ': ' + this.comment.content;
+
+                                apiService.addNotification(this.notification).then(
+                                    data => {
+                                        this.message = data.message;
+                                        this.notification = data;
+                                    },
+                                    error => {
+                                        this.message = error.message;
+                                    }
+                                );
+
                             } else this.dialogFormVisible = false
                         } else {
                         this.$message({
@@ -248,7 +264,7 @@
                 else return false;
             },
             ifHasInstagram(){
-                if(this.model.user.instagramName!=null) return true;
+                if(this.model.survey.instagramName!=null) return true;
                 else return false
             }
         }

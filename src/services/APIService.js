@@ -154,6 +154,11 @@ export class APIService{
         return axios.get(url).then(response => response.data);
     }
 
+    getAllForUser(username) {
+        const url = `${API_URL}/photoshoots/all/${username}`;
+        return axios.get(url).then(response => response.data);
+    }
+
     getAllUsers() {
         const url = `${API_URL}/users`;
         return axios.get(url).then(response => response.data);
@@ -258,8 +263,15 @@ export class APIService{
         }).then(response => response.data);
     }
 
-    editInstagramName(username, user) {
-        const url = `${API_URL}/users/instagram/${username}`;
+    editModelInstagramName(username, user) {
+        const url = `${API_URL}/models/instagram/${username}`;
+        return axios.patch(url,{
+            instagramName : user.instagramName,
+        }).then(response => response.data);
+    }
+
+    editPhotographerInstagramName(username, user) {
+        const url = `${API_URL}/photographers/instagram/${username}`;
         return axios.patch(url,{
             instagramName : user.instagramName,
         }).then(response => response.data);

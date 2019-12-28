@@ -11,21 +11,22 @@
                         <el-breadcrumb-item>Terminarz</el-breadcrumb-item>
                     </el-breadcrumb>
                     <el-row>
-                        <el-col :span="10" style="margin-right: 50px"><div>
+                        <el-col :span="10" style="margin-right: 20px"><div>
                             <el-form label-width="250px">
                                 <el-form-item label="Zapraszający użytkownik">
                                     <el-input v-model="search"></el-input>
                                 </el-form-item>
                             </el-form>
                         </div></el-col>
-                        <el-col :span="8"><div>
-                            <el-form label-width="200px">
-                                <el-form-item label="Data sesji zdjęciowej">
+                        <el-col :span="6"><div>
+                            <el-form label-width="110px">
+                                <el-form-item label="Data sesji">
                                     <el-date-picker
                                             v-model="sessionDate"
                                             type="date"
                                             placeholder="Wybierz dzień"
-                                            :picker-options="pickerOptions">
+                                            :picker-options="pickerOptions"
+                                            value-format="yyyy-MM-dd">
                                     </el-date-picker>
                                 </el-form-item>
                             </el-form>
@@ -37,8 +38,8 @@
                                 data.photoShootStatus.toLowerCase().startsWith(statusRequired.toLowerCase()))
                                 .filter(data => !search ||
                                 data.invitingUser.username.toLowerCase().startsWith(search.toLowerCase()))
-                                .filter(data => !search ||
-                                data.invitingUser.username.toLowerCase().startsWith(search.toLowerCase()))"
+                                .filter(data => !sessionDate ||
+                                data.meetingDate.slice(0,10).startsWith(sessionDate))"
                                 style="width: 100%"
                                 :default-sort = "{prop: 'meetingDate', order: 'descending'}">
                             <el-table-column type="expand">
@@ -91,8 +92,8 @@
             Menu
         },
         methods: {
-            getAllByInvitedUserUsername(username) {
-                apiService.getAllByInvitedUserUsername(username).then((data) => {
+            getAllForUser(username) {
+                apiService.getAllForUser(username).then((data) => {
                     this.invitations = data;
                 });
             },
@@ -166,7 +167,7 @@
                 } else if (status == "Anulowane"){
                     return 'CANCELED';
                 }
-            },
+            }
         },
         computed: {
             currentUser() {
@@ -174,7 +175,7 @@
             }
         },
         mounted() {
-            this.getAllByInvitedUserUsername(this.currentUser.username)
+            this.getAllForUser(this.currentUser.username)
         },
         data() {
             return {
@@ -182,11 +183,19 @@
                 notification: new Notification('', ''),
                 invitations: [],
                 statusRequired: 'ACCEPTED',
+                state: '',
                 sessionDate: '',
+                whenOptions: [{
+                    value: 1,
+                    label: 'Przyszłe'
+                }, {
+                    value: 0,
+                    label: 'Odbyte'
+                }, {
+                    value: '',
+                    label: '-'
+                },],
                 pickerOptions: {
-                    disabledDate(time) {
-                        return time.getTime() > Date.now();
-                    },
                     shortcuts: [{
                         text: 'Dzisiaj',
                         onClick(picker) {
