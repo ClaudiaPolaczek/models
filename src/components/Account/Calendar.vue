@@ -31,11 +31,27 @@
                                 </el-form-item>
                             </el-form>
                         </div></el-col>
+                        <el-col :span="6"><div>
+                            <el-form label-width="100px">
+                                <el-form-item label="Stan">
+                                    <el-select v-model="state">
+                                        <el-option
+                                                v-for="item in whenOptions"
+                                                :key="item.value"
+                                                :label="item.label"
+                                                :value="item.value">
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </el-form>
+                        </div></el-col>
                     </el-row>
                     <el-row>
                         <el-table
-                                :data="invitations.filter(data => !statusRequired ||
-                                data.photoShootStatus.toLowerCase().startsWith(statusRequired.toLowerCase()))
+                                :data="invitations.filter(data => !statusRequired && (
+                                data.photoShootStatus.toLowerCase().startsWith(statusRequiredAccept.toLowerCase()) ||
+                                data.photoShootStatus.toLowerCase().startsWith(statusRequiredEnd.toLowerCase()))
+                                && data.photoShootStatus.toLowerCase().startsWith(state.toLowerCase()))
                                 .filter(data => !search ||
                                 data.invitingUser.username.toLowerCase().startsWith(search.toLowerCase()))
                                 .filter(data => !sessionDate ||
@@ -64,7 +80,7 @@
                                     prop="meetingDate"
                                     label="Godzina spotkania"
                                     align="center"
-                                    width="400">
+                                    width="250">
                                 <template slot-scope="x">
                                     <p>{{getTime(x.row.meetingDate)}}</p>
                                 </template>
@@ -74,6 +90,15 @@
                                     label="Użytkownik"
                                     width="max"
                                     align="center">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="photoShootStatus"
+                                    label="Status"
+                                    width="max"
+                                    align="center">
+                                <template slot-scope="x">
+                                    <p>{{translateStatus(x.row.photoShootStatus)}}</p>
+                                </template>
                             </el-table-column>
                         </el-table>
                     </el-row>
@@ -151,6 +176,8 @@
                     return 'Zaakceptowane';
                 } else if (status == "CANCELED"){
                     return 'Anulowane';
+                } else if (status == "END"){
+                    return 'Zakończone';
                 }
             },
             getDate(date){
@@ -182,15 +209,16 @@
                 search: '',
                 notification: new Notification('', ''),
                 invitations: [],
-                statusRequired: 'ACCEPTED',
+                statusRequiredAccept: 'ACCEPTED',
+                statusRequiredEnd: 'END',
                 state: '',
                 sessionDate: '',
                 whenOptions: [{
-                    value: 1,
-                    label: 'Przyszłe'
+                    value: 'ACCEPTED',
+                    label: 'Zaakceptowane'
                 }, {
-                    value: 0,
-                    label: 'Odbyte'
+                    value: 'END',
+                    label: 'Zakończone'
                 }, {
                     value: '',
                     label: '-'

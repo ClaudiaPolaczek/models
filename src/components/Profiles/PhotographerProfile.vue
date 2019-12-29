@@ -66,7 +66,7 @@
                                     </el-form-item>
                                     <el-form-item label="Treść">
                                         <el-input type="textarea"
-                                                  maxlength="100"
+                                                  maxlength="800"
                                                   show-word-limit
                                                   :rows="6" v-model="form.content"></el-input>
                                     </el-form-item>

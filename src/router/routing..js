@@ -2,9 +2,9 @@ import Vue from 'vue';
 import VueRouter from 'vue-router'
 import WelcomePage from "@/components/WelcomePage";
 import AccountSettings from "@/components/Account/AccountSettings";
-import Signin from "@/components/Signin";
+import Signin from "@/components/Basic/Signin";
 import Invitations from "@/components/Account/Invitations";
-import Signup from "@/components/Signup";
+import Signup from "@/components/Basic/Signup";
 import InstagramName from "@/components/Account/InstagramName";
 import Notifications from "@/components/Account/Notifications";
 import Calendar from "@/components/Account/Calendar";
@@ -14,18 +14,17 @@ import PhotographerProfiles from "@/components/Profiles/PhotographerProfiles";
 import PhotographerProfile from "@/components/Profiles/PhotographerProfile";
 import ModelProfile from "@/components/Profiles/ModelProfile";
 import ModelProfiles from "@/components/Profiles/ModelProfiles";
-import Portfolio from "@/components/Portfolio";
+import Portfolio from "@/components/Portfolios/Portfolio";
 import Account from "@/components/Account/Account";
-import Home from "@/components/headers/Home";
 import PasswordChange from "@/components/Account/PasswordChange";
 import ModelAdditionalData from "@/components/Account/ModelAdditionalData";
-import PhotoshootInvitation from "@/components/PhotoshootInvitation";
+import PhotoshootInvitation from "@/components/Profiles/PhotoshootInvitation";
 import AdminComments from "@/components/admin/AdminComments";
 import AdminUsers from "@/components/admin/AdminUsers";
 import AddPortfolio from "@/components/Account/AddPortfolio";
-import PortfolioImages from "@/components/PortfolioImages";
+import PortfolioImages from "@/components/Portfolios/PortfolioImages";
 import PortfolioList from "@/components/Portfolios/PortfolioList";
-import Regulations from "@/components/Regulations";
+import Regulations from "@/components/Basic/Regulations";
 
 Vue.use(VueRouter)
 
@@ -53,20 +52,9 @@ export default new VueRouter({
         { path: '/models', component: ModelProfiles},
         { path: '/models/:id', component: ModelProfile},
         { path: '/account', component: Account},
-        { path: '/home', component: Home},
         { path: '/photoshoot/:username', component: PhotoshootInvitation},
         { path: '/admin/comments', component: AdminComments},
         { path: '/admin/users', component: AdminUsers},
-        { path: '/admin', name: 'admin',
-            // lazy-loaded
-            component: () => import('@/components/headers/BoardAdmin.vue')
-        },
-        {
-            path: '/user',
-            name: 'user',
-            // lazy-loaded
-            component: () => import('@/components/headers/BoardUser.vue')
-        }
     ],
     mode: 'history',
 

@@ -74,7 +74,7 @@
 </template>
 
 <script>
-    import User from '../models/user';
+    import User from '../../models/user';
     export default {
         name: "register",
         active: 0,
@@ -210,60 +210,70 @@
                     if (valid) {
                         this.message = '';
                         this.submitted = true;
+                        var regex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})");
                         if (this.ruleForm.password == this.ruleForm.passwordConfirmation) {
-                            this.$validator.validate().then(valid => {
-                                if (valid) {
-                                    this.user.username = this.ruleForm.username;
-                                    this.user.password = this.ruleForm.password;
-                                    this.user.firstName = this.ruleForm.firstName;
-                                    this.user.lastName = this.ruleForm.lastName;
-                                    this.user.birthdayYear = this.ruleForm.birthdayYear;
-                                    this.user.gender = this.ruleForm.gender;
-                                    this.user.region = this.ruleForm.region;
-                                    this.user.city = this.ruleForm.city;
-                                    this.user.phoneNumber = this.ruleForm.phoneNumber;
-                                    if(this.ruleForm.regulationsAgreement==true) {
-                                        this.user.regulationsAgreement = '1'
-                                    } else this.user.regulationsAgreement = '0'
-                                    if(this.ruleForm.occupation=="Fotograf"){
-                                        this.specifyGender(this.user.gender);
-                                        this.$store.dispatch('auth/registerPhotographer', this.user).then(
-                                            data => {
-                                                location.reload();
-                                            },
-                                            error => {
-                                                this.message = error.message;
-                                                if(this.message.startsWith("User with username")){
-                                                    this.$message({
-                                                        message: 'Podana nazwa użytkownika jest już zajęta!',
-                                                        type: 'error',
-                                                        offset: 30
-                                                    });
+                            if (regex.test(this.ruleForm.password)) {
+                                this.$validator.validate().then(valid => {
+                                    if (valid) {
+                                        this.user.username = this.ruleForm.username;
+                                        this.user.password = this.ruleForm.password;
+                                        this.user.firstName = this.ruleForm.firstName;
+                                        this.user.lastName = this.ruleForm.lastName;
+                                        this.user.birthdayYear = this.ruleForm.birthdayYear;
+                                        this.user.gender = this.ruleForm.gender;
+                                        this.user.region = this.ruleForm.region;
+                                        this.user.city = this.ruleForm.city;
+                                        this.user.phoneNumber = this.ruleForm.phoneNumber;
+                                        if (this.ruleForm.regulationsAgreement == true) {
+                                            this.user.regulationsAgreement = '1'
+                                        } else this.user.regulationsAgreement = '0'
+                                        if (this.ruleForm.occupation == "Fotograf") {
+                                            this.specifyGender(this.user.gender);
+                                            this.$store.dispatch('auth/registerPhotographer', this.user).then(
+                                                data => {
+                                                    location.reload();
+                                                },
+                                                error => {
+                                                    this.message = error.message;
+                                                    if (this.message.startsWith("User with username")) {
+                                                        this.$message({
+                                                            message: 'Podana nazwa użytkownika jest już zajęta!',
+                                                            type: 'error',
+                                                            offset: 30
+                                                        });
+                                                    }
+                                                    this.successful = false;
                                                 }
-                                                this.successful = false;
-                                            }
-                                        );
-                                    }else if(this.ruleForm.occupation=="Model/Modelka"){
-                                        this.specifyGender(this.user.gender);
-                                        this.$store.dispatch('auth/registerModel', this.user).then(
-                                            data => {
-                                                location.reload();
-                                            },
-                                            error => {
-                                                this.message = error.message;
-                                                if(this.message.startsWith("User with username")){
-                                                    this.$message({
-                                                        message: 'Podana nazwa użytkownika jest już zajęta!',
-                                                        type: 'error',
-                                                        offset: 30
-                                                    });
+                                            );
+                                        } else if (this.ruleForm.occupation == "Model/Modelka") {
+                                            this.specifyGender(this.user.gender);
+                                            this.$store.dispatch('auth/registerModel', this.user).then(
+                                                data => {
+                                                    location.reload();
+                                                },
+                                                error => {
+                                                    this.message = error.message;
+                                                    if (this.message.startsWith("User with username")) {
+                                                        this.$message({
+                                                            message: 'Podana nazwa użytkownika jest już zajęta!',
+                                                            type: 'error',
+                                                            offset: 30
+                                                        });
+                                                    }
+                                                    this.successful = false;
                                                 }
-                                                this.successful = false;
-                                            }
-                                        );
+                                            );
+                                        }
                                     }
-                                }
-                            });
+                                });
+                            } else {
+                                this.$message({
+                                    message: 'Hasło musi zawierać co najmniej 8 znaków w tym jedną dużą, jedną małą literę i jedną cyfrę',
+                                    type: 'error',
+                                    offset: 30
+                                });
+                                this.successful = false;
+                            }
                         } else {
                             this.$message({
                                 message: 'Podane hasła nie są takie same',

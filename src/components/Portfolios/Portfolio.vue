@@ -82,7 +82,7 @@
 </template>
 
 <script>
-    import {APIService} from '../services/APIService';
+    import {APIService} from '../../services/APIService';
     const apiService = new APIService();
 
     export default {

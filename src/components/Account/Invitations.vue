@@ -172,11 +172,13 @@
                     return 'Zaakceptowane';
                 } else if (status == "CANCELED"){
                     return 'Anulowane';
+                } else if (status == "END"){
+                    return 'Zakończone';
                 }
             },
             translateStatusOnEnglish(status) {
                 if(status == "Utworzone"){
-                    return "CERATED";
+                    return "CREATED";
                 } else if (status == "Zaakceptowane"){
                     return 'ACCEPTED';
                 } else if (status == "Anulowane"){

@@ -59,29 +59,39 @@
         },
         methods: {
             changePassword(ruleForm) {
+                var regex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})");
                 this.$refs[ruleForm].validate((valid) => {
                     if(valid){
                         if(this.ruleForm.password != this.ruleForm.passwordConfirmation){
                             this.$message.error('Podane hasła nie są takie same');
                             this.ruleForm.password = '';
                             this.ruleForm.passwordConfirmation = '';
-                        }else{
-                            this.user.username = this.currentUser.username;
-                            this.user.password = this.ruleForm.password;
-                            apiService.changePassword(this.user).then(
-                                data => {
-                                    this.message = data.message;
-                                    this.$message({
-                                        message: 'Hasło zostało zmienione',
-                                        type: 'success'
-                                    });
-                                    this.ruleForm.password = '';
-                                    this.ruleForm.passwordConfirmation = '';
-                                },
-                                error => {
-                                    this.message = error.message;
-                                }
-                            );
+                        }else {
+                            if (regex.test(this.ruleForm.password)) {
+                                this.user.username = this.currentUser.username;
+                                this.user.password = this.ruleForm.password;
+                                apiService.changePassword(this.user).then(
+                                    data => {
+                                        this.message = data.message;
+                                        this.$message({
+                                            message: 'Hasło zostało zmienione',
+                                            type: 'success'
+                                        });
+                                        this.ruleForm.password = '';
+                                        this.ruleForm.passwordConfirmation = '';
+                                    },
+                                    error => {
+                                        this.message = error.message;
+                                    }
+                                );
+                            } else {
+                                this.$message({
+                                    message: 'Hasło musi zawierać co najmniej 8 znaków w tym jedną dużą, jedną małą literę i jedną cyfrę',
+                                    type: 'error',
+                                    offset: 30
+                                });
+                                this.successful = false;
+                            }
                         }
                     }
                 });

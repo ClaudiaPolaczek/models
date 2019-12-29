@@ -38,7 +38,7 @@
                             </el-form-item>
                             <el-form-item label="Notatka">
                                 <el-input type="textarea"
-                                          maxlength="200"
+                                          maxlength="800"
                                           show-word-limit
                                           :rows="4"
                                           v-model="form.notes"></el-input>

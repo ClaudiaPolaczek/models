@@ -27,7 +27,7 @@
 </template>
 
 <script>
-    import User from '../models/user';
+    import User from '../../models/user';
     export default {
         data() {
             return {
