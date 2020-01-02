@@ -19,8 +19,8 @@ import Account from "@/components/Account/Account";
 import PasswordChange from "@/components/Account/PasswordChange";
 import ModelAdditionalData from "@/components/Account/ModelAdditionalData";
 import PhotoshootInvitation from "@/components/Profiles/PhotoshootInvitation";
-import AdminComments from "@/components/admin/AdminComments";
-import AdminUsers from "@/components/admin/AdminUsers";
+import AdminComments from "@/components/Admin/AdminComments";
+import AdminUsers from "@/components/Admin/AdminUsers";
 import AddPortfolio from "@/components/Account/AddPortfolio";
 import PortfolioImages from "@/components/Portfolios/PortfolioImages";
 import PortfolioList from "@/components/Portfolios/PortfolioList";
@@ -57,7 +57,6 @@ export default new VueRouter({
         { path: '/admin/users', component: AdminUsers},
     ],
     mode: 'history',
-
 })
 
 

@@ -57,7 +57,7 @@
                 </div></el-col>
             </el-row>
             <el-row :gutter="20"  v-for="photographer in photographers" :key="photographer.photographers"
-            v-if="(!form.gender || photographer.survey.gender == form.gender) &&
+                    v-show="(!form.gender || photographer.survey.gender == form.gender) &&
             (!form.city || photographer.survey.city == form.city) &&
             (!form.region || photographer.survey.region == form.region) &&
             (!form.age || getBirthdayYear(form.age,photographer.survey.birthdayYear))">

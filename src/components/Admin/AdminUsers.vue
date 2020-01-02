@@ -57,6 +57,9 @@
     const apiService = new APIService();
     export default {
         mounted() {
+            if (!this.currentUser || !this.currentUser.role.includes('ADMIN')) {
+                this.$router.push('/');
+            }
             this.getUsers();
         },
         name: 'AdminUsers',
@@ -144,7 +147,11 @@
                 });
             },
         },
-        computed: {}
+        computed: {
+            currentUser() {
+                return this.$store.state.auth.user;
+            }
+        }
     }
 </script>
 

@@ -87,7 +87,7 @@
                 </div></el-col>
             </el-row>
             <el-row :gutter="20"  v-for="model in models" :key="model.models"
-                    v-if="(!form.gender || model.survey.gender == form.gender) &&
+                    v-show="(!form.gender || model.survey.gender == form.gender) &&
             (!form.city || model.survey.city == form.city) &&
             (!form.region || model.survey.region == form.region) &&
             (!form.age || getBirthdayYear(form.age,model.survey.birthdayYear)) &&

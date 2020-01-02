@@ -63,10 +63,14 @@
     const apiService = new APIService();
     export default {
         mounted() {
+            if (!this.currentUser || !this.currentUser.role.includes('ADMIN')) {
+                this.$router.push('/');
+            }
             this.getComments();
         },
         name: 'AdminComments',
-        components: {},
+        components: {
+        },
         data() {
             return {
                 comments: [],
@@ -102,12 +106,13 @@
                         });
                 }).catch(() => {
                 });
-
-
             },
-
         },
-        computed: {}
+        computed: {
+            currentUser() {
+                return this.$store.state.auth.user;
+            }
+        }
     }
 </script>
 
