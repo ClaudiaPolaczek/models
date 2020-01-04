@@ -9,7 +9,6 @@
                         <el-breadcrumb-item>Albumy</el-breadcrumb-item>
                     </el-breadcrumb>
                     <el-row :gutter="20"  v-for="portfolio in portfolios" :key="portfolio.portfolios">
-
                         <el-card>
                             <el-col :span="6">
                                 <el-image

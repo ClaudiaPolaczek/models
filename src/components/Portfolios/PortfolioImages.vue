@@ -8,7 +8,7 @@
             <el-row>
                 <el-carousel :interval="5000" type="card" height="600px" arrow="always">
                     <el-carousel-item v-for="image in images" :key="image">
-                        <el-image :src="image.fileUrl"></el-image>
+                        <el-image :src="image.fileUrl" :fit="'fit'"></el-image>
                     </el-carousel-item>
                 </el-carousel>
             </el-row>

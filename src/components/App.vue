@@ -9,7 +9,7 @@
           <font-awesome-icon icon="home" size=" fa-lg" style="margin-right: 10px"/> Start
         </el-menu-item>
         <el-menu-item index="2" @click="$router.push('/portfolios')">
-           Portfolio
+           Portfolia
         </el-menu-item>
         <el-submenu index="3">
           <template slot="title">Profile</template>

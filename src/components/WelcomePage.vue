@@ -5,7 +5,7 @@
                 <el-row style="margin-top: 10px"><div>
                     <div class="block">
                         <el-card> Top profile modelek </el-card>
-                        <el-carousel :interval="5000" type="card" height="400px" arrow="always">
+                        <el-carousel :interval="5000" type="card" height="600px" arrow="always">
                             <el-carousel-item v-for="model in models" :key="model" :label="model.user.username">
                                 <el-image :src="model.user.mainPhotoUrl"></el-image>
                             </el-carousel-item>
@@ -15,7 +15,7 @@
                 <el-row><div>
                     <div class="block">
                         <el-card style="margin-top: 20px"> Top profile fotografów </el-card>
-                        <el-carousel :interval="5000" type="card" height="400px" arrow="always">
+                        <el-carousel :interval="5000" type="card" height="600px" arrow="always">
                             <el-carousel-item v-for="photographer in photographers" :key="photographer" :label="photographer.user.username">
                                 <el-image :src="photographer.user.mainPhotoUrl"></el-image>
                             </el-carousel-item>

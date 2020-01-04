@@ -117,7 +117,7 @@
                             <el-table-column
                                     fixed="right"
                                     label="Usuwanie"
-                                    width="170">
+                                    width="fill">
                                 <template slot-scope="scope">
                                     <el-button v-if="deleteCommentPossible(scope.row.ratingUser.username)"  @click="deleteComment(scope.row.id)"
                                                type="primary">  Usuń  </el-button>

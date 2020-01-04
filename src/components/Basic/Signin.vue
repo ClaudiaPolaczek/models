@@ -14,7 +14,7 @@
                             </el-form-item>
                             <el-form-item>
                                 <el-button type="primary" @click="handleLogin('ruleForm')">
-                                    <span>Login</span>
+                                    <span>Loguj</span>
                                 </el-button>
                                 <el-button type="primary" @click="$router.push('signup')">Załóż konto</el-button>
                             </el-form-item>
@@ -73,7 +73,7 @@
                         }
                     } else {
                         this.$message({
-                            message: 'Niepoprawne dane logowania',
+                            message: 'Niepoprawnie uzupełniony formularz',
                             type: 'error',
                             offset: 30
                         });
