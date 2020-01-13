@@ -5,10 +5,10 @@
       <el-menu
               mode="horizontal"
               :router="true">
-        <el-menu-item @click="$router.push({ path: `/` })">
+        <el-menu-item index="1" @click="$router.push({ path: `/` })">
           <font-awesome-icon icon="home" size=" fa-lg" style="margin-right: 10px"/> Start
         </el-menu-item>
-        <el-menu-item  @click="$router.push({ path: `/portfolios` })">
+        <el-menu-item index="2" @click="$router.push({ path: `/portfolios` })">
            Portfolia
         </el-menu-item>
         <el-submenu index="3">
