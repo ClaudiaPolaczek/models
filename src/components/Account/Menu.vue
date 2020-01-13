@@ -7,31 +7,31 @@
                 <font-awesome-icon icon="user-cog" size="fa-lg" style="margin-right: 10px"/>
                 <span style="font-size: 17px">Profil</span>
             </template>
-            <el-menu-item @click="$router.push('/user')">Dane osobowe</el-menu-item>
-            <el-menu-item @click="$router.push('/user/password')">Zmiana hasła</el-menu-item>
-            <el-menu-item @click="$router.push('/user/instagram')">Instagram</el-menu-item>
-            <el-menu-item @click="$router.push('/user/model')"
+            <el-menu-item @click="$router.push({ path: `/user` })">Dane osobowe</el-menu-item>
+            <el-menu-item @click="$router.push({ path: `/user/password` })">Zmiana hasła</el-menu-item>
+            <el-menu-item @click="$router.push({ path: `/user/instagram` })">Instagram</el-menu-item>
+            <el-menu-item @click="$router.push({ path: `/user/model` })"
                           v-if="showModelBoard">Dane modelki</el-menu-item>
         </el-submenu>
-        <el-menu-item index="2" @click="$router.push('/calendar')">
+        <el-menu-item @click="$router.push({ path: `/calendar`})">
             <font-awesome-icon icon="calendar-alt" size=" fa-lg" style="margin-right: 10px"/>
             <span>Terminarz</span>
         </el-menu-item>
-        <el-menu-item index="3" @click="$router.push('/invitations')">
+        <el-menu-item @click="$router.push({ path: `/invitations` })">
             <font-awesome-icon icon="envelope" size=" fa-lg" style="margin-right: 10px"/>
             <span>Zaproszenia</span>
         </el-menu-item>
-        <el-menu-item index="4" @click="$router.push('/notifications')">
+        <el-menu-item @click="$router.push({ path: `/notifications` })">
             <font-awesome-icon icon="bell" size=" fa-lg" style="margin-right: 10px"/>
             <span>Powiadomienia</span>
         </el-menu-item>
-        <el-submenu index="5" >
+        <el-submenu>
             <template slot="title">
                 <font-awesome-icon icon="camera-retro" size=" fa-mg" style="margin-right: 10px"/>
                 <span style="font-size: 17px">Portfolio</span>
             </template>
-            <el-menu-item @click="$router.push('/user/portfolio')">Albumy</el-menu-item>
-            <el-menu-item @click="$router.push('/user/new/portfolio')">Nowy album</el-menu-item>
+            <el-menu-item @click="$router.push({ path: `/user/portfolio` })">Albumy</el-menu-item>
+            <el-menu-item @click="$router.push({ path: `/user/new/portfolio`})">Nowy album</el-menu-item>
         </el-submenu>
     </el-menu>
 </template>

@@ -5,48 +5,48 @@
       <el-menu
               mode="horizontal"
               :router="true">
-        <el-menu-item index="1" :route="{path:'/'}">
+        <el-menu-item @click="$router.push({ path: `/` })">
           <font-awesome-icon icon="home" size=" fa-lg" style="margin-right: 10px"/> Start
         </el-menu-item>
-        <el-menu-item index="2" @click="$router.push('/portfolios')">
+        <el-menu-item  @click="$router.push({ path: `/portfolios` })">
            Portfolia
         </el-menu-item>
         <el-submenu index="3">
           <template slot="title">Profile</template>
-          <el-menu-item index="3-1" @click="$router.push('/photographers')">
+          <el-menu-item @click="$router.push({ path: `/photographers` })">
             Fotograf
           </el-menu-item>
-          <el-menu-item index="3-2" @click="$router.push('/models')">
+          <el-menu-item @click="$router.push({ path: `/models` })">
             Model/Modelka
           </el-menu-item>
         </el-submenu>
         <el-submenu index="4" v-if="showAdminBoard">
           <template slot="title">Panel administratora</template>
-          <el-menu-item index="4-1" @click="$router.push('/admin/comments')">
+          <el-menu-item @click="$router.push({ path: `/admin/comments` })">
             Komentarze
           </el-menu-item>
-          <el-menu-item index="4-2" @click="$router.push('/admin/users')">
+          <el-menu-item @click="$router.push({ path: `/admin/users` })">
             Użytkownicy
           </el-menu-item>
         </el-submenu>
         <div v-if="!currentUser">
-          <el-menu-item index="6" style="float: right;" @click="$router.push('/login')">
+          <el-menu-item style="float: right;" @click="$router.push({ path: `/login` })">
             <span style="padding: 7em 2em">Logowanie / Rejestracja</span>
           </el-menu-item>
         </div>
         <div v-if="currentUser">
-          <el-submenu index="5" >
+          <el-submenu>
             <template slot="title" >
               <font-awesome-icon icon="user-circle" size=" fa-2x" style="margin-right: 10px"/>
               {{currentUser.username}}
             </template>
-            <el-menu-item v-if="!showAdminBoard" index="4-1" @click="$router.push('/account')" style="margin-top: 5px">
+            <el-menu-item v-if="!showAdminBoard" @click="$router.push({ path: `/account` })" style="margin-top: 5px">
               <font-awesome-icon icon="user" size=" fa-lg" style="margin-right: 10px"/>
                 Konto
               <el-badge v-if="ifNotificationsNumberNull" :value="length" class="item" :max="10">
               </el-badge>
             </el-menu-item>
-            <el-menu-item index="4-2" @click="logOut">
+            <el-menu-item @click="logOut">
               <font-awesome-icon icon="sign-out-alt" size=" fa-lg" style="margin-right: 10px"/>
               Wyloguj
             </el-menu-item>
