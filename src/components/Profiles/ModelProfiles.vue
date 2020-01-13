@@ -324,16 +324,16 @@
 
     .image{
     margin-bottom: 15px;
-}
+    }
+
     .profile{
         margin-top: 10px;
         text-align: left;
     }
 
-.el-button{
-    border-color: #213159;
-    background-color: #213159;
-    margin-top: 150px;
-}
-
+    .el-button{
+        border-color: #213159;
+        background-color: #213159;
+        margin-top: 150px;
+    }
 </style>

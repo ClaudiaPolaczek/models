@@ -76,7 +76,7 @@
             if (!this.currentUser) {
                this.$router.push('/login');
             }
-            this.username = this.$route.params.username
+            this.username = this.$route.params.username;
             this.getFullUser(this.username);
         },
         data() {
@@ -190,7 +190,4 @@
 </script>
 
 <style scoped>
-    /*.el-form{*/
-    /*    margin-left: 50px;*/
-    /*}*/
 </style>

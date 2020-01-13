@@ -293,5 +293,4 @@
 .el-form-item__label{
     font-size: 30px;
 }
-
 </style>

@@ -314,5 +314,4 @@
     .portfolio{
         text-align: left;
     }
-
 </style>

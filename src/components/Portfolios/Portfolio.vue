@@ -42,7 +42,7 @@
             </el-row>
             <el-row>
             </el-row>
-            <el-row  style="margin-top: 0px" :gutter="20" v-for="portfolio in portfolios" :key="portfolio.portfolios"
+            <el-row style="margin-top: 0px" :gutter="20" v-for="portfolio in portfolios" :key="portfolio.portfolios"
                     v-if="(!form.occupation || portfolio.user.role == form.occupation) &&
             (!form.title || portfolio.name == form.title) &&
             (!form.addedDate || getDate(portfolio.addedDate) == form.addedDate)">
@@ -125,12 +125,11 @@
 </script>
 
 <style scoped>
-.el-link{
-    color: black;
-}
+    .el-link{
+        color: black;
+    }
 
     .portfolio{
         text-align: left;
     }
-
 </style>

@@ -87,7 +87,6 @@
         letter-spacing: 0.1em;
     }
 
-
     .el-menu-item:not(.is-disabled):focus, .el-menu-item:not(.is-disabled):hover, .el-submenu .el-submenu__title:hover {
         background-color: #FCEEE0;
     }
